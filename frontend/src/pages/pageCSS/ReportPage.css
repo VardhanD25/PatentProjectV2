@@ -1,0 +1,18 @@
+@media print {
+    body {
+      margin: 0;
+      padding: 0;
+    }
+  
+    #report-content {
+      width: 100%; /* Ensure it fits the page */
+      border: none; /* Remove unnecessary borders for printing */
+      box-shadow: none; /* Remove shadows for a clean look */
+    }
+  
+    /* Optional: Make text smaller if necessary */
+    .text-sm {
+      font-size: 0.9rem; 
+    }
+  }
+  

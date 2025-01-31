@@ -1,0 +1,112 @@
+/* General Styles */
+.add-part-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f3f4f6; /* Tailwind's gray-100 */
+    font-family: 'Poppins', sans-serif;
+}
+
+.add-part-content {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff; /* Tailwind's white */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 4px solid #000;
+}
+
+.add-part-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.input-label {
+    font-weight: 600;
+}
+
+.input-field {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db; /* Tailwind's gray-300 */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.add-element-btn {
+    background-color: #3b82f6; /* Tailwind's blue-500 */
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 20px;
+    display: inline-block;
+    font-weight: 600;
+}
+
+.add-element-btn:hover {
+    background-color: #2563eb; /* Tailwind's blue-600 */
+}
+
+.element-list {
+    margin-bottom: 20px;
+}
+
+.element-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb; /* Tailwind's gray-200 */
+}
+
+.remove-btn {
+    background-color: #ef4444; /* Tailwind's red-500 */
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.remove-btn:hover {
+    background-color: #dc2626; /* Tailwind's red-600 */
+}
+
+.submit-btn {
+    background-color: #10b981; /* Tailwind's green-500 */
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: 600;
+}
+
+.submit-btn:hover {
+    background-color: #059669; /* Tailwind's green-600 */
+}
+
+/* Validation Message */
+.validation-message {
+    background-color: #fef2f2; /* Tailwind's red-100 */
+    color: #b91c1c; /* Tailwind's red-700 */
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #fecaca; /* Tailwind's red-300 */
+}

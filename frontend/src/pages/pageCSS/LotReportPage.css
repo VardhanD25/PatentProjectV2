@@ -1,0 +1,15 @@
+#reportRef {
+    max-width: 210mm; /* Set max width for A4 */
+    margin: auto;
+  }
+  
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact; /* Ensure colors are printed as shown */
+    }
+    .page-break {
+      display: block;
+      page-break-before: always; /* Add this class to elements where you want a page break */
+    }
+  }
+  
