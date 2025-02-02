@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import AddElement from '../components/AddElement';
@@ -12,7 +11,6 @@ function ElementManagement() {
 
   const fetchElements = async () => {
     try {
-      console.log('Fetching all elements');
       const response = await fetch('http://localhost:4000/elements');
       const data = await response.json();
 
@@ -20,17 +18,14 @@ function ElementManagement() {
         throw new Error(data.message || 'Failed to fetch elements');
       }
 
-      console.log('Fetched elements:', data);
       setElements(data || []);
     } catch (error) {
-      console.error('Error fetching elements:', error);
       setError(`Error fetching elements: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch all elements on component mount
   useEffect(() => {
     fetchElements();
   }, []);
@@ -41,7 +36,6 @@ function ElementManagement() {
     }
 
     try {
-      console.log('Deleting element:', id);
       const response = await fetch(`http://localhost:4000/elements/${id}`, {
         method: 'DELETE'
       });
@@ -52,100 +46,90 @@ function ElementManagement() {
         throw new Error(data.message || 'Failed to delete element');
       }
 
-      console.log('Element deleted successfully');
-      fetchElements(); // Refresh the list after deletion
+      fetchElements();
     } catch (error) {
-      console.error('Error deleting element:', error);
       setError(`Error deleting element: ${error.message}`);
     }
   };
 
-  const handleAdd = (newElement) => {
-    fetchElements(); // Refresh the list after adding
+  const handleAdd = () => {
+    fetchElements();
   };
 
   return (
-    <div className="min-h-screen bg-slate-900">
-      <Navbar />
+    <div className="min-h-screen flex flex-col bg-white font-quicksand text-[#163d64] relative">
+      <div className="fixed inset-0">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#163d640a_1px,transparent_1px),linear-gradient(to_bottom,#163d640a_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div className="fixed inset-0 bg-gradient-to-b from-white via-[#163d64]/5 to-white"></div>
+      </div>
 
-      <div className="absolute inset-0 bg-grid-slate-700/[0.05] bg-[size:3rem_3rem] pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-900/90 to-slate-900 pointer-events-none" />
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Navbar />
 
-      <main className="relative container mx-auto px-4 py-32">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1 className="text-3xl font-bold text-slate-200 mb-8">Element Management</h1>
-
-          {loading && (
-            <div className="text-slate-200 text-center py-8">Loading elements...</div>
-          )}
-
-          {error && (
-            <div className="text-red-400 bg-red-900/20 border border-red-900/50 rounded-lg p-4 mb-6">
-              {error}
+        <main className="flex-grow p-8 mt-[80px] mb-[80px]">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex justify-between items-center mb-8">
+              <h1 className="text-4xl font-bold text-[#163d64]">Element Management</h1>
+              <button
+                onClick={() => setAddingElement(true)}
+                className="px-6 py-3 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform"
+              >
+                Add Element
+              </button>
             </div>
-          )}
 
-          {!loading && !error && elements.length === 0 && (
-            <div className="text-slate-200 text-center py-8">No elements found.</div>
-          )}
+            {loading && (
+              <div className="text-center py-8 text-[#163d64]">Loading elements...</div>
+            )}
 
-          <div className="flex justify-end mb-4">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setAddingElement(true)}
-              className="px-4 py-2 rounded-lg bg-green-500/20 text-green-300 hover:bg-green-500/30"
-            >
-              Add Element
-            </motion.button>
-          </div>
+            {error && (
+              <div className="text-red-600 bg-red-50 rounded-xl p-4 mb-6 text-center">
+                {error}
+              </div>
+            )}
 
-          <div className="grid gap-6">
-            {elements.map(element => (
-              element && (
-                <motion.div
-                  key={element._id}
-                  className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg p-6"
-                  whileHover={{ scale: 1.01 }}
-                >
-                  <div className="flex justify-between items-start">
-                    <div className="flex-grow">
-                      <h2 className="text-xl font-semibold text-slate-200">{element.name}</h2>
-                      <p className="text-slate-400">Symbol: {element.symbol}</p>
-                      <p className="text-slate-400">Atomic Number: {element.atomicNumber}</p>
-                      <p className="text-slate-400">Density: {element.density}</p>
-                    </div>
+            {!loading && !error && elements.length === 0 && (
+              <div className="text-center py-8 text-[#163d64]">No elements found.</div>
+            )}
 
-                    <div className="flex gap-2">
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+            <div className="space-y-4">
+              {elements.map(element => (
+                element && (
+                  <div
+                    key={element._id}
+                    className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-slate-200"
+                  >
+                    <div className="flex justify-between items-start">
+                      <div className="flex-grow">
+                        <h2 className="text-xl font-semibold text-[#163d64]">{element.name}</h2>
+                        <p className="text-[#163d64]/70">Symbol: {element.symbol}</p>
+                        <p className="text-[#163d64]/70">Atomic Number: {element.atomicNumber}</p>
+                        <p className="text-[#163d64]/70">Density: {element.density}</p>
+                      </div>
+
+                      <button
                         onClick={() => handleDelete(element._id)}
-                        className="px-4 py-2 rounded-lg bg-red-500/20 text-red-300 hover:bg-red-500/30"
+                        className="px-4 py-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition-colors duration-300"
                       >
                         Delete
-                      </motion.button>
+                      </button>
                     </div>
                   </div>
-                </motion.div>
-              )
-            ))}
+                )
+              ))}
+            </div>
           </div>
-        </motion.div>
-      </main>
+        </main>
 
-      {addingElement && (
-        <AddElement
-          onClose={() => setAddingElement(false)}
-          onSave={handleAdd}
-        />
-      )}
+        {addingElement && (
+          <AddElement
+            onClose={() => setAddingElement(false)}
+            onSave={handleAdd}
+          />
+        )}
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 }

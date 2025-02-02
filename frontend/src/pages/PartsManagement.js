@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
@@ -9,7 +8,6 @@ function PartsManagement() {
   const [error, setError] = useState(null);
   const [expandedParts, setExpandedParts] = useState(new Set());
 
-  // Get user from localStorage and extract email
   const user = JSON.parse(localStorage.getItem('user'));
   const email = user?.email;
   const [userId, setUserId] = useState('');
@@ -26,18 +24,15 @@ function PartsManagement() {
     });
   };
 
-  // First, fetch userId using email
   useEffect(() => {
     const fetchUserId = async () => {
       if (!email) {
-        console.error('No email found in localStorage');
         setError('User not logged in');
         setLoading(false);
         return;
       }
 
       try {
-        console.log('Fetching userId for email:', email);
         const response = await fetch(`http://localhost:4000/user/user-id/${email}`);
         const data = await response.json();
         
@@ -45,10 +40,8 @@ function PartsManagement() {
           throw new Error(data.message || 'Failed to fetch userId');
         }
 
-        console.log('Fetched userId:', data.userId);
         setUserId(data.userId);
       } catch (error) {
-        console.error('Error fetching user ID:', error);
         setError(`Error fetching user ID: ${error.message}`);
         setLoading(false);
       }
@@ -57,16 +50,11 @@ function PartsManagement() {
     fetchUserId();
   }, [email]);
 
-  // Then, fetch parts using userId
   useEffect(() => {
     const fetchParts = async () => {
-      if (!userId) {
-        console.log('No userId available yet');
-        return;
-      }
+      if (!userId) return;
       
       try {
-        console.log('Fetching parts for userId:', userId);
         const response = await fetch(`http://localhost:4000/parts/user/${userId}/parts`);
         const data = await response.json();
         
@@ -74,10 +62,8 @@ function PartsManagement() {
           throw new Error(data.message || 'Failed to fetch parts');
         }
 
-        console.log('Fetched parts with standard alloys:', data.parts);
         setParts(data.parts || []);
       } catch (error) {
-        console.error('Error fetching parts:', error);
         setError(`Error fetching parts: ${error.message}`);
       } finally {
         setLoading(false);
@@ -95,7 +81,6 @@ function PartsManagement() {
     }
 
     try {
-      console.log('Deleting part:', partCode);
       const response = await fetch(`http://localhost:4000/parts/${partCode}`, {
         method: 'DELETE'
       });
@@ -106,106 +91,101 @@ function PartsManagement() {
         throw new Error(data.message || 'Failed to delete part');
       }
 
-      console.log('Part deleted successfully');
       setParts(parts.filter(part => part.partCode !== partCode));
     } catch (error) {
-      console.error('Error deleting part:', error);
       setError(`Error deleting part: ${error.message}`);
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-900">
-      <Navbar />
-      
-      <div className="absolute inset-0 bg-grid-slate-700/[0.05] bg-[size:3rem_3rem] pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-900/90 to-slate-900 pointer-events-none" />
+    <div className="min-h-screen flex flex-col bg-white font-quicksand text-[#163d64] relative">
+      <div className="fixed inset-0">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#163d640a_1px,transparent_1px),linear-gradient(to_bottom,#163d640a_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div className="fixed inset-0 bg-gradient-to-b from-white via-[#163d64]/5 to-white"></div>
+      </div>
 
-      <main className="relative container mx-auto px-4 py-32">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1 className="text-3xl font-bold text-slate-200 mb-8">Parts Management</h1>
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Navbar />
 
-          {loading && (
-            <div className="text-slate-200 text-center py-8">Loading parts...</div>
-          )}
+        <main className="flex-grow p-8 mt-[80px] mb-[80px]">
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-4xl font-bold text-[#163d64] mb-8 text-center">Parts Management</h1>
 
-          {error && (
-            <div className="text-red-400 bg-red-900/20 border border-red-900/50 rounded-lg p-4 mb-6">
-              {error}
-            </div>
-          )}
+            {loading && (
+              <div className="text-center py-8 text-[#163d64]">Loading parts...</div>
+            )}
 
-          {!loading && !error && parts.length === 0 && (
-            <div className="text-slate-200 text-center py-8">No parts found for this user.</div>
-          )}
+            {error && (
+              <div className="text-red-600 bg-red-50 rounded-xl p-4 mb-6 text-center">
+                {error}
+              </div>
+            )}
 
-          <div className="grid gap-6">
-            {parts.map(part => (
-              <motion.div
-                key={part.partCode}
-                className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg p-6"
-                whileHover={{ scale: 1.01 }}
-              >
-                <div className="flex justify-between items-start">
-                  <div className="flex-grow">
-                    <h2 className="text-xl font-semibold text-slate-200">{part.partName}</h2>
-                    <p className="text-slate-400">Code: {part.partCode}</p>
-                    
-                    {part.standardAlloyId ? (
-                      <p className="text-slate-400">
-                        Standard Alloy: {part.standardAlloyId.name || 'N/A'} 
-                        {part.standardAlloyId.country ? ` (${part.standardAlloyId.country})` : ''}
-                      </p>
-                    ) : (
-                      <div className="mt-2">
-                        <button
-                          onClick={() => toggleComposition(part.partCode)}
-                          className="text-blue-400 hover:text-blue-300 flex items-center gap-2"
-                        >
-                          {expandedParts.has(part.partCode) ? 'Hide' : 'Show'} Composition
-                          <svg 
-                            className={`w-4 h-4 transform transition-transform ${expandedParts.has(part.partCode) ? 'rotate-180' : ''}`} 
-                            fill="none" 
-                            stroke="currentColor" 
-                            viewBox="0 0 24 24"
+            {!loading && !error && parts.length === 0 && (
+              <div className="text-center py-8 text-[#163d64]">No parts found for this user.</div>
+            )}
+
+            <div className="space-y-4">
+              {parts.map(part => (
+                <div
+                  key={part.partCode}
+                  className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-slate-200"
+                >
+                  <div className="flex justify-between items-start">
+                    <div className="flex-grow">
+                      <h2 className="text-xl font-semibold text-[#163d64]">{part.partName}</h2>
+                      <p className="text-[#163d64]/70">Code: {part.partCode}</p>
+                      
+                      {part.standardAlloyId ? (
+                        <p className="text-[#163d64]/70">
+                          Standard Alloy: {part.standardAlloyId.name || 'N/A'} 
+                          {part.standardAlloyId.country ? ` (${part.standardAlloyId.country})` : ''}
+                        </p>
+                      ) : (
+                        <div className="mt-2">
+                          <button
+                            onClick={() => toggleComposition(part.partCode)}
+                            className="text-[#fa4516] hover:text-[#fa4516]/80 flex items-center gap-2"
                           >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </button>
-                        
-                        {expandedParts.has(part.partCode) && (
-                          <ul className="list-disc list-inside mt-2">
-                            {part.composition?.map((comp, index) => (
-                              <li key={index} className="text-slate-300">
-                                {comp.element?.symbol || 'N/A'}: {comp.percentage}%
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                    )}
+                            {expandedParts.has(part.partCode) ? 'Hide' : 'Show'} Composition
+                            <svg 
+                              className={`w-4 h-4 transform transition-transform ${expandedParts.has(part.partCode) ? 'rotate-180' : ''}`} 
+                              fill="none" 
+                              stroke="currentColor" 
+                              viewBox="0 0 24 24"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </button>
+                          
+                          {expandedParts.has(part.partCode) && (
+                            <ul className="list-disc list-inside mt-2 space-y-1">
+                              {part.composition?.map((comp, index) => (
+                                <li key={index} className="text-[#163d64]">
+                                  {comp.element?.symbol || 'N/A'}: {comp.percentage}%
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    <button
+                      onClick={() => handleDelete(part.partCode)}
+                      className="px-4 py-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition-colors duration-300"
+                    >
+                      Delete
+                    </button>
                   </div>
-
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => handleDelete(part.partCode)}
-                    className="px-4 py-2 rounded-lg bg-red-500/20 text-red-300 hover:bg-red-500/30"
-                  >
-                    Delete
-                  </motion.button>
                 </div>
-              </motion.div>
-            ))}
+              ))}
+            </div>
           </div>
-        </motion.div>
-      </main>
+        </main>
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 }

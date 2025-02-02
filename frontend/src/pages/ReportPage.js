@@ -1,7 +1,6 @@
 // src/pages/ReportPage.jsx
 import React, { useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import html2pdf from 'html2pdf.js';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -26,20 +25,18 @@ function ReportPage() {
     optionalReport,
     standardAlloyCountry,
     standardAlloyName,
-    notes: initialNotes,
-  } = location.state.reportData; // Access the passed data
+    notes,
+  } = location.state.reportData;
 
-  const [notes, setNotes] = useState(initialNotes || ''); // Initialize state for notes
-  const reportRef = useRef(); // Reference to the report div
+  const reportRef = useRef();
   const navigate = useNavigate();
 
-  // Add state for field selection
   const [selectedFields, setSelectedFields] = useState({
     basicInfo: true,
     measurements: true,
     chemicalComposition: true,
     masterDetails: true,
-    
+    notes: true
   });
 
   const handleFieldToggle = (field) => {
@@ -49,15 +46,10 @@ function ReportPage() {
     }));
   };
 
-  const handleNotesChange = (e) => {
-    setNotes(e.target.value); // Update notes as user types
-  };
-
   const handleGoToHome = () => {
     navigate('/');
   };
 
-  // Function to handle printing the report as PDF
   const handlePrintReport = () => {
     const reportContent = document.createElement('div');
     reportContent.style.padding = '20px';
@@ -143,166 +135,154 @@ function ReportPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 relative">
-      <Navbar />
-      
-      {/* Grid Background */}
-      <div className="absolute inset-0 bg-grid-slate-700/[0.05] bg-[size:3rem_3rem] pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-900/90 to-slate-900 pointer-events-none" />
-      
-      <main className="container mx-auto px-4 py-24 relative">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="space-y-12"
-        >
-          <h2 className="text-3xl font-bold text-slate-200 text-center">
-            Report Preview
-          </h2>
+    <div className="min-h-screen flex flex-col bg-white font-quicksand text-[#163d64] relative">
+      <div className="fixed inset-0">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#163d640a_1px,transparent_1px),linear-gradient(to_bottom,#163d640a_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div className="fixed inset-0 bg-gradient-to-b from-white via-[#163d64]/5 to-white"></div>
+      </div>
 
-          {/* Field Selection */}
-          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg p-8 shadow-xl">
-            <h3 className="text-xl font-semibold text-slate-200 mb-6">Select Sections for Download</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-              {Object.entries(selectedFields).map(([field, isSelected]) => (
-                <div key={field} className="flex items-center space-x-3">
-                  <input
-                    type="checkbox"
-                    id={field}
-                    checked={isSelected}
-                    onChange={() => handleFieldToggle(field)}
-                    className="w-5 h-5 rounded border-slate-700 bg-slate-800/50 text-slate-200 focus:ring-slate-600"
-                  />
-                  <label htmlFor={field} className="text-slate-200 select-none cursor-pointer">
-                    {field.split(/(?=[A-Z])/).join(' ')}
-                  </label>
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Navbar />
+        
+        <main className="flex-grow p-8 mt-[80px] mb-[80px]">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-slate-200">
+              <h2 className="text-4xl font-bold text-[#163d64] mb-8 text-center">Report Preview</h2>
+
+              <div className="space-y-8">
+                {/* Field Selection */}
+                <div className="bg-white/50 border border-[#163d64]/20 rounded-xl p-6">
+                  <h3 className="text-xl font-semibold text-[#163d64] mb-4">Select Sections for Download</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {Object.entries(selectedFields).map(([field, isSelected]) => (
+                      <div key={field} className="flex items-center space-x-3">
+                        <input
+                          type="checkbox"
+                          id={field}
+                          checked={isSelected}
+                          onChange={() => handleFieldToggle(field)}
+                          className="w-5 h-5 rounded border-[#163d64]/20 text-[#fa4516] focus:ring-[#fa4516] transition-colors duration-300"
+                        />
+                        <label htmlFor={field} className="text-sm font-medium text-[#163d64] select-none cursor-pointer">
+                          {field.split(/(?=[A-Z])/).join(' ')}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
+
+                {/* Basic Information */}
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold text-[#163d64]">Basic Information</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-[#163d64]/70">Date</p>
+                      <p className="text-[#163d64]">{date}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-[#163d64]/70">Part Code</p>
+                      <p className="text-[#163d64]">{partCode}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-[#163d64]/70">Part Name</p>
+                      <p className="text-[#163d64]">{partName}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-[#163d64]/70">Theoretical Density</p>
+                      <p className="text-[#163d64]">{density}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Measurements */}
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold text-[#163d64]">Measurements</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-[#163d64]/70">Mass in Air</p>
+                      <p className="text-[#163d64]">{massInAir}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-[#163d64]/70">Mass in Fluid</p>
+                      <p className="text-[#163d64]">{massInFluid}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-[#163d64]/70">Fluid Density</p>
+                      <p className="text-[#163d64]">{fluidDensity}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-[#163d64]/70">Item Density</p>
+                      <p className="text-[#163d64]">{densityOfItem}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-[#163d64]/70">Compactness Ratio</p>
+                      <p className="text-[#163d64]">{compactnessRatio}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Chemical Composition */}
+                {chemicalComposition && Object.keys(chemicalComposition).length > 0 && (
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-semibold text-[#163d64]">Chemical Composition</h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                      {Object.entries(chemicalComposition).map(([element, percentage]) => (
+                        <div key={element} className="bg-white/50 border border-[#163d64]/20 rounded-xl p-4">
+                          <p className="text-sm font-medium text-[#163d64]/70">{element}</p>
+                          <p className="text-[#163d64] font-medium">{percentage}%</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Notes */}
+                {notes && (
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-semibold text-[#163d64]">Notes</h3>
+                    <p className="text-[#163d64]">{notes}</p>
+                  </div>
+                )}
+
+                {/* Master Details */}
+                {masterExists === 'yes' && (
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-semibold text-[#163d64]">Master Sample Details</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium text-[#163d64]/70">Master Sample has Attachment</p>
+                        <p className="text-[#163d64]">{masterAttachmentExists ? 'Yes' : 'No'}</p>
+                      </div>
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium text-[#163d64]/70">Density of Master Sample</p>
+                        <p className="text-[#163d64]">{densityOfMasterSample}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                  <button
+                    onClick={handleGoToHome}
+                    className="px-6 py-3 border-2 border-[#163d64] text-[#163d64] font-semibold rounded-xl hover:bg-[#163d64] hover:text-white transition-all duration-300"
+                  >
+                    Go to Home
+                  </button>
+                  <button
+                    onClick={handlePrintReport}
+                    className="px-6 py-3 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300"
+                  >
+                    Download PDF
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
+        </main>
 
-          {/* Report Preview - Always show all sections */}
-          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg p-8 shadow-xl space-y-8">
-           {/* Basic Information - Always visible */}
-<div className="space-y-6">
-  <h3 className="text-xl font-semibold text-slate-200">Basic Information</h3>
-  <div className="space-y-4">
-    <div className="flex items-center">
-      <p className="text-slate-400 w-1/3">Date:</p>
-      <p className="text-slate-200">{date}</p>
-    </div>
-    <div className="flex items-center">
-      <p className="text-slate-400 w-1/3">Part Code:</p>
-      <p className="text-slate-200">{partCode}</p>
-    </div>
-    <div className="flex items-center">
-      <p className="text-slate-400 w-1/3">Part Name:</p>
-      <p className="text-slate-200">{partName}</p>
-    </div>
-    <div className="flex items-center">
-      <p className="text-slate-400 w-1/3">Theoretical Density:</p>
-      <p className="text-slate-200">{density}</p>
-    </div>
-  </div>
-</div>
-           {/* Measurements - Always visible */}
-<div className="space-y-6">
-  <h3 className="text-xl font-semibold text-slate-200">Measurements</h3>
-  <div className="space-y-4">
-    <div className="flex items-center">
-      <p className="text-slate-400 w-1/3">Mass in Air:</p>
-      <p className="text-slate-200">{massInAir}</p>
-    </div>
-    <div className="flex items-center">
-      <p className="text-slate-400 w-1/3">Mass in Fluid:</p>
-      <p className="text-slate-200">{massInFluid}</p>
-    </div>
-    <div className="flex items-center">
-      <p className="text-slate-400 w-1/3">Fluid Density:</p>
-      <p className="text-slate-200">{fluidDensity}</p>
-    </div>
-    <div className="flex items-center">
-      <p className="text-slate-400 w-1/3">Item Density:</p>
-      <p className="text-slate-200">{densityOfItem}</p>
-    </div>
-    <div className="flex items-center">
-      <p className="text-slate-400 w-1/3">Compactness Ratio:</p>
-      <p className="text-slate-200">{compactnessRatio}</p>
-    </div>
-  </div>
-</div>
-
-            {/* Chemical Composition - Show if exists */}
-            {chemicalComposition && Object.keys(chemicalComposition).length > 0 && (
-              <div className="space-y-6">
-                <h3 className="text-xl font-semibold text-slate-200">Chemical Composition</h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {Object.entries(chemicalComposition).map(([element, percentage]) => (
-                    <div key={element} className="bg-slate-800/30 p-4 rounded-lg">
-                      <p className="text-slate-400">{element}</p>
-                      <p className="text-slate-200">{percentage}%</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Notes - Show if exists */}
-            {notes && (
-              <div className="space-y-6">
-                <h3 className="text-xl font-semibold text-slate-200">Notes</h3>
-                <textarea
-                  value={notes}
-                  onChange={handleNotesChange}
-                  className="w-full px-4 py-3 rounded-lg bg-slate-800/30 border border-slate-700/50 text-slate-200 focus:outline-none focus:border-slate-600 focus:ring-1 focus:ring-slate-600"
-                  rows="4"
-                  placeholder="Add any notes here..."
-                />
-              </div>
-            )}
-
-            {/* Master Details - Show if exists */}
-            {masterExists === 'yes' && (
-  <div className="space-y-6">
-    <h3 className="text-xl font-semibold text-slate-200">Master Sample Details</h3>
-    <div className="space-y-4">
-      <div className="flex items-center">
-        <p className="text-slate-400 w-1/3">Master Sample has Attachment:</p>
-        <p className="text-slate-200">{masterAttachmentExists ? 'Yes' : 'No'}</p>
+        <Footer />
       </div>
-      <div className="flex items-center">
-        <p className="text-slate-400 w-1/3">Density of Master Sample:</p>
-        <p className="text-slate-200">{densityOfMasterSample}</p>
-      </div>
-    </div>
-  </div>
-            )}
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex justify-end gap-4">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate('/')}
-              className="px-6 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800/70 hover:text-white transition-all duration-300"
-            >
-              Back to Home
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handlePrintReport}
-              className="px-6 py-2 rounded-lg bg-slate-200 text-slate-900 hover:bg-white transition-all duration-300"
-            >
-              Download Report
-            </motion.button>
-          </div>
-        </motion.div>
-      </main>
-
-      <Footer />
     </div>
   );
 }

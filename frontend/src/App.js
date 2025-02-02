@@ -16,12 +16,19 @@ import TermsOfService from './pages/TermsOfService';
 import ContactUs from './pages/ContactUs';
 import StandardAlloyManagement from './pages/StandardAlloyManagement';
 import ElementManagement from './pages/ElementManagement';
+import useScrollToTop from './hooks/useScrollToTop';
+
+function ScrollToTopWrapper() {
+  useScrollToTop();
+  return null;
+}
 
 function App() {
   return (
     <div className="App">
       <HashRouter>
         <AuthContextProvider>
+          <ScrollToTopWrapper />
           <div className="pages">
             <Routes>
               <Route path="/" element={<Home/>}/>

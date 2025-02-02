@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { motion } from 'framer-motion';
-import CustomDropdown from '../components/CustomDropdown';
 
 const AddPart = () => {
   const [partCode, setPartCode] = useState('');
@@ -201,98 +199,82 @@ const AddPart = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 font-quicksand text-slate-200">
-      {/* Background with Grid */}
-      <div className="fixed inset-0 bg-gradient-to-b from-slate-950 to-slate-900">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-        <motion.div
-          animate={{
-            opacity: [0.3, 0.5, 0.3],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{ duration: 8, repeat: Infinity }}
-          className="fixed inset-0 bg-gradient-to-r from-slate-950/0 via-slate-100/5 to-slate-950/0"
-        />
+    <div className="min-h-screen flex flex-col bg-white font-quicksand text-[#163d64] relative">
+      <div className="fixed inset-0">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#163d640a_1px,transparent_1px),linear-gradient(to_bottom,#163d640a_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div className="fixed inset-0 bg-gradient-to-b from-white via-[#163d64]/5 to-white"></div>
       </div>
 
-      {/* Content Container */}
       <div className="relative z-10 flex flex-col min-h-screen">
         <Navbar />
 
-        {/* Main Content */}
-        <main className="flex-grow p-8 mt-[140px] mb-[80px]">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-4xl mx-auto"
-          >
-            {/* Form Card */}
+        <main className="flex-grow p-8 mt-[80px] mb-[80px]">
+          <div className="max-w-4xl mx-auto">
             <div className="relative">
-              {/* Decorative glow effect */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-slate-100/10 to-slate-400/10 rounded-2xl blur-lg" />
-              
-              <div className="relative bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-8">
-                <h2 className="text-3xl font-bold text-slate-200 mb-8 text-center">Add Part</h2>
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-slate-200">
+                <h2 className="text-4xl font-bold text-[#163d64] mb-8 text-center">Add Part</h2>
                 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Part Code Field */}
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300">Part Code</label>
+                    <label className="text-sm font-medium text-[#163d64]">Part Code</label>
                     <input
                       type="text"
                       value={partCode}
                       onChange={(e) => setPartCode(e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-slate-600 focus:ring-1 focus:ring-slate-600 transition-colors duration-300"
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
                       required
                       placeholder="Enter unique part code"
                     />
                   </div>
 
-                  {/* Part Name Field */}
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300">Part Name</label>
+                    <label className="text-sm font-medium text-[#163d64]">Part Name</label>
                     <input
                       type="text"
                       value={partName}
                       onChange={(e) => setPartName(e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-slate-600 focus:ring-1 focus:ring-slate-600 transition-colors duration-300"
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
                       required
                       placeholder="Enter part name"
                     />
                   </div>
 
-                  {/* Standard Alloy Selection */}
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300">Select Standard Alloy</label>
-                    <CustomDropdown
-                      label="Select Standard Alloy"
+                    <label className="text-sm font-medium text-[#163d64]">Select Standard Alloy</label>
+                    <select
                       value={selectedStandardAlloy}
                       onChange={(e) => setSelectedStandardAlloy(e.target.value)}
-                      options={standardAlloys.map(alloy => ({
-                        value: alloy._id,
-                        label: `${alloy.name}${alloy.country ? ` (${alloy.country})` : ''}`
-                      }))}
-                      placeholder="Select Standard Alloy"
-                    />
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
+                    >
+                      <option value="">Select Standard Alloy</option>
+                      {standardAlloys.map(alloy => (
+                        <option key={alloy._id} value={alloy._id}>
+                          {alloy.name}{alloy.country ? ` (${alloy.country})` : ''}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
-                  {/* Composition */}
                   <div className="space-y-4">
-                    <label className="text-sm font-medium text-slate-300">Composition</label>
+                    <label className="text-sm font-medium text-[#163d64]">Composition</label>
                     {composition.map((element, index) => (
-                      <div key={index} className="space-y-4 p-4 bg-slate-800/30 rounded-lg border border-slate-700/50">
+                      <div key={index} className="space-y-4 p-4 bg-white rounded-xl border border-[#163d64]/20">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="space-y-2">
-                            <CustomDropdown
+                            <select
                               value={element.symbol}
                               onChange={(e) => handleCompositionChange(index, 'symbol', e.target.value)}
-                              options={elementSymbols
-                                .filter((symbol) => !selectedSymbols.has(symbol) || symbol === element.symbol)
-                                .map(symbol => ({ value: symbol, label: symbol }))}
-                              placeholder="Select Symbol"
+                              className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
                               required
-                            />
+                            >
+                              <option value="">Select Symbol</option>
+                              {elementSymbols
+                                .filter((symbol) => !selectedSymbols.has(symbol) || symbol === element.symbol)
+                                .map(symbol => (
+                                  <option key={symbol} value={symbol}>{symbol}</option>
+                                ))
+                              }
+                            </select>
                           </div>
                           <div className="space-y-2">
                             <input
@@ -300,7 +282,7 @@ const AddPart = () => {
                               step="0.01"
                               value={element.percentage}
                               onChange={(e) => handleCompositionChange(index, 'percentage', e.target.value)}
-                              className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-200 focus:outline-none focus:border-slate-600 focus:ring-1 focus:ring-slate-600 transition-colors duration-300"
+                              className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
                               placeholder="Percentage"
                               min="0"
                               max="100"
@@ -310,54 +292,42 @@ const AddPart = () => {
                         </div>
                         
                         {index > 0 && (
-                          <motion.button
+                          <button
                             type="button"
                             onClick={() => handleRemoveElement(index)}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            className="px-4 py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors duration-300"
+                            className="px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-colors duration-300"
                           >
                             Remove Element
-                          </motion.button>
+                          </button>
                         )}
                       </div>
                     ))}
                     
-                    <motion.button
+                    <button
                       type="button"
                       onClick={handleAddElement}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full px-4 py-2 bg-slate-700/50 text-slate-200 rounded-lg hover:bg-slate-700/70 transition-colors duration-300"
+                      className="w-full px-4 py-2 border-2 border-[#163d64] text-[#163d64] font-semibold rounded-xl hover:bg-[#163d64] hover:text-white transition-all duration-300"
                     >
                       Add Element
-                    </motion.button>
+                    </button>
                   </div>
 
-                  {/* Error Message */}
                   {errorMessage && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="text-red-400 text-sm text-center bg-red-500/10 py-2 rounded-lg"
-                    >
+                    <div className="text-red-600 text-sm text-center bg-red-50 py-2 rounded-xl">
                       {errorMessage}
-                    </motion.div>
+                    </div>
                   )}
 
-                  {/* Submit Button */}
-                  <motion.button
+                  <button
                     type="submit"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full px-6 py-3 bg-slate-200 text-slate-900 rounded-lg font-semibold hover:bg-white transition-all duration-300"
+                    className="w-full px-8 py-4 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform"
                   >
                     Add Part
-                  </motion.button>
+                  </button>
                 </form>
               </div>
             </div>
-          </motion.div>
+          </div>
         </main>
 
         <Footer />

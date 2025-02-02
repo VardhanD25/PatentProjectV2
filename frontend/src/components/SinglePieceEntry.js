@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { motion } from 'framer-motion';
 
 function SinglePieceEntry({ 
   partMassAir,
@@ -157,181 +156,149 @@ function SinglePieceEntry({
 
   if (selectedPartCode === 'Select part code' || !partName || !date) {
     return (
-      <div className="flex flex-col min-h-screen bg-brand-light font-poppins">
+      <div className="min-h-screen flex flex-col bg-white font-quicksand text-[#163d64] relative">
         <Navbar />
         <div className="flex-grow flex justify-center items-center p-8">
-          <p className="text-center text-gray-700">Please fill in the required fields in the previous steps to enter data on this screen.</p>
+          <p className="text-center text-[#163d64]">Please fill in the required fields in the previous steps to enter data on this screen.</p>
         </div>
-        <footer className="bg-brand-dark text-white py-6">
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <p className="mb-4 md:mb-0">&copy; {new Date().getFullYear()} Compactness Calculator. All rights reserved.</p>
-              <div className="flex space-x-4">
-                <a href="/privacy" className="hover:text-brand-primary transition duration-300">Privacy Policy</a>
-                <a href="/terms" className="hover:text-brand-primary transition duration-300">Terms of Service</a>
-                <a href="/contact" className="hover:text-brand-primary transition duration-300">Contact</a>
-              </div>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </div>
     );
   }
 
   if (loading || artificialLoading) {
     return (
-      <div className="flex flex-col min-h-screen bg-brand-light font-poppins">
+      <div className="min-h-screen flex flex-col bg-white font-quicksand text-[#163d64] relative">
         <Navbar />
         <div className="flex-grow flex justify-center items-center p-8">
-          <p className="text-center text-gray-700">Loading...</p>
+          <p className="text-center text-[#163d64]">Loading...</p>
         </div>
-        <footer className="bg-brand-dark text-white py-6">
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <p className="mb-4 md:mb-0">&copy; {new Date().getFullYear()} Compactness Calculator. All rights reserved.</p>
-              <div className="flex space-x-4">
-                <a href="/privacy" className="hover:text-brand-primary transition duration-300">Privacy Policy</a>
-                <a href="/terms" className="hover:text-brand-primary transition duration-300">Terms of Service</a>
-                <a href="/contact" className="hover:text-brand-primary transition duration-300">Contact</a>
-              </div>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </div>
     );
   }
 
-  // Rest of the component remains exactly the same...
-  // (The return statement with the main content and all other code continues here unchanged)
-  
-  // The existing return statement and rest of the code remains exactly the same
   return (
-    <div className="min-h-screen bg-slate-900 relative">
-      <Navbar />
-      
-      {/* Grid Background */}
-      <div className="absolute inset-0 bg-grid-slate-700/[0.05] bg-[size:3rem_3rem] pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-900/90 to-slate-900 pointer-events-none" />
-      
-      <main className="container mx-auto px-4 py-32 max-w-4xl relative">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="space-y-12"
-        >
-          <h2 className="text-3xl font-bold text-slate-200 text-center mb-12">
-            Single Piece Entry
-          </h2>
+    <div className="min-h-screen flex flex-col bg-white font-quicksand text-[#163d64] relative">
+      <div className="fixed inset-0">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#163d640a_1px,transparent_1px),linear-gradient(to_bottom,#163d640a_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div className="fixed inset-0 bg-gradient-to-b from-white via-[#163d64]/5 to-white"></div>
+      </div>
 
-          {showResults ? (
-            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg p-8 space-y-6 shadow-xl">
-              <h3 className="text-xl font-semibold text-slate-200 text-center">Results</h3>
-              
-              <div className="bg-slate-800/30 border border-slate-700/50 rounded-lg p-4 space-y-2">
-                <p className="text-slate-400"><span className="text-slate-400">Compactness Ratio:</span> {compactnessRatio}</p>
-                
-                {masterExists === 'yes' ? (
-                  <p>
-                    <span className="text-slate-400">Porosity:</span> {porosity}%
-                  </p>
-                ) : (
-                  <p className="text-amber-500/80">
-                    <span className="text-slate-400">Porosity:</span> Cannot be calculated (No master sample)
-                  </p>
-                )}
-              </div>
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Navbar />
+        
+        <main className="flex-grow p-8 mt-[80px] mb-[80px]">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-slate-200">
+              <h2 className="text-4xl font-bold text-[#163d64] mb-8 text-center">Single Piece Entry</h2>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleToggleForm}
-                  className="px-6 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800/70 hover:text-white transition-all duration-300"
-                >
-                  Edit Values
-                </motion.button>
+              {showResults ? (
+                <div className="space-y-6">
+                  <h3 className="text-2xl font-semibold text-[#163d64] text-center">Results</h3>
+                  
+                  <div className="bg-white/50 border border-[#163d64]/20 rounded-xl p-6 space-y-4">
+                    <p className="text-[#163d64]">
+                      <span className="font-medium">Compactness Ratio:</span> {compactnessRatio}
+                    </p>
+                    
+                    {masterExists === 'yes' ? (
+                      <p className="text-[#163d64]">
+                        <span className="font-medium">Porosity:</span> {porosity}%
+                      </p>
+                    ) : (
+                      <p className="text-[#fa4516]">
+                        <span className="font-medium text-[#163d64]">Porosity:</span> Cannot be calculated (No master sample)
+                      </p>
+                    )}
+                  </div>
 
-                {compactnessRatio !== 'Incorrect input, compactness ratio cannot be greater than 100!' && (
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={handleShowReport}
-                    className="px-6 py-2 rounded-lg bg-slate-200 text-slate-900 hover:bg-white transition-all duration-300"
-                  >
-                    Show Report
-                  </motion.button>
-                )}
-              </div>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button
+                      onClick={handleToggleForm}
+                      className="px-6 py-3 border-2 border-[#163d64] text-[#163d64] font-semibold rounded-xl hover:bg-[#163d64] hover:text-white transition-all duration-300"
+                    >
+                      Edit Values
+                    </button>
 
-              {compactnessRatio !== 'Incorrect input, compactness ratio cannot be greater than 100!' && (
-                <p className="text-amber-500/80 text-sm text-center">
-                  Verify entries before generating report, values cannot be edited later.
-                </p>
+                    {compactnessRatio !== 'Incorrect input, compactness ratio cannot be greater than 100!' && (
+                      <button
+                        onClick={handleShowReport}
+                        className="px-6 py-3 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300"
+                      >
+                        Show Report
+                      </button>
+                    )}
+                  </div>
+
+                  {compactnessRatio !== 'Incorrect input, compactness ratio cannot be greater than 100!' && (
+                    <p className="text-[#fa4516] text-sm text-center">
+                      Verify entries before generating report, values cannot be edited later.
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <form className="space-y-6">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-[#163d64]">
+                      Part Mass in Air (grams)
+                    </label>
+                    <input
+                      type="number"
+                      value={partMassAir}
+                      onChange={handlePartMassAirChange}
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
+                      placeholder="Enter part mass in air"
+                      min="0"
+                      step="any"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-[#163d64]">
+                      Part Mass in Fluid (grams)
+                    </label>
+                    <input
+                      type="number"
+                      value={partMassFluid}
+                      onChange={handlePartMassFluidChange}
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
+                      placeholder="Enter part mass in fluid"
+                      min="0"
+                      step="any"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-[#163d64]">
+                      Part Density (grams/cm³)
+                    </label>
+                    <input
+                      type="text"
+                      value={partDensity}
+                      readOnly
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64]/70 cursor-not-allowed"
+                      placeholder="Part density will be calculated"
+                    />
+                  </div>
+
+                  <div className="flex justify-center pt-4">
+                    <button
+                      type="button"
+                      onClick={handleFormSubmit}
+                      className="px-8 py-3 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </form>
               )}
             </div>
-          ) : (
-            <form className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg p-8 space-y-8 shadow-xl">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">
-                  Part Mass in Air (grams)
-                </label>
-                <input
-                  type="number"
-                  value={partMassAir}
-                  onChange={handlePartMassAirChange}
-                  className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-200 focus:outline-none focus:border-slate-600 focus:ring-1 focus:ring-slate-600 transition-colors duration-300"
-                  placeholder="Enter part mass in air"
-                  min="0"
-                  step="any"
-                />
-              </div>
+          </div>
+        </main>
 
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">
-                  Part Mass in Fluid (grams)
-                </label>
-                <input
-                  type="number"
-                  value={partMassFluid}
-                  onChange={handlePartMassFluidChange}
-                  className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-200 focus:outline-none focus:border-slate-600 focus:ring-1 focus:ring-slate-600 transition-colors duration-300"
-                  placeholder="Enter part mass in fluid"
-                  min="0"
-                  step="any"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">
-                  Part Density (grams/cm³)
-                </label>
-                <input
-                  type="text"
-                  value={partDensity}
-                  readOnly
-                  className="w-full px-4 py-3 rounded-lg bg-slate-800/30 border border-slate-700/50 text-slate-400 cursor-not-allowed"
-                  placeholder="Part density will be calculated"
-                />
-              </div>
-
-              <div className="flex justify-center pt-4">
-                <motion.button
-                  type="button"
-                  onClick={handleFormSubmit}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-3 rounded-lg bg-slate-200 text-slate-900 hover:bg-white transition-all duration-300 font-medium"
-                >
-                  Submit
-                </motion.button>
-              </div>
-            </form>
-          )}
-        </motion.div>
-      </main>
-
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 }

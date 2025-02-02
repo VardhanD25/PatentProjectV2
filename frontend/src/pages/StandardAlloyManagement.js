@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import EditStandardAlloy from '../components/EditStandardAlloy';
@@ -14,7 +13,6 @@ function StandardAlloyManagement() {
 
   const fetchAlloys = async () => {
     try {
-      console.log('Fetching all standard alloys');
       const response = await fetch('http://localhost:4000/standardAlloy');
       const data = await response.json();
 
@@ -22,17 +20,14 @@ function StandardAlloyManagement() {
         throw new Error(data.message || 'Failed to fetch standard alloys');
       }
 
-      console.log('Fetched standard alloys:', data.alloys);
       setAlloys(data.alloys || []);
     } catch (error) {
-      console.error('Error fetching standard alloys:', error);
       setError(`Error fetching standard alloys: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch all standard alloys on component mount
   useEffect(() => {
     fetchAlloys();
   }, []);
@@ -43,7 +38,6 @@ function StandardAlloyManagement() {
     }
 
     try {
-      console.log('Deleting standard alloy:', id);
       const response = await fetch(`http://localhost:4000/standardAlloy/${id}`, {
         method: 'DELETE'
       });
@@ -54,10 +48,8 @@ function StandardAlloyManagement() {
         throw new Error(data.message || 'Failed to delete standard alloy');
       }
 
-      console.log('Standard alloy deleted successfully');
-      fetchAlloys(); // Refresh the list after deletion
+      fetchAlloys();
     } catch (error) {
-      console.error('Error deleting standard alloy:', error);
       setError(`Error deleting standard alloy: ${error.message}`);
     }
   };
@@ -71,108 +63,100 @@ function StandardAlloyManagement() {
     setAlloys(alloys.map(alloy => (alloy._id === updatedAlloy._id ? updatedAlloy : alloy)));
   };
 
-  const handleAdd = (newAlloy) => {
-    fetchAlloys(); // Refresh the list after adding
+  const handleAdd = () => {
+    fetchAlloys();
   };
 
   return (
-    <div className="min-h-screen bg-slate-900">
-      <Navbar />
+    <div className="min-h-screen flex flex-col bg-white font-quicksand text-[#163d64] relative">
+      <div className="fixed inset-0">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#163d640a_1px,transparent_1px),linear-gradient(to_bottom,#163d640a_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div className="fixed inset-0 bg-gradient-to-b from-white via-[#163d64]/5 to-white"></div>
+      </div>
 
-      <div className="absolute inset-0 bg-grid-slate-700/[0.05] bg-[size:3rem_3rem] pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-900/90 to-slate-900 pointer-events-none" />
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Navbar />
 
-      <main className="relative container mx-auto px-4 py-32">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1 className="text-3xl font-bold text-slate-200 mb-8">Standard Alloy Management</h1>
-
-          {loading && (
-            <div className="text-slate-200 text-center py-8">Loading standard alloys...</div>
-          )}
-
-          {error && (
-            <div className="text-red-400 bg-red-900/20 border border-red-900/50 rounded-lg p-4 mb-6">
-              {error}
+        <main className="flex-grow p-8 mt-[80px] mb-[80px]">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex justify-between items-center mb-8">
+              <h1 className="text-4xl font-bold text-[#163d64]">Standard Alloy Management</h1>
+              <button
+                onClick={() => setAddingAlloy(true)}
+                className="px-6 py-3 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform"
+              >
+                Add Standard Alloy
+              </button>
             </div>
-          )}
 
-          {!loading && !error && alloys.length === 0 && (
-            <div className="text-slate-200 text-center py-8">No standard alloys found.</div>
-          )}
+            {loading && (
+              <div className="text-center py-8 text-[#163d64]">Loading standard alloys...</div>
+            )}
 
-          <div className="flex justify-end mb-4">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setAddingAlloy(true)}
-              className="px-4 py-2 rounded-lg bg-green-500/20 text-green-300 hover:bg-green-500/30"
-            >
-              Add Standard Alloy
-            </motion.button>
-          </div>
+            {error && (
+              <div className="text-red-600 bg-red-50 rounded-xl p-4 mb-6 text-center">
+                {error}
+              </div>
+            )}
 
-          <div className="grid gap-6">
-            {alloys.map(alloy => (
-              alloy && (
-                <motion.div
-                  key={alloy._id}
-                  className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg p-6"
-                  whileHover={{ scale: 1.01 }}
-                >
-                  <div className="flex justify-between items-start">
-                    <div className="flex-grow">
-                      <h2 className="text-xl font-semibold text-slate-200">{alloy.name}</h2>
-                      <p className="text-slate-400">Country: {alloy.country}</p>
-                      <p className="text-slate-400">Density: {alloy.density}</p>
-                      <p className="text-slate-400">Reference: {alloy.reference}</p>
-                    </div>
+            {!loading && !error && alloys.length === 0 && (
+              <div className="text-center py-8 text-[#163d64]">No standard alloys found.</div>
+            )}
 
-                    <div className="flex gap-2">
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => handleEdit(alloy._id)}
-                        className="px-4 py-2 rounded-lg bg-blue-500/20 text-blue-300 hover:bg-blue-500/30"
-                      >
-                        Edit
-                      </motion.button>
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => handleDelete(alloy._id)}
-                        className="px-4 py-2 rounded-lg bg-red-500/20 text-red-300 hover:bg-red-500/30"
-                      >
-                        Delete
-                      </motion.button>
+            <div className="space-y-4">
+              {alloys.map(alloy => (
+                alloy && (
+                  <div
+                    key={alloy._id}
+                    className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-slate-200"
+                  >
+                    <div className="flex justify-between items-start">
+                      <div className="flex-grow">
+                        <h2 className="text-xl font-semibold text-[#163d64]">{alloy.name}</h2>
+                        <p className="text-[#163d64]/70">Country: {alloy.country}</p>
+                        <p className="text-[#163d64]/70">Density: {alloy.density}</p>
+                        <p className="text-[#163d64]/70">Reference: {alloy.reference}</p>
+                      </div>
+
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleEdit(alloy._id)}
+                          className="px-4 py-2 rounded-xl bg-[#163d64]/10 text-[#163d64] hover:bg-[#163d64]/20 transition-colors duration-300"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(alloy._id)}
+                          className="px-4 py-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition-colors duration-300"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </motion.div>
-              )
-            ))}
+                )
+              ))}
+            </div>
           </div>
-        </motion.div>
-      </main>
+        </main>
 
-      {editingAlloy && (
-        <EditStandardAlloy
-          alloy={editingAlloy}
-          onClose={() => setEditingAlloy(null)}
-          onSave={handleSave}
-        />
-      )}
+        {editingAlloy && (
+          <EditStandardAlloy
+            alloy={editingAlloy}
+            onClose={() => setEditingAlloy(null)}
+            onSave={handleSave}
+          />
+        )}
 
-      {addingAlloy && (
-        <AddStandardAlloy
-          onClose={() => setAddingAlloy(false)}
-          onSave={handleAdd}
-        />
-      )}
+        {addingAlloy && (
+          <AddStandardAlloy
+            onClose={() => setAddingAlloy(false)}
+            onSave={handleAdd}
+          />
+        )}
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 }

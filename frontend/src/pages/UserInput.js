@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import FirstEntry from '../components/FirstEntry'; // Adjust the import path as needed
-import SecondEntry from '../components/SecondEntry'; // Import SecondEntry component
-import SinglePieceEntry from '../components/SinglePieceEntry'; // Import ThirdEntry component
+import FirstEntry from '../components/FirstEntry'; 
+import SecondEntry from '../components/SecondEntry'; 
+import SinglePieceEntry from '../components/SinglePieceEntry'; 
 import LotEntry from '../components/LotEntry'
 import Navbar from '../components/Navbar';
 import UpdatePart from '../components/UpdatePart';
