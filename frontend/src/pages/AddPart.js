@@ -261,20 +261,27 @@ const AddPart = () => {
                       <div key={index} className="space-y-4 p-4 bg-white rounded-xl border border-[#163d64]/20">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="space-y-2">
-                            <select
-                              value={element.symbol}
-                              onChange={(e) => handleCompositionChange(index, 'symbol', e.target.value)}
-                              className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
-                              required
-                            >
-                              <option value="">Select Symbol</option>
-                              {elementSymbols
-                                .filter((symbol) => !selectedSymbols.has(symbol) || symbol === element.symbol)
-                                .map(symbol => (
-                                  <option key={symbol} value={symbol}>{symbol}</option>
-                                ))
-                              }
-                            </select>
+                            <div className="flex items-center gap-2">
+                              <select
+                                value={element.symbol}
+                                onChange={(e) => handleCompositionChange(index, 'symbol', e.target.value)}
+                                className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
+                                required
+                              >
+                                <option value="">Select Symbol</option>
+                                {elementSymbols
+                                  .filter((symbol) => !selectedSymbols.has(symbol) || symbol === element.symbol)
+                                  .map(symbol => (
+                                    <option key={symbol} value={symbol}>{symbol}</option>
+                                  ))
+                                }
+                              </select>
+                              {index === 0 && (
+                                <span className="text-sm font-medium text-[#163d64] bg-[#163d64]/10 px-3 py-1 rounded-lg whitespace-nowrap">
+                                  Base Element
+                                </span>
+                              )}
+                            </div>
                           </div>
                           <div className="space-y-2">
                             <input

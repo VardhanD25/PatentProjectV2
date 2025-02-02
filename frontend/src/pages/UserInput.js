@@ -5,7 +5,7 @@ import SinglePieceEntry from '../components/SinglePieceEntry';
 import LotEntry from '../components/LotEntry'
 import Navbar from '../components/Navbar';
 import UpdatePart from '../components/UpdatePart';
-import { motion } from 'framer-motion';
+
 
 function UserInput() {
   
@@ -652,25 +652,21 @@ const validateLotEntry = () => {
 )}
       <div className="fixed bottom-8 right-8 flex gap-4 z-50">
         {currentScreen !== 'first' && !isUpdatePartVisible && (
-          <motion.button 
+          <button 
             onClick={goToPreviousScreen}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-6 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800/70 hover:text-white transition-all duration-300 font-medium"
+            className="px-8 py-4 rounded-xl bg-white/80 backdrop-blur-sm border border-[#163d64]/10 text-[#163d64] hover:bg-[#163d64] hover:text-white transition-all duration-300 font-semibold shadow-lg hover:shadow-xl"
           >
-            Prev
-          </motion.button>
+            Previous
+          </button>
         )}
 
         {currentScreen !== 'third' && !isUpdatePartVisible && (
-          <motion.button 
+          <button 
             onClick={goToNextScreen}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-6 py-2 rounded-lg bg-slate-200 text-slate-900 hover:bg-white transition-all duration-300 font-medium"
+            className="px-8 py-4 rounded-xl bg-[#fa4516] text-white font-semibold hover:bg-[#fa4516]/90 transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             Next
-          </motion.button>
+          </button>
         )}
       </div>
     </div>

@@ -214,12 +214,7 @@ function SinglePieceEntry({
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button
-                      onClick={handleToggleForm}
-                      className="px-6 py-3 border-2 border-[#163d64] text-[#163d64] font-semibold rounded-xl hover:bg-[#163d64] hover:text-white transition-all duration-300"
-                    >
-                      Edit Values
-                    </button>
+                   
 
                     {compactnessRatio !== 'Incorrect input, compactness ratio cannot be greater than 100!' && (
                       <button

@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import UpdatePart from './UpdatePart';
 import UpdateStandardAlloy from './UpdateStandardAlloy';
-import CustomDropdown from './CustomDropdown';
+
 function FirstEntry({
   partCodes,
   onPartCodeChange,
@@ -171,99 +171,89 @@ function FirstEntry({
 
         <main className="flex-grow p-8 mt-[80px] mb-[80px]">
           <div className="max-w-4xl mx-auto">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-slate-200">
-              <h2 className="text-4xl font-bold text-[#163d64] mb-8 text-center">First Entry</h2>
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-[#163d64]/10">
+              <h2 className="text-5xl font-bold text-[#163d64] mb-8 text-center">
+                First Entry
+              </h2>
 
               <form className="space-y-6">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-[#163d64]">Date</label>
+                  <label className="text-sm font-semibold text-[#163d64]/80">Date</label>
                   <input
                     type="date"
                     value={date}
                     onChange={handleDateChange}
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
+                    className="w-full px-6 py-4 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-[#163d64]">Part Code</label>
-                  <CustomDropdown
+                  <label className="text-sm font-semibold text-[#163d64]/80">Part Code</label>
+                  <select
                     value={partCode}
                     onChange={handlePartCodeChange}
-                    options={partCodes.map(code => ({ value: code, label: code }))}
-                    placeholder="Select part code"
-                    required={true}
-                  />
+                    className="w-full px-6 py-4 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
+                    required
+                  >
+                    <option value="">Select part code</option>
+                    {partCodes.map(code => (
+                      <option key={code} value={code}>{code}</option>
+                    ))}
+                  </select>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-[#163d64]">Part Name</label>
+                  <label className="text-sm font-semibold text-[#163d64]/80">Part Name</label>
                   <input
                     type="text"
                     value={partName}
                     readOnly
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64]/70 cursor-not-allowed"
+                    className="w-full px-6 py-4 rounded-xl bg-white/50 border border-[#163d64]/10 text-[#163d64]/50 cursor-not-allowed"
                     placeholder="Part name will be autofilled"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-[#163d64]">Single Piece or Lot</label>
-                  <CustomDropdown
-                    label="Single Piece or Lot"
+                  <label className="text-sm font-semibold text-[#163d64]/80">Single Piece or Lot</label>
+                  <select
                     value={pieceOrLot}
                     onChange={handleSingleOrLotChange}
-                    options={[
-                      { value: "single", label: "Single Piece" },
-                      { value: "lot", label: "Lot" }
-                    ]}
-                    placeholder="Select option"
+                    className="w-full px-6 py-4 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
                     required
-                  />
+                  >
+                    <option value="">Select option</option>
+                    <option value="single">Single Piece</option>
+                    <option value="lot">Lot</option>
+                  </select>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-[#163d64]">Calculated Density or Specified Density</label>
-                  <CustomDropdown
-                    label="Calculated Density or Specified Density"
+                  <label className="text-sm font-semibold text-[#163d64]/80">Calculated Density or Specified Density</label>
+                  <select
                     value={density}
                     onChange={handleDensityTypeChange}
-                    options={[
-                      { value: "calculated", label: "Calculated Density" },
-                      { value: "specified", label: "Specified Density" }
-                    ]}
-                    placeholder="Select option"
+                    className="w-full px-6 py-4 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
                     required
-                  />
+                  >
+                    <option value="">Select option</option>
+                    <option value="calculated">Calculated Density</option>
+                    <option value="specified">Specified Density</option>
+                  </select>
 
                   {density === 'calculated' && (
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5 }}
-                      className="mt-2"
+                      className="mt-4"
                     >
                       <motion.button
                         onClick={handleViewComposition}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="w-full group relative px-4 py-2.5 bg-white rounded-lg border border-slate-200 hover:bg-slate-200 transition-all duration-300"
+                        className="w-full px-6 py-4 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300 shadow-lg hover:shadow-xl"
                       >
-                        <div className="absolute inset-0 bg-gradient-to-r from-slate-100/0 via-slate-100/5 to-slate-100/0 rounded-lg" />
-                        <div className="flex items-center justify-center space-x-2">
-                          <svg 
-                            className="w-4 h-4 text-slate-300 group-hover:text-black transition-colors duration-300" 
-                            fill="none" 
-                            viewBox="0 0 24 24" 
-                            stroke="currentColor"
-                          >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                          </svg>
-                          <span className="text-slate-300 group-hover:text-black font-medium transition-colors duration-300">
-                            View Part Composition
-                          </span>
-                        </div>
+                        View Part Composition
                       </motion.button>
                     </motion.div>
                   )}
@@ -273,36 +263,22 @@ function FirstEntry({
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5 }}
-                      className="mt-2"
+                      className="mt-4"
                     >
                       <motion.button
                         onClick={handleShowStandardAlloy}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="w-full group relative px-4 py-2.5 bg-white rounded-lg border border-slate-200 hover:bg-slate-200 transition-all duration-300"
+                        className="w-full px-6 py-4 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300 shadow-lg hover:shadow-xl"
                       >
-                        <div className="absolute inset-0 bg-gradient-to-r from-slate-100/0 via-slate-100/5 to-slate-100/0 rounded-lg" />
-                        <div className="flex items-center justify-center space-x-2">
-                          <svg 
-                            className="w-4 h-4 text-slate-300 group-hover:text-black transition-colors duration-300" 
-                            fill="none" 
-                            viewBox="0 0 24 24" 
-                            stroke="currentColor"
-                          >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                          </svg>
-                          <span className="text-slate-300 group-hover:text-black font-medium transition-colors duration-300">
-                            {showStandardAlloyPanel ? 'Hide' : 'Show'} Standard Alloy
-                          </span>
-                        </div>
+                        {showStandardAlloyPanel ? 'Hide' : 'Show'} Standard Alloy
                       </motion.button>
                     </motion.div>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-[#163d64]">Theoretical Density</label>
+                  <label className="text-sm font-semibold text-[#163d64]/80">Theoretical Density</label>
                   <div className="flex items-center space-x-2">
                     <input
                       type="text"
@@ -335,47 +311,47 @@ function FirstEntry({
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-[#163d64]">Does the part have attachments?</label>
-                  <CustomDropdown
-                    label="Does the part have attachments?"
+                  <label className="text-sm font-semibold text-[#163d64]/80">Does the part have attachments?</label>
+                  <select
                     value={attachment}
                     onChange={handleAttachmentChange}
-                    options={[
-                      { value: "yes", label: "Yes" },
-                      { value: "no", label: "No" }
-                    ]}
-                    placeholder="Select option"
+                    className="w-full px-6 py-4 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
                     required
-                  />
+                  >
+                    <option value="">Select option</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-[#163d64]">Does the master sample exist?</label>
-                  <CustomDropdown
-                    label="Does the master sample exist?"
+                  <label className="text-sm font-semibold text-[#163d64]/80">Does the master sample exist?</label>
+                  <select
                     value={master}
                     onChange={handleMasterChange}
-                    options={[
-                      { value: "yes", label: "Yes" },
-                      { value: "no", label: "No" }
-                    ]}
-                    placeholder="Select option"
+                    className="w-full px-6 py-4 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
                     required
-                  />
+                  >
+                    <option value="">Select option</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
                 </div>
 
                 {master === 'yes' && (
-                  <CustomDropdown
-                    label="Does the master sample have attachments?"
-                    value={masterAttachment}
-                    onChange={handleMasterAttachmentChange}
-                    options={[
-                      { value: "yes", label: "Yes" },
-                      { value: "no", label: "No" }
-                    ]}
-                    placeholder="Select option"
-                    required
-                  />
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-[#163d64]/80">Does the master sample have attachments?</label>
+                    <select
+                      value={masterAttachment}
+                      onChange={handleMasterAttachmentChange}
+                      className="w-full px-6 py-4 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
+                      required
+                    >
+                      <option value="">Select option</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </select>
+                  </div>
                 )}
               </form>
             </div>

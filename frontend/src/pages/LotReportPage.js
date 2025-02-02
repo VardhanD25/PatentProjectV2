@@ -16,28 +16,56 @@ function LotReportPage() {
     chemicalComposition: true,
     standardAlloy: true,
     masterDetails: true,
-    
   });
 
+  // Add console.log to debug the data
+  console.log('Location State:', location.state);
+  console.log('Serial Numbers:', location.state?.serialNumbers);
+
+  if (!location.state) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-[#163d64] mb-4">No Data Available</h2>
+          <button
+            onClick={() => navigate(-1)}
+            className="px-8 py-4 rounded-xl bg-[#fa4516] text-white font-semibold hover:bg-[#fa4516]/90 transition-all duration-300"
+          >
+            Go Back
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Destructure with explicit default for serialNumbers
   const {
-    date,
-    selectedPartCode: partCode,
-    partName,
-    theoreticalDensity: density,
-    chemicalComposition,
+    date = '',
+    selectedPartCode: partCode = '',
+    partName = '',
+    theoreticalDensity: density = '',
+    chemicalComposition = {},
     partAttachments,
-    partMassAirArray: massInAir,
-    partMassFluidArray: massInFluid,
-    densityOfFluid: fluidDensity,
-    densityOfMasterSample: densityOfItem,
-    compactnessRatioArray: compactnessRatio,
-    porosityArray,
-    masterExists,
-    masterAttachmentExists,
-    standardAlloyCountry,
-    standardAlloyName,
+    partMassAirArray: massInAir = [],
+    partMassFluidArray: massInFluid = [],
+    densityOfFluid: fluidDensity = '',
+    densityOfMasterSample: densityOfItem = '',
+    compactnessRatioArray: compactnessRatio = [],
+    porosityArray = [],
+    masterExists = false,
+    masterAttachmentExists = false,
+    standardAlloyCountry = '',
+    standardAlloyName = '',
+    serialNumbers: passedSerialNumbers,
     optionalReport = true,
-  } = location.state;
+  } = location.state || {};
+
+  // Generate or use passed serial numbers
+  const serialNumbers = passedSerialNumbers || massInAir.map((_, index) => {
+    const lastUsedNumberKey = `lastSerialNumber_${partCode}_${date}`;
+    const lastUsedNumber = parseInt(localStorage.getItem(lastUsedNumberKey)) || 100000;
+    return lastUsedNumber + index;
+  });
 
   const handleFieldToggle = (field) => {
     setSelectedFields(prev => ({
@@ -46,10 +74,18 @@ function LotReportPage() {
     }));
   };
 
+  
+  const formatFieldName = (fieldName) => {
+    return fieldName
+      .split(/(?=[A-Z])/)
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
   const handleDownloadReport = () => {
     const reportContent = document.createElement('div');
     reportContent.style.padding = '20px';
-    reportContent.style.color = '#000';
+    reportContent.style.color = '#163d64';
     reportContent.style.backgroundColor = '#fff';
 
     let content = '';
@@ -57,7 +93,7 @@ function LotReportPage() {
     if (selectedFields.basicInfo) {
       content += `
         <div style="margin-bottom: 20px">
-          <h2 style="font-size: 20px; margin-bottom: 10px">Basic Information</h2>
+          <h2 style="color: #163d64; font-size: 20px; margin-bottom: 10px">Basic Information</h2>
           <p><strong>Date:</strong> ${date}</p>
           <p><strong>Part Code:</strong> ${partCode}</p>
           <p><strong>Part Name:</strong> ${partName}</p>
@@ -69,27 +105,29 @@ function LotReportPage() {
     if (selectedFields.measurements) {
       content += `
         <div style="margin-bottom: 20px">
-          <h2 style="font-size: 20px; margin-bottom: 10px">Measurements</h2>
+          <h2 style="color: #163d64; font-size: 20px; margin-bottom: 10px">Measurements</h2>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px">
             <thead>
-              <tr style="background-color: #f3f4f6">
-                <th style="border: 1px solid #000; padding: 8px">Serial Number</th>
-                <th style="border: 1px solid #000; padding: 8px">Mass in Air (g)</th>
-                <th style="border: 1px solid #000; padding: 8px">Mass in Fluid (g)</th>
-                <th style="border: 1px solid #000; padding: 8px">Compactness Ratio</th>
-                <th style="border: 1px solid #000; padding: 8px">Porosity</th>
+              <tr style="background-color: #163d64">
+                <th style="border: 1px solid #163d64; padding: 8px; color: white">Serial Number</th>
+                <th style="border: 1px solid #163d64; padding: 8px; color: white">Mass in Air (g)</th>
+                <th style="border: 1px solid #163d64; padding: 8px; color: white">Mass in Fluid (g)</th>
+                <th style="border: 1px solid #163d64; padding: 8px; color: white">Compactness Ratio</th>
+                <th style="border: 1px solid #163d64; padding: 8px; color: white">Porosity</th>
               </tr>
             </thead>
             <tbody>
-              ${massInAir.map((_, index) => `
-                <tr>
-                  <td style="border: 1px solid #000; padding: 8px">${index + 1}</td>
-                  <td style="border: 1px solid #000; padding: 8px">${massInAir[index]}</td>
-                  <td style="border: 1px solid #000; padding: 8px">${massInFluid[index]}</td>
-                  <td style="border: 1px solid #000; padding: 8px">${compactnessRatio[index]}</td>
-                  <td style="border: 1px solid #000; padding: 8px">${porosityArray[index]}</td>
-                </tr>
-              `).join('')}
+              ${massInAir.map((_, index) => {
+                return `
+                  <tr>
+                    <td style="border: 1px solid #163d64; padding: 8px; font-family: monospace">${serialNumbers[index].toString().padStart(6, '0')}</td>
+                    <td style="border: 1px solid #163d64; padding: 8px">${massInAir[index]}</td>
+                    <td style="border: 1px solid #163d64; padding: 8px">${massInFluid[index]}</td>
+                    <td style="border: 1px solid #163d64; padding: 8px">${compactnessRatio[index]}</td>
+                    <td style="border: 1px solid #163d64; padding: 8px">${porosityArray[index]}</td>
+                  </tr>
+                `;
+              }).join('')}
             </tbody>
           </table>
         </div>
@@ -143,138 +181,148 @@ function LotReportPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 relative">
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
       
-      {/* Grid Background */}
-      <div className="absolute inset-0 bg-grid-slate-700/[0.05] bg-[size:3rem_3rem] pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-900/90 to-slate-900 pointer-events-none" />
-      
-      <main className="container mx-auto px-4 py-24 relative">
+      <main className="container mx-auto px-4 py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="space-y-12"
+          className="space-y-8"
         >
-          <h2 className="text-3xl font-bold text-slate-200 text-center">
+          <h1 className="text-3xl font-bold text-[#163d64] text-center mb-12">
             Lot Report Preview
-          </h2>
+          </h1>
 
           {/* Field Selection */}
-          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg p-8 shadow-xl">
-            <h3 className="text-xl font-semibold text-slate-200 mb-6">Select Sections for Download</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 className="text-xl font-semibold text-[#163d64] mb-4">Select Fields for Report</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {Object.entries(selectedFields).map(([field, isSelected]) => (
-                <div key={field} className="flex items-center space-x-3">
+                <div key={field} className="flex items-center gap-2">
                   <input
                     type="checkbox"
                     id={field}
                     checked={isSelected}
                     onChange={() => handleFieldToggle(field)}
-                    className="w-5 h-5 rounded border-slate-700 bg-slate-800/50 text-slate-200 focus:ring-slate-600"
+                    className="w-5 h-5 rounded border-[#163d64]/10 text-[#fa4516] focus:ring-[#fa4516]/20"
                   />
-                  <label htmlFor={field} className="text-slate-200 select-none cursor-pointer">
-                    {field.split(/(?=[A-Z])/).join(' ')}
+                  <label 
+                    htmlFor={field} 
+                    className="text-[#163d64] select-none cursor-pointer"
+                  >
+                    {formatFieldName(field)}
                   </label>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Visible Report Preview */}
-          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg p-8 shadow-xl space-y-8">
-            <div className="space-y-6">
-              <h3 className="text-xl font-semibold text-slate-200">Basic Information</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-slate-400">Date:</p>
-                  <p className="text-slate-200">{date}</p>
-                </div>
-                <div>
-                  <p className="text-slate-400">Part Code:</p>
-                  <p className="text-slate-200">{partCode}</p>
-                </div>
-                <div>
-                  <p className="text-slate-400">Part Name:</p>
-                  <p className="text-slate-200">{partName}</p>
-                </div>
-                <div>
-                  <p className="text-slate-400">Theoretical Density:</p>
-                  <p className="text-slate-200">{density}</p>
+          {/* Report Preview - Only show selected sections */}
+          <div className="bg-white rounded-xl shadow-lg p-8 space-y-8">
+            {/* Basic Information */}
+            {selectedFields.basicInfo && (
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold text-[#163d64]">Basic Information</h2>
+                <div className="grid grid-cols-2 gap-6">
+                  <div>
+                    <p className="text-sm text-[#163d64]/60">Date</p>
+                    <p className="text-[#163d64] font-medium">{date}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-[#163d64]/60">Part Code</p>
+                    <p className="text-[#163d64] font-medium">{partCode}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-[#163d64]/60">Part Name</p>
+                    <p className="text-[#163d64] font-medium">{partName}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-[#163d64]/60">Theoretical Density</p>
+                    <p className="text-[#163d64] font-medium">{density}</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
-            <div className="space-y-6">
-              <h3 className="text-xl font-semibold text-slate-200">Measurements</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
-                  <thead>
-                    <tr className="border-b border-slate-700/50">
-                      <th className="py-3 px-4 text-left text-slate-300">Serial Number</th>
-                      <th className="py-3 px-4 text-left text-slate-300">Mass in Air (g)</th>
-                      <th className="py-3 px-4 text-left text-slate-300">Mass in Fluid (g)</th>
-                      <th className="py-3 px-4 text-left text-slate-300">Compactness Ratio</th>
-                      <th className="py-3 px-4 text-left text-slate-300">Porosity</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {massInAir.map((_, index) => (
-                      <tr key={index} className="border-b border-slate-700/30">
-                        <td className="py-3 px-4 text-slate-200">{index + 1}</td>
-                        <td className="py-3 px-4 text-slate-200">{massInAir[index]}</td>
-                        <td className="py-3 px-4 text-slate-200">{massInFluid[index]}</td>
-                        <td className="py-3 px-4 text-slate-200">{compactnessRatio[index]}</td>
-                        <td className="py-3 px-4 text-slate-200">{porosityArray[index]}</td>
+            {/* Measurements Table */}
+            {selectedFields.measurements && (
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold text-[#163d64]">Measurements</h2>
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr>
+                        <th className="py-3 px-4 text-left bg-[#163d64] text-white font-medium rounded-tl-lg">Serial Number</th>
+                        <th className="py-3 px-4 text-left bg-[#163d64] text-white font-medium">Mass in Air (g)</th>
+                        <th className="py-3 px-4 text-left bg-[#163d64] text-white font-medium">Mass in Fluid (g)</th>
+                        <th className="py-3 px-4 text-left bg-[#163d64] text-white font-medium">Compactness Ratio</th>
+                        <th className="py-3 px-4 text-left bg-[#163d64] text-white font-medium rounded-tr-lg">Porosity</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {massInAir.map((_, index) => (
+                        <tr key={index} className="border-b border-[#163d64]/10 hover:bg-gray-50">
+                          <td className="py-3 px-4 font-mono text-[#163d64]">
+                            {serialNumbers[index].toString().padStart(6, '0')}
+                          </td>
+                          <td className="py-3 px-4 text-[#163d64]">{massInAir[index]}</td>
+                          <td className="py-3 px-4 text-[#163d64]">{massInFluid[index]}</td>
+                          <td className="py-3 px-4 text-[#163d64]">{compactnessRatio[index]}</td>
+                          <td className="py-3 px-4 text-[#163d64]">{porosityArray[index]}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
+            )}
 
-            {chemicalComposition && (
-              <div className="space-y-6">
-                <h3 className="text-xl font-semibold text-slate-200">Chemical Composition</h3>
+            {/* Chemical Composition */}
+            {selectedFields.chemicalComposition && Object.keys(chemicalComposition).length > 0 && (
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold text-[#163d64]">Chemical Composition</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {Object.entries(chemicalComposition).map(([element, percentage]) => (
-                    <div key={element} className="bg-slate-800/30 p-4 rounded-lg">
-                      <p className="text-slate-400">{element}</p>
-                      <p className="text-slate-200">{percentage}%</p>
+                    <div key={element} className="p-4 rounded-lg bg-gray-50 border border-[#163d64]/10">
+                      <p className="text-sm text-[#163d64]/60">{element}</p>
+                      <p className="text-[#163d64] font-medium">{percentage}%</p>
                     </div>
                   ))}
                 </div>
               </div>
             )}
 
-            {standardAlloyName && (
-              <div className="space-y-6">
-                <h3 className="text-xl font-semibold text-slate-200">Standard Alloy Information</h3>
-                <div className="grid grid-cols-2 gap-4">
+            {/* Standard Alloy Information */}
+            {selectedFields.standardAlloy && standardAlloyName && (
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold text-[#163d64]">Standard Alloy Information</h2>
+                <div className="grid grid-cols-2 gap-6">
                   <div>
-                    <p className="text-slate-400">Name:</p>
-                    <p className="text-slate-200">{standardAlloyName}</p>
+                    <p className="text-sm text-[#163d64]/60">Name</p>
+                    <p className="text-[#163d64] font-medium">{standardAlloyName}</p>
                   </div>
                   <div>
-                    <p className="text-slate-400">Country:</p>
-                    <p className="text-slate-200">{standardAlloyCountry}</p>
+                    <p className="text-sm text-[#163d64]/60">Country</p>
+                    <p className="text-[#163d64] font-medium">{standardAlloyCountry}</p>
                   </div>
                 </div>
               </div>
             )}
 
-            {masterExists && (
-              <div className="space-y-6">
-                <h3 className="text-xl font-semibold text-slate-200">Master Sample Details</h3>
-                <div className="grid grid-cols-2 gap-4">
+            {/* Master Sample Details */}
+            {selectedFields.masterDetails && masterExists && (
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold text-[#163d64]">Master Sample Details</h2>
+                <div className="grid grid-cols-2 gap-6">
                   <div>
-                    <p className="text-slate-400">Density of Master Sample:</p>
-                    <p className="text-slate-200">{densityOfItem}</p>
+                    <p className="text-sm text-[#163d64]/60">Density of Master Sample</p>
+                    <p className="text-[#163d64] font-medium">{densityOfItem}</p>
                   </div>
                   <div>
-                    <p className="text-slate-400">Master Attachment:</p>
-                    <p className="text-slate-200">{masterAttachmentExists ? 'Yes' : 'No'}</p>
+                    <p className="text-sm text-[#163d64]/60">Master Attachment</p>
+                    <p className="text-[#163d64] font-medium">{masterAttachmentExists ? 'Yes' : 'No'}</p>
                   </div>
                 </div>
               </div>
@@ -284,18 +332,18 @@ function LotReportPage() {
           {/* Action Buttons */}
           <div className="flex justify-end gap-4">
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => navigate(-1)}
-              className="px-6 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800/70 hover:text-white transition-all duration-300"
+              className="px-8 py-4 rounded-xl bg-white/80 backdrop-blur-sm border border-[#163d64]/10 text-[#163d64] hover:bg-[#163d64] hover:text-white transition-all duration-300 font-semibold shadow-lg hover:shadow-xl"
             >
               Back
             </motion.button>
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={handleDownloadReport}
-              className="px-6 py-2 rounded-lg bg-slate-200 text-slate-900 hover:bg-white transition-all duration-300"
+              className="px-8 py-4 rounded-xl bg-[#fa4516] text-white font-semibold hover:bg-[#fa4516]/90 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               Download Report
             </motion.button>

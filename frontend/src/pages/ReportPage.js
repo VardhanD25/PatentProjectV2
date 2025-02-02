@@ -26,6 +26,7 @@ function ReportPage() {
     standardAlloyCountry,
     standardAlloyName,
     notes,
+    porosity,
   } = location.state.reportData;
 
   const reportRef = useRef();
@@ -36,7 +37,8 @@ function ReportPage() {
     measurements: true,
     chemicalComposition: true,
     masterDetails: true,
-    notes: true
+    compactnessRatio: true,
+    ...(porosity && porosity !== 'N/A' ? { porosity: true } : {})
   });
 
   const handleFieldToggle = (field) => {
@@ -79,7 +81,24 @@ function ReportPage() {
           <p><strong>Mass in Fluid:</strong> ${massInFluid}</p>
           <p><strong>Fluid Density:</strong> ${fluidDensity}</p>
           <p><strong>Item Density:</strong> ${densityOfItem}</p>
+        </div>
+      `;
+    }
+
+    if (selectedFields.compactnessRatio) {
+      content += `
+        <div style="margin-bottom: 20px">
+          <h2 style="font-size: 20px; margin-bottom: 10px">Compactness Ratio</h2>
           <p><strong>Compactness Ratio:</strong> ${compactnessRatio}</p>
+        </div>
+      `;
+    }
+
+    if (selectedFields.porosity && porosity && porosity !== 'N/A') {
+      content += `
+        <div style="margin-bottom: 20px">
+          <h2 style="font-size: 20px; margin-bottom: 10px">Porosity</h2>
+          <p><strong>Porosity:</strong> ${porosity}</p>
         </div>
       `;
     }
@@ -134,6 +153,13 @@ function ReportPage() {
     }).save();
   };
 
+  const formatFieldName = (fieldName) => {
+    return fieldName
+      .split(/(?=[A-Z])/)
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-white font-quicksand text-[#163d64] relative">
       <div className="fixed inset-0">
@@ -164,7 +190,7 @@ function ReportPage() {
                           className="w-5 h-5 rounded border-[#163d64]/20 text-[#fa4516] focus:ring-[#fa4516] transition-colors duration-300"
                         />
                         <label htmlFor={field} className="text-sm font-medium text-[#163d64] select-none cursor-pointer">
-                          {field.split(/(?=[A-Z])/).join(' ')}
+                          {formatFieldName(field)}
                         </label>
                       </div>
                     ))}
@@ -214,12 +240,32 @@ function ReportPage() {
                       <p className="text-sm font-medium text-[#163d64]/70">Item Density</p>
                       <p className="text-[#163d64]">{densityOfItem}</p>
                     </div>
+                  </div>
+                </div>
+
+                {/* Compactness Ratio as separate section */}
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold text-[#163d64]">Compactness Ratio</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <p className="text-sm font-medium text-[#163d64]/70">Compactness Ratio</p>
                       <p className="text-[#163d64]">{compactnessRatio}</p>
                     </div>
                   </div>
                 </div>
+
+                {/* Porosity as separate section */}
+                {porosity && porosity !== 'N/A' && (
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-semibold text-[#163d64]">Porosity</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium text-[#163d64]/70">Porosity</p>
+                        <p className="text-[#163d64]">{porosity}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Chemical Composition */}
                 {chemicalComposition && Object.keys(chemicalComposition).length > 0 && (
