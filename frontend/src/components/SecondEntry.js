@@ -112,7 +112,7 @@ function SecondEntry({
                     className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
                     placeholder="Enter mass of fluid"
                     min="0"
-                    step="any"
+                    step="0.1"
                   />
                 </div>
 
@@ -125,7 +125,7 @@ function SecondEntry({
                     className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
                     placeholder="Enter volume of fluid"
                     min="0"
-                    step="any"
+                    step="0.1"
                   />
                 </div>
 
@@ -151,7 +151,7 @@ function SecondEntry({
                         className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
                         placeholder="Enter attachment mass in air"
                         min="0"
-                        step="any"
+                        step="0.1"
                       />
                     </div>
 
@@ -164,7 +164,7 @@ function SecondEntry({
                         className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
                         placeholder="Enter attachment mass in fluid"
                         min="0"
-                        step="any"
+                        step="0.1"
                       />
                     </div>
                   </>
@@ -181,7 +181,7 @@ function SecondEntry({
                         className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
                         placeholder="Enter master sample mass in air"
                         min="0"
-                        step="any"
+                        step="0.1"
                       />
                     </div>
 
@@ -194,7 +194,7 @@ function SecondEntry({
                         className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
                         placeholder="Enter master sample mass in fluid"
                         min="0"
-                        step="any"
+                        step="0.1"
                       />
                     </div>
 

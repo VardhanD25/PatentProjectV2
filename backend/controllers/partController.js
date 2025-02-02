@@ -156,6 +156,35 @@ const getAllPartsForUser = async (req, res) => {
   }
 };
 
+const updatePartFields = async (req, res) => {
+  try {
+    const { partCode, newPartCode, newPartName } = req.body;
+
+    // Validate request body
+    if (!partCode || !newPartCode || !newPartName) {
+      return res.status(400).json({ message: 'Part code, new part code, and new part name are required.' });
+    }
+
+    // Find the part by the current part code
+    const part = await Part.findOne({ partCode });
+    if (!part) {
+      return res.status(404).json({ message: 'Part not found.' });
+    }
+
+    // Update the part fields
+    part.partCode = newPartCode;
+    part.partName = newPartName;
+
+    // Save the updated part document to the database
+    await part.save();
+
+    res.status(200).json({ message: 'Part updated successfully!', part });
+  } catch (error) {
+    console.error('Error updating part fields:', error);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+};
+
 
 
 const updatePart = async (req, res) => {
@@ -593,5 +622,6 @@ const updatePart = async (req, res) => {
     calculatePorosity,
     getAllPartsForUser,
     deletePart,
-    updateStandardAlloy
+    updateStandardAlloy,
+    updatePartFields
   }

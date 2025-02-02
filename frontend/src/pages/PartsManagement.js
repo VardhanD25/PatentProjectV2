@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import EditPart from '../components/EditPart';
 
 function PartsManagement() {
   const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expandedParts, setExpandedParts] = useState(new Set());
+  const [editingPart, setEditingPart] = useState(null);
 
   const user = JSON.parse(localStorage.getItem('user'));
   const email = user?.email;
   const [userId, setUserId] = useState('');
 
   const toggleComposition = (partCode) => {
-    setExpandedParts(prev => {
+    setExpandedParts((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(partCode)) {
         newSet.delete(partCode);
@@ -35,7 +37,7 @@ function PartsManagement() {
       try {
         const response = await fetch(`http://localhost:4000/user/user-id/${email}`);
         const data = await response.json();
-        
+
         if (!response.ok) {
           throw new Error(data.message || 'Failed to fetch userId');
         }
@@ -50,29 +52,27 @@ function PartsManagement() {
     fetchUserId();
   }, [email]);
 
-  useEffect(() => {
-    const fetchParts = async () => {
-      if (!userId) return;
-      
-      try {
-        const response = await fetch(`http://localhost:4000/parts/user/${userId}/parts`);
-        const data = await response.json();
-        
-        if (!response.ok) {
-          throw new Error(data.message || 'Failed to fetch parts');
-        }
+  const fetchParts = async () => {
+    if (!userId) return;
 
-        setParts(data.parts || []);
-      } catch (error) {
-        setError(`Error fetching parts: ${error.message}`);
-      } finally {
-        setLoading(false);
+    try {
+      const response = await fetch(`http://localhost:4000/parts/user/${userId}/parts`);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to fetch parts');
       }
-    };
 
-    if (userId) {
-      fetchParts();
+      setParts(data.parts || []);
+    } catch (error) {
+      setError(`Error fetching parts: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    fetchParts();
   }, [userId]);
 
   const handleDelete = async (partCode) => {
@@ -81,20 +81,29 @@ function PartsManagement() {
     }
 
     try {
-      const response = await fetch(`http://localhost:4000/parts/${partCode}`, {
-        method: 'DELETE'
+      const response = await fetch(`http://localhost:4000/parts/delete/${partCode}`, {
+        method: 'DELETE',
       });
 
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.message || 'Failed to delete part');
       }
 
-      setParts(parts.filter(part => part.partCode !== partCode));
+      setParts(parts.filter((part) => part.partCode !== partCode));
     } catch (error) {
       setError(`Error deleting part: ${error.message}`);
     }
+  };
+
+  const handleEdit = (part) => {
+    setEditingPart(part);
+  };
+
+  const handleSave = async (updatedPart) => {
+    await fetchParts(); // Re-fetch parts after saving
+    setEditingPart(null);
   };
 
   return (
@@ -126,7 +135,7 @@ function PartsManagement() {
             )}
 
             <div className="space-y-4">
-              {parts.map(part => (
+              {parts.map((part) => (
                 <div
                   key={part.partCode}
                   className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-slate-200"
@@ -135,10 +144,10 @@ function PartsManagement() {
                     <div className="flex-grow">
                       <h2 className="text-xl font-semibold text-[#163d64]">{part.partName}</h2>
                       <p className="text-[#163d64]/70">Code: {part.partCode}</p>
-                      
+
                       {part.standardAlloyId ? (
                         <p className="text-[#163d64]/70">
-                          Standard Alloy: {part.standardAlloyId.name || 'N/A'} 
+                          Standard Alloy: {part.standardAlloyId.name || 'N/A'}
                           {part.standardAlloyId.country ? ` (${part.standardAlloyId.country})` : ''}
                         </p>
                       ) : (
@@ -148,16 +157,18 @@ function PartsManagement() {
                             className="text-[#fa4516] hover:text-[#fa4516]/80 flex items-center gap-2"
                           >
                             {expandedParts.has(part.partCode) ? 'Hide' : 'Show'} Composition
-                            <svg 
-                              className={`w-4 h-4 transform transition-transform ${expandedParts.has(part.partCode) ? 'rotate-180' : ''}`} 
-                              fill="none" 
-                              stroke="currentColor" 
+                            <svg
+                              className={`w-4 h-4 transform transition-transform ${
+                                expandedParts.has(part.partCode) ? 'rotate-180' : ''
+                              }`}
+                              fill="none"
+                              stroke="currentColor"
                               viewBox="0 0 24 24"
                             >
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                             </svg>
                           </button>
-                          
+
                           {expandedParts.has(part.partCode) && (
                             <ul className="list-disc list-inside mt-2 space-y-1">
                               {part.composition?.map((comp, index) => (
@@ -171,12 +182,20 @@ function PartsManagement() {
                       )}
                     </div>
 
-                    <button
-                      onClick={() => handleDelete(part.partCode)}
-                      className="px-4 py-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition-colors duration-300"
-                    >
-                      Delete
-                    </button>
+                    <div className="flex flex-col space-y-2">
+                      <button
+                        onClick={() => handleEdit(part)}
+                        className="px-4 py-2 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors duration-300"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(part.partCode)}
+                        className="px-4 py-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition-colors duration-300"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -186,6 +205,14 @@ function PartsManagement() {
 
         <Footer />
       </div>
+
+      {editingPart && (
+        <EditPart
+          part={editingPart}
+          onSave={handleSave}
+          onClose={() => setEditingPart(null)}
+        />
+      )}
     </div>
   );
 }
