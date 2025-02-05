@@ -51,7 +51,7 @@ const Navbar = () => {
               {user ? (
                 <div className="flex items-center space-x-8">
                   <NavLink to="/addpart">Add Part</NavLink>
-                  <NavLink to="/userinput">Calculator</NavLink>
+                  <NavLink to="/userinput">Evaluation</NavLink>
                   <NavLink to="/parts-management">Parts Management</NavLink>
                   <NavLink to="/standard-alloy-management">Alloy Management</NavLink>
                   <NavLink to="/element-management">Element Management</NavLink>

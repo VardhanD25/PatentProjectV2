@@ -404,6 +404,8 @@ const updatePart = async (req, res) => {
       // Calculate the density of the master sample
       const numerator = (masterMassAir - effectiveAttachmentMassAir) * densityOfFluid1;
       const denominator = (masterMassAir - effectiveAttachmentMassAir) - (masterMassFluid - effectiveAttachmentMassFluid);
+      //const numerator = (masterMassAir ) * densityOfFluid1;
+      //const denominator = (masterMassAir) - (masterMassFluid);
   
       // Check for division by zero
       if (denominator === 0) {
@@ -411,7 +413,7 @@ const updatePart = async (req, res) => {
       }
   
       const density = numerator / denominator;
-      const formattedDensity = density.toFixed(2);
+      const formattedDensity = density.toFixed(3);
   
       res.status(200).json({ density: formattedDensity });
     } catch (error) {
@@ -468,7 +470,7 @@ const updatePart = async (req, res) => {
       const density = (effectivePartMassAir * densityOfFluidNum) / (effectivePartMassAir - effectivePartMassFluid);
   
       // Respond with the calculated density
-      res.json({ density: density.toFixed(2) });
+      res.json({ density: density.toFixed(3) });
     } catch (error) {
       console.error('Error calculating part density:', error);
       res.status(500).json({ error: 'Internal server error' });
@@ -507,7 +509,7 @@ const updatePart = async (req, res) => {
       }
   
       // Respond with the calculated compactness ratio
-      res.json({ compactnessRatio: compactnessRatio.toFixed(1) });
+      res.json({ compactnessRatio: compactnessRatio.toFixed(2) });
     } catch (error) {
       console.error('Error calculating compactness ratio:', error);
       res.status(500).json({ error: 'Internal server error' });

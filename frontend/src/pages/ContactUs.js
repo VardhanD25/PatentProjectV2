@@ -113,7 +113,7 @@ function ContactUs() {
 
                       <div className="space-y-2">
                         <h3 className="text-lg font-semibold text-[#163d64]">Location</h3>
-                        <p className="text-[#163d64]/80">Mumbai, India</p>
+                        <p className="text-[#163d64]/80">Pune, India</p>
                       </div>
 
                       <div className="space-y-2">

@@ -188,7 +188,7 @@ function FirstEntry({
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-[#163d64]/80">Part Code</label>
+                  <label className="text-3xl font-semibold text-[#163d64]/80">Part Code</label>
                   <select
                     value={partCode}
                     onChange={handlePartCodeChange}
@@ -203,7 +203,7 @@ function FirstEntry({
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-[#163d64]/80">Part Name</label>
+                  <label className="text-3xl font-semibold text-[#163d64]/80">Part Name</label>
                   <input
                     type="text"
                     value={partName}
@@ -214,7 +214,7 @@ function FirstEntry({
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-[#163d64]/80">Single Piece or Lot</label>
+                  <label className="text-3xl font-semibold text-[#163d64]/80">Single Piece or Lot</label>
                   <select
                     value={pieceOrLot}
                     onChange={handleSingleOrLotChange}
@@ -228,7 +228,7 @@ function FirstEntry({
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-[#163d64]/80">Calculated Density or Specified Density</label>
+                  <label className="text-3xl font-semibold text-[#163d64]/80">Calculated Density or Specified Density</label>
                   <select
                     value={density}
                     onChange={handleDensityTypeChange}

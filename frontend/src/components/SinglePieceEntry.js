@@ -199,16 +199,16 @@ function SinglePieceEntry({
                   
                   <div className="bg-white/50 border border-[#163d64]/20 rounded-xl p-6 space-y-4">
                     <p className="text-[#163d64]">
-                      <span className="font-medium">Compactness Ratio:</span> {compactnessRatio}
+                      <span className="font-medium">Compactness Ratio:</span> {compactnessRatio}%
                     </p>
                     
                     {masterExists === 'yes' ? (
                       <p className="text-[#163d64]">
-                        <span className="font-medium">Porosity:</span> {porosity}%
+                        <span className="font-medium">Porosity Index:</span> {porosity}%
                       </p>
                     ) : (
                       <p className="text-[#fa4516]">
-                        <span className="font-medium text-[#163d64]">Porosity:</span> Cannot be calculated (No master sample)
+                        <span className="font-medium text-[#163d64]">Porosity Index (For specified alloy density):</span> Cannot be calculated (No master sample)
                       </p>
                     )}
                   </div>
