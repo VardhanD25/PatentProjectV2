@@ -97,118 +97,122 @@ function SecondEntry({
       <div className="relative z-10 flex flex-col min-h-screen">
         <Navbar />
 
-        <main className="flex-grow p-8 mt-[80px] mb-[80px]">
-          <div className="max-w-4xl mx-auto">
+        <main className="flex-grow mt-[120px] mb-[80px] flex items-center justify-center p-6">
+          <div className="max-w-7xl w-full">
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-slate-200">
-              <h2 className="text-4xl font-bold text-[#163d64] mb-8 text-center">Second Entry</h2>
+              <h2 className="text-4xl font-bold text-[#163d64] mb-10 text-center">
+                Second Entry
+              </h2>
               
-              <form className="space-y-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-[#163d64]">Mass of Fluid (grams)</label>
-                  <input
-                    type="number"
-                    value={massOfFluid}
-                    onChange={handleMassOfFluidChange}
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
-                    placeholder="Enter mass of fluid"
-                    min="0"
-                    step="0.1"
-                  />
-                </div>
+              <form className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-3xl font-semibold text-[#163d64]/80">Mass of Fluid (grams)</label>
+                    <input
+                      type="number"
+                      value={massOfFluid}
+                      onChange={handleMassOfFluidChange}
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                      placeholder="Enter mass of fluid"
+                      min="0"
+                      step="0.1"
+                    />
+                  </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-[#163d64]">Volume of Fluid (cm³)</label>
-                  <input
-                    type="number"
-                    value={volumeOfFluid}
-                    onChange={handleVolumeOfFluidChange}
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
-                    placeholder="Enter volume of fluid"
-                    min="0"
-                    step="0.1"
-                  />
-                </div>
+                  <div className="space-y-3">
+                    <label className="text-3xl font-semibold text-[#163d64]/80">Volume of Fluid (cm³)</label>
+                    <input
+                      type="number"
+                      value={volumeOfFluid}
+                      onChange={handleVolumeOfFluidChange}
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                      placeholder="Enter volume of fluid"
+                      min="0"
+                      step="0.1"
+                    />
+                  </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-[#163d64]">Density of Fluid (grams/cm³)</label>
-                  <input
-                    type="text"
-                    value={densityOfFluid}
-                    readOnly
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64]/70 cursor-not-allowed"
-                    placeholder="Density of fluid will be calculated"
-                  />
+                  <div className="space-y-3">
+                    <label className="text-3xl font-semibold text-[#163d64]/80">Density of Fluid (g/cm³)</label>
+                    <input
+                      type="text"
+                      value={densityOfFluid}
+                      readOnly
+                      className="w-full px-4 py-3 rounded-xl bg-[#fff0f0] border border-[#163d64]/10 text-[#163d64]/75 cursor-not-allowed"
+                      placeholder="Density of fluid will be calculated"
+                    />
+                  </div>
                 </div>
 
                 {(attachmentExists === "yes" || masterAttachmentExists === "yes") && (
-                  <>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-[#163d64]">Attachment Mass in Air (grams)</label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-3">
+                      <label className="text-3xl font-semibold text-[#163d64]/80">Attachment Mass in Air (g)</label>
                       <input
                         type="number"
                         value={attachmentMassAir}
                         onChange={handleAttachmentMassAirChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
                         placeholder="Enter attachment mass in air"
                         min="0"
                         step="0.1"
                       />
                     </div>
 
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-[#163d64]">Attachment Mass in Fluid (grams)</label>
+                    <div className="space-y-3">
+                      <label className="text-3xl font-semibold text-[#163d64]/80">Attachment Mass in Fluid (g)</label>
                       <input
                         type="number"
                         value={attachmentMassFluid}
                         onChange={handleAttachmentMassFluidChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
                         placeholder="Enter attachment mass in fluid"
                         min="0"
                         step="0.1"
                       />
                     </div>
-                  </>
+                  </div>
                 )}
 
                 {masterExists === 'yes' && (
-                  <>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-[#163d64]">Master Sample Mass in Air (grams)</label>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="space-y-3">
+                      <label className="text-3xl font-semibold text-[#163d64]/80">Master Sample Mass in Air (g)</label>
                       <input
                         type="number"
                         value={masterSampleMassAir}
                         onChange={handleMasterSampleMassAirChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
                         placeholder="Enter master sample mass in air"
                         min="0"
                         step="0.1"
                       />
                     </div>
 
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-[#163d64]">Master Sample Mass in Fluid (grams)</label>
+                    <div className="space-y-3">
+                      <label className="text-3xl font-semibold text-[#163d64]/80">Master Sample Mass in Fluid (g)</label>
                       <input
                         type="number"
                         value={masterSampleMassFluid}
                         onChange={handleMasterSampleMassFluidChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
                         placeholder="Enter master sample mass in fluid"
                         min="0"
                         step="0.1"
                       />
                     </div>
 
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-[#163d64]">Density of Master Sample (grams/cm³)</label>
+                    <div className="space-y-3">
+                      <label className="text-3xl font-semibold text-[#163d64]/80">Master Sample Density (g/cm³)</label>
                       <input
                         type="text"
                         value={densityMasterSample}
                         readOnly
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64]/70 cursor-not-allowed"
-                        placeholder="Density of master sample will be calculated"
+                        className="w-full px-4 py-3 rounded-xl bg-[#fff0f0] border border-[#163d64]/10 text-[#163d64]/75 cursor-not-allowed"
+                        placeholder="Density will be calculated"
                       />
                     </div>
-                  </>
+                  </div>
                 )}
               </form>
             </div>

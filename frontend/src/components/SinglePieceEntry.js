@@ -188,38 +188,38 @@ function SinglePieceEntry({
       <div className="relative z-10 flex flex-col min-h-screen">
         <Navbar />
         
-        <main className="flex-grow p-8 mt-[80px] mb-[80px]">
-          <div className="max-w-4xl mx-auto">
+        <main className="flex-grow mt-[120px] mb-[80px] flex items-center justify-center p-6">
+          <div className="max-w-7xl w-full">
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-slate-200">
-              <h2 className="text-4xl font-bold text-[#163d64] mb-8 text-center">Single Piece Entry</h2>
+              <h2 className="text-4xl font-bold text-[#163d64] mb-10 text-center">
+                Single Piece Entry
+              </h2>
 
               {showResults ? (
-                <div className="space-y-6">
-                  <h3 className="text-2xl font-semibold text-[#163d64] text-center">Results</h3>
+                <div className="space-y-8">
+                  <h3 className="text-3xl font-semibold text-[#163d64] text-center">Results</h3>
                   
-                  <div className="bg-white/50 border border-[#163d64]/20 rounded-xl p-6 space-y-4">
-                    <p className="text-[#163d64]">
+                  <div className="bg-white/50 border border-[#163d64]/20 rounded-xl p-8 space-y-4">
+                    <p className="text-[#163d64] text-3xl">
                       <span className="font-medium">Compactness Ratio:</span> {compactnessRatio}%
                     </p>
                     
                     {masterExists === 'yes' ? (
-                      <p className="text-[#163d64]">
+                      <p className="text-[#163d64] text-3xl">
                         <span className="font-medium">Porosity Index:</span> {porosity}%
                       </p>
                     ) : (
-                      <p className="text-[#fa4516]">
+                      <p className="text-[#fa4516] text-3xl">
                         <span className="font-medium text-[#163d64]">Porosity Index (For specified alloy density):</span> Cannot be calculated (No master sample)
                       </p>
                     )}
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                   
-
                     {compactnessRatio !== 'Incorrect input, compactness ratio cannot be greater than 100!' && (
                       <button
                         onClick={handleShowReport}
-                        className="px-6 py-3 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300"
+                        className="px-6 py-3 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-200 shadow-sm hover:shadow-md"
                       >
                         Show Report
                       </button>
@@ -227,61 +227,63 @@ function SinglePieceEntry({
                   </div>
 
                   {compactnessRatio !== 'Incorrect input, compactness ratio cannot be greater than 100!' && (
-                    <p className="text-[#fa4516] text-sm text-center">
+                    <p className="text-[#fa4516] text-xl text-center">
                       Verify entries before generating report, values cannot be edited later.
                     </p>
                   )}
                 </div>
               ) : (
-                <form className="space-y-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-[#163d64]">
-                      Part Mass in Air (grams)
-                    </label>
-                    <input
-                      type="number"
-                      value={partMassAir}
-                      onChange={handlePartMassAirChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
-                      placeholder="Enter part mass in air"
-                      min="0"
-                      step="any"
-                    />
-                  </div>
+                <form className="space-y-8">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="space-y-3">
+                      <label className="text-3xl font-semibold text-[#163d64]/80">
+                        Part Mass in Air (g)
+                      </label>
+                      <input
+                        type="number"
+                        value={partMassAir}
+                        onChange={handlePartMassAirChange}
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                        placeholder="Enter part mass in air"
+                        min="0"
+                        step="any"
+                      />
+                    </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-[#163d64]">
-                      Part Mass in Fluid (grams)
-                    </label>
-                    <input
-                      type="number"
-                      value={partMassFluid}
-                      onChange={handlePartMassFluidChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
-                      placeholder="Enter part mass in fluid"
-                      min="0"
-                      step="any"
-                    />
-                  </div>
+                    <div className="space-y-3">
+                      <label className="text-3xl font-semibold text-[#163d64]/80">
+                        Part Mass in Fluid (g)
+                      </label>
+                      <input
+                        type="number"
+                        value={partMassFluid}
+                        onChange={handlePartMassFluidChange}
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                        placeholder="Enter part mass in fluid"
+                        min="0"
+                        step="any"
+                      />
+                    </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-[#163d64]">
-                      Part Density (grams/cm³)
-                    </label>
-                    <input
-                      type="text"
-                      value={partDensity}
-                      readOnly
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64]/70 cursor-not-allowed"
-                      placeholder="Part density will be calculated"
-                    />
+                    <div className="space-y-3">
+                      <label className="text-3xl font-semibold text-[#163d64]/80">
+                        Part Density (g/cm³)
+                      </label>
+                      <input
+                        type="text"
+                        value={partDensity}
+                        readOnly
+                        className="w-full px-4 py-3 rounded-xl bg-[#fff0f0] border border-[#163d64]/10 text-[#163d64]/75 cursor-not-allowed"
+                        placeholder="Part density will be calculated"
+                      />
+                    </div>
                   </div>
 
                   <div className="flex justify-center pt-4">
                     <button
                       type="button"
                       onClick={handleFormSubmit}
-                      className="px-8 py-3 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300"
+                      className="px-8 py-4 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transform"
                     >
                       Submit
                     </button>

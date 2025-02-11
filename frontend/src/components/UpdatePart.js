@@ -108,7 +108,7 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
 
   return (
     <div 
-      className="fixed inset-0 bg-slate-900/90 backdrop-blur-sm flex items-center justify-center z-50"
+      className="fixed inset-0 bg-white-900/90 backdrop-blur-sm flex items-center justify-center z-50"
       onClick={onClose}
     >
       <motion.div 

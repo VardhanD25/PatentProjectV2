@@ -154,175 +154,164 @@ function LotEntry({
   };
 
   return (
-    <div className="min-h-screen bg-white text-[#163d64] relative">
-      <Navbar />
-      
-      {/* Grid Background */}
-      <div className="absolute inset-0 bg-white text-[#163d64] bg-[size:3rem_3rem] pointer-events-none" />
-      <div className="absolute inset-0 bg-white text-[#163d64] pointer-events-none" />
-      
-      <main className="container mx-auto px-4 py-32 relative ">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="space-y-12"
-        >
-          <h2 className="text-3xl font-bold text-[#163d64] text-center mb-12">
-            Lot Entry Screen
-          </h2>
-          
-          {showResults ? (
-  <div className="bg-white-800/50 backdrop-blur-sm border border-white-700/50 rounded-lg p-8 space-y-6 shadow-xl">
-    <h3 className="text-xl font-semibold text-[#163d64]">Results</h3>
-    
-    <div className="overflow-x-auto">
-      <table className="w-full border-collapse">
-        <thead>
-          <tr className="border-b border-white-700/50">
-            <th className="py-3 px-4 text-left text-white-300 font-medium">Item Number</th>
-            <th className="py-3 px-4 text-left text-white-300 font-medium">Mass in Air (g)</th>
-            <th className="py-3 px-4 text-left text-white-300 font-medium">Mass in Fluid (g)</th>
-            <th className="py-3 px-4 text-left text-white-300 font-medium">Density (g/cm³)</th>
-            <th className="py-3 px-4 text-left text-white-300 font-medium">Compactness</th>
-            <th className="py-3 px-4 text-left text-white-300 font-medium">Porosity Index</th>
-          </tr>
-        </thead>
-        <tbody>
-          {partMassAirArray.map((_, index) => (
-            <tr key={index} className="border-b border-white-700/30">
-              <td className="py-3 px-4 text-white-300">{index + 1}</td>
-              <td className="py-3 px-4 text-white-300">{partMassAirArray[index]}</td>
-              <td className="py-3 px-4 text-white-300">{partMassFluidArray[index]}</td>
-              <td className="py-3 px-4 text-white-300">{partDensityArray[index]}</td>
-              <td className="py-3 px-4 text-white-300">{compactnessRatioArray[index]}%</td>
-              <td className="py-3 px-4 text-white-300">
-                {masterExists === 'yes' ? (
-                  `${porosityArray[index]}`
-                ) : (
-                  partDensityArray[index] === Math.max(...partDensityArray.map(d => parseFloat(d))).toString() ? (
-                    'Reference Part'
-                  ) : (
-                    `${porosityArray[index]}`
-                  )
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <div className="min-h-screen flex flex-col bg-white font-quicksand text-[#163d64] relative">
+      <div className="fixed inset-0">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#163d640a_1px,transparent_1px),linear-gradient(to_bottom,#163d640a_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div className="fixed inset-0 bg-gradient-to-b from-white via-[#163d64]/5 to-white"></div>
+      </div>
 
-    {/* Add a note about porosity calculation method */}
-    <div className="text-sm text-amber-500/80 mt-4">
-      {masterExists === 'yes' ? (
-        <p>Porosity calculated using master sample as reference</p>
-      ) : (
-        <p>Porosity calculated using highest density part as reference</p>
-      )}
-    </div>
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Navbar />
+        
+        <main className="flex-grow mt-[120px] mb-[80px] flex items-center justify-center p-6">
+          <div className="max-w-7xl w-full">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="space-y-8"
+            >
+              <h2 className="text-4xl font-bold text-[#163d64] mb-10 text-center">
+                Lot Entry Screen
+              </h2>
+              
+              {showResults ? (
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-slate-200">
+                  <h3 className="text-3xl font-semibold text-[#163d64] mb-6">Results</h3>
+                  
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse">
+                      <thead>
+                        <tr className="border-b border-[#163d64]/20">
+                          <th className="py-4 px-6 text-left text-xl font-semibold">item Number</th>
+                          <th className="py-4 px-6 text-left text-xl font-semibold">Mass in Air (g)</th>
+                          <th className="py-4 px-6 text-left text-xl font-semibold">Mass in Fluid (g)</th>
+                          <th className="py-4 px-6 text-left text-xl font-semibold">Density (g/cm³)</th>
+                          <th className="py-4 px-6 text-left text-xl font-semibold">Compactness</th>
+                          <th className="py-4 px-6 text-left text-xl font-semibold">Porosity</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {partMassAirArray.map((_, index) => (
+                          <tr key={index} className="border-b border-[#163d64]/10">
+                            <td className="py-4 px-6 text-lg">{index + 1}</td>
+                            <td className="py-4 px-6 text-lg">{partMassAirArray[index]}</td>
+                            <td className="py-4 px-6 text-lg">{partMassFluidArray[index]}</td>
+                            <td className="py-4 px-6 text-lg bg-[#fff0f0]">{partDensityArray[index]}</td>
+                            <td className="py-4 px-6 text-lg bg-[#fff0f0]">{compactnessRatioArray[index]}</td>
+                            <td className="py-4 px-6 text-lg bg-[#fff0f0]">
+                              {masterExists === 'yes' ? (
+                                `${porosityArray[index]}%`
+                              ) : (
+                                partDensityArray[index] === Math.max(...partDensityArray.map(d => parseFloat(d))).toString() ? (
+                                  'Reference Part'
+                                ) : (
+                                  `${porosityArray[index]}%`
+                                )
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
 
-    <div className="flex gap-4 justify-end pt-4">
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={handleGoBack}
-        className="px-6 py-2 rounded-lg bg-white-800/50 border border-white-700/50 text-white-300 hover:bg-white-800/70 hover:text-white transition-all duration-300"
-      >
-        Edit Values
-      </motion.button>
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={handleShowReport}
-        className="px-6 py-2 rounded-lg bg-white-200 text-white-900 hover:bg-white transition-all duration-300"
-      >
-        Show Report
-      </motion.button>
-    </div>
-  </div>
-) : (
-            <div className="space-y-6">
-              {validationMessage && (
-                <div className="bg-red-900/50 text-red-200 p-4 rounded-lg border border-red-500/50">
-                  {validationMessage}
+                  <div className="text-lg text-amber-500/80 mt-6">
+                    {masterExists === 'yes' ? (
+                      <p>Porosity calculated using master sample as reference</p>
+                    ) : (
+                      <p>Porosity calculated using highest density part as reference</p>
+                    )}
+                  </div>
+
+                  <div className="flex gap-4 justify-end pt-8">
+                    
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleShowReport}
+                      className="px-8 py-4 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300"
+                    >
+                      Show Report
+                    </motion.button>
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-slate-200">
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse">
+                      <thead>
+                        <tr className="border-b border-[#163d64]/20">
+                          <th className="py-4 px-6 text-left text-xl font-semibold">Item Number</th>
+                          <th className="py-4 px-6 text-left text-xl font-semibold">Mass in Air (g)</th>
+                          <th className="py-4 px-6 text-left text-xl font-semibold">Mass in Fluid (g)</th>
+                          <th className="py-4 px-6 text-left text-xl font-semibold">Density (g/cm³)</th>
+                          <th className="py-4 px-6 text-left text-xl font-semibold">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {partMassAirArray.map((_, index) => (
+                          <tr key={index} className="border-b border-[#163d64]/10">
+                            <td className="py-4 px-6 text-lg">{index + 1}</td>
+                            <td className="py-4 px-6">
+                              <input
+                                type="number"
+                                value={partMassAirArray[index]}
+                                onChange={(e) => handlePartMassAirChange(index, e.target.value)}
+                                className="w-full px-4 py-3 text-lg rounded-lg border border-[#163d64]/20 focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-colors"
+                              />
+                            </td>
+                            <td className="py-4 px-6">
+                              <input
+                                type="number"
+                                value={partMassFluidArray[index]}
+                                onChange={(e) => handlePartMassFluidChange(index, e.target.value)}
+                                className="w-full px-4 py-3 text-lg rounded-lg border border-[#163d64]/20 focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-colors"
+                              />
+                            </td>
+                            <td className="py-4 px-6 text-lg bg-[#fff0f0]">{partDensityArray[index]}</td>
+                            <td className="py-4 px-6">
+                              <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => handleRemovePart(index)}
+                                className="px-6 py-2 bg-red-500/10 text-red-500 font-semibold rounded-lg hover:bg-red-500/20 transition-colors"
+                              >
+                                Remove
+                              </motion.button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div className="flex gap-4 justify-end pt-8">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleAddPart}
+                      className="px-8 py-4 border-2 border-[#163d64] text-[#163d64] font-semibold rounded-xl hover:bg-[#163d64] hover:text-white transition-all duration-300"
+                    >
+                      Add Part
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleFormSubmit}
+                      className="px-8 py-4 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300"
+                    >
+                      Submit
+                    </motion.button>
+                  </div>
                 </div>
               )}
-              
-              <div className="bg-white-800/50 backdrop-blur-sm border border-white-700/50 rounded-lg p-8 shadow-xl">
-                <div className="overflow-x-auto">
-                  <table className="w-full border-collapse">
-                    <thead>
-                      <tr className="border-b border-white-700/50">
-                        <th className="py-3 px-4 text-left text-white-300 font-medium">Item Number</th>
-                        <th className="py-3 px-4 text-left text-white-300 font-medium">Mass in Air (g)</th>
-                        <th className="py-3 px-4 text-left text-white-300 font-medium">Mass in Fluid (g)</th>
-                        <th className="py-3 px-4 text-left text-white-300 font-medium">Density (g/cm³)</th>
-                        <th className="py-3 px-4 text-left text-white-300 font-medium">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {partMassAirArray.map((_, index) => (
-                        <tr key={index} className="border-b border-white-700/30">
-                          <td className="py-3 px-4 text-white-300">{index + 1}</td>
-                          <td className="py-3 px-4">
-                            <input
-                              type="number"
-                              value={partMassAirArray[index]}
-                              onChange={(e) => handlePartMassAirChange(index, e.target.value)}
-                              className="w-full px-4 py-2 rounded-lg bg-white-800/50 border border-white-700/50 text-white-200 focus:outline-none focus:border-white-600 focus:ring-1 focus:ring-white-600"
-                            />
-                          </td>
-                          <td className="py-3 px-4">
-                            <input
-                              type="number"
-                              value={partMassFluidArray[index]}
-                              onChange={(e) => handlePartMassFluidChange(index, e.target.value)}
-                              className="w-full px-4 py-2 rounded-lg bg-white-800/50 border border-white-700/50 text-white-200 focus:outline-none focus:border-white-600 focus:ring-1 focus:ring-white-600"
-                            />
-                          </td>
-                          <td className="py-3 px-4 text-white-300">{partDensityArray[index]}</td>
-                          <td className="py-3 px-4">
-                            <motion.button
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                              onClick={() => handleRemovePart(index)}
-                              className="px-4 py-1 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20"
-                            >
-                              Remove
-                            </motion.button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+            </motion.div>
+          </div>
+        </main>
 
-                <div className="flex gap-4 justify-end pt-8">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={handleAddPart}
-                    className="px-6 py-2 rounded-lg bg-white-800/50 border border-white-700/50 text-white-300 hover:bg-white-800/70 hover:text-white transition-all duration-300"
-                  >
-                    Add Part
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={handleFormSubmit}
-                    className="px-6 py-2 rounded-lg bg-white-200 text-white-900 hover:bg-white transition-all duration-300"
-                  >
-                    Submit
-                  </motion.button>
-                </div>
-              </div>
-            </div>
-          )}
-        </motion.div>
-      </main>
-
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 }

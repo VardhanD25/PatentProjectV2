@@ -80,7 +80,7 @@ function StandardAlloyManagement() {
         <main className="flex-grow p-8 mt-[80px] mb-[80px]">
           <div className="max-w-4xl mx-auto">
             <div className="flex justify-between items-center mb-8">
-              <h1 className="text-4xl font-bold text-[#163d64]">Standard Alloy Management</h1>
+              <h1 className="text-3xl font-bold text-[#163d64]">Standard Alloy Management</h1>
               <button
                 onClick={() => setAddingAlloy(true)}
                 className="px-6 py-3 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform"
@@ -103,7 +103,7 @@ function StandardAlloyManagement() {
               <div className="text-center py-8 text-[#163d64]">No standard alloys found.</div>
             )}
 
-            <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
               {alloys.map(alloy => (
                 alloy && (
                   <div
@@ -112,7 +112,7 @@ function StandardAlloyManagement() {
                   >
                     <div className="flex justify-between items-start">
                       <div className="flex-grow">
-                        <h2 className="text-xl font-semibold text-[#163d64]">{alloy.name}</h2>
+                        <h2 className="text-3xl font-semibold text-[#163d64]">{alloy.name}</h2>
                         <p className="text-[#163d64]/70">Country: {alloy.country}</p>
                         <p className="text-[#163d64]/70">Density: {alloy.density}</p>
                         <p className="text-[#163d64]/70">Reference: {alloy.reference}</p>

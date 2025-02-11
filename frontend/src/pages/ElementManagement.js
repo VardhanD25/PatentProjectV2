@@ -69,7 +69,7 @@ function ElementManagement() {
         <main className="flex-grow p-8 mt-[80px] mb-[80px]">
           <div className="max-w-4xl mx-auto">
             <div className="flex justify-between items-center mb-8">
-              <h1 className="text-4xl font-bold text-[#163d64]">Element Management</h1>
+              <h1 className="text-3xl font-bold text-[#163d64]">Element Management</h1>
               <button
                 onClick={() => setAddingElement(true)}
                 className="px-6 py-3 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform"
@@ -92,7 +92,7 @@ function ElementManagement() {
               <div className="text-center py-8 text-[#163d64]">No elements found.</div>
             )}
 
-            <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
               {elements.map(element => (
                 element && (
                   <div
@@ -101,7 +101,7 @@ function ElementManagement() {
                   >
                     <div className="flex justify-between items-start">
                       <div className="flex-grow">
-                        <h2 className="text-xl font-semibold text-[#163d64]">{element.name}</h2>
+                        <h2 className="text-3xl font-semibold text-[#163d64]">{element.name}</h2>
                         <p className="text-[#163d64]/70">Symbol: {element.symbol}</p>
                         <p className="text-[#163d64]/70">Atomic Number: {element.atomicNumber}</p>
                         <p className="text-[#163d64]/70">Density: {element.density}</p>

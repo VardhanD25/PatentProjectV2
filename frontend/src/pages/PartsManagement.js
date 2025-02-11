@@ -118,7 +118,7 @@ function PartsManagement() {
 
         <main className="flex-grow p-8 mt-[80px] mb-[80px]">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl font-bold text-[#163d64] mb-8 text-center">Parts Management</h1>
+            <h1 className="text-3xl font-bold text-[#163d64] mb-8 text-center">Parts Management</h1>
 
             {loading && (
               <div className="text-center py-8 text-[#163d64]">Loading parts...</div>
@@ -134,7 +134,7 @@ function PartsManagement() {
               <div className="text-center py-8 text-[#163d64]">No parts found for this user.</div>
             )}
 
-            <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
               {parts.map((part) => (
                 <div
                   key={part.partCode}
@@ -142,7 +142,7 @@ function PartsManagement() {
                 >
                   <div className="flex justify-between items-start">
                     <div className="flex-grow">
-                      <h2 className="text-xl font-semibold text-[#163d64]">{part.partName}</h2>
+                      <h2 className="text-3xl font-semibold text-[#163d64]">{part.partName}</h2>
                       <p className="text-[#163d64]/70">Code: {part.partCode}</p>
 
                       {part.standardAlloyId ? (

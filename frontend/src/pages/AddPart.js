@@ -209,38 +209,40 @@ const AddPart = () => {
         <Navbar />
 
         <main className="flex-grow p-8 mt-[80px] mb-[80px]">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             <div className="relative">
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-slate-200">
-                <h2 className="text-4xl font-bold text-[#163d64] mb-8 text-center">Add Part</h2>
+                <h2 className="text-3xl font-bold text-[#163d64] mb-8 text-center">Add Part</h2>
                 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-[#163d64]">Part Code</label>
-                    <input
-                      type="text"
-                      value={partCode}
-                      onChange={(e) => setPartCode(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
-                      required
-                      placeholder="Enter unique part code"
-                    />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-3xl font-semibold text-[#163d64]/80">Part Code</label>
+                      <input
+                        type="text"
+                        value={partCode}
+                        onChange={(e) => setPartCode(e.target.value)}
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
+                        required
+                        placeholder="Enter unique part code"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-3xl font-semibold text-[#163d64]/80">Part Name</label>
+                      <input
+                        type="text"
+                        value={partName}
+                        onChange={(e) => setPartName(e.target.value)}
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
+                        required
+                        placeholder="Enter part name"
+                      />
+                    </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-[#163d64]">Part Name</label>
-                    <input
-                      type="text"
-                      value={partName}
-                      onChange={(e) => setPartName(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
-                      required
-                      placeholder="Enter part name"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-[#163d64]">Select Standard Alloy</label>
+                    <label className="text-3xl font-semibold text-[#163d64]/80">Select Standard Alloy</label>
                     <select
                       value={selectedStandardAlloy}
                       onChange={(e) => setSelectedStandardAlloy(e.target.value)}
@@ -256,7 +258,7 @@ const AddPart = () => {
                   </div>
 
                   <div className="space-y-4">
-                    <label className="text-sm font-medium text-[#163d64]">Composition</label>
+                    <label className="text-3xl font-semibold text-[#163d64]/80">Composition</label>
                     {composition.map((element, index) => (
                       <div key={index} className="space-y-4 p-4 bg-white rounded-xl border border-[#163d64]/20">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

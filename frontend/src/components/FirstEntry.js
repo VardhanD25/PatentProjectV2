@@ -169,190 +169,172 @@ function FirstEntry({
       <div className="relative z-10 flex flex-col min-h-screen">
         <Navbar />
 
-        <main className="flex-grow p-8 mt-[80px] mb-[80px]">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-[#163d64]/10">
-              <h2 className="text-5xl font-bold text-[#163d64] mb-8 text-center">
+        <main className="flex-grow p-6 mt-[80px] mb-[80px]">
+          <div className="max-w-7xl mx-auto">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-slate-200">
+              <h2 className="text-4xl font-bold text-[#163d64] mb-10 text-center">
                 First Entry
               </h2>
 
-              <form className="space-y-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-[#163d64]/80">Date</label>
-                  <input
-                    type="date"
-                    value={date}
-                    onChange={handleDateChange}
-                    className="w-full px-6 py-4 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
-                  />
-                </div>
+              <form className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-3xl font-semibold text-[#163d64]/80">Date</label>
+                    <input
+                      type="date"
+                      value={date}
+                      onChange={handleDateChange}
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516]"
+                    />
+                  </div>
 
-                <div className="space-y-2">
-                  <label className="text-3xl font-semibold text-[#163d64]/80">Part Code</label>
-                  <select
-                    value={partCode}
-                    onChange={handlePartCodeChange}
-                    className="w-full px-6 py-4 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
-                    required
-                  >
-                    <option value="">Select part code</option>
-                    {partCodes.map(code => (
-                      <option key={code} value={code}>{code}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-3xl font-semibold text-[#163d64]/80">Part Name</label>
-                  <input
-                    type="text"
-                    value={partName}
-                    readOnly
-                    className="w-full px-6 py-4 rounded-xl bg-white/50 border border-[#163d64]/10 text-[#163d64]/50 cursor-not-allowed"
-                    placeholder="Part name will be autofilled"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-3xl font-semibold text-[#163d64]/80">Single Piece or Lot</label>
-                  <select
-                    value={pieceOrLot}
-                    onChange={handleSingleOrLotChange}
-                    className="w-full px-6 py-4 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
-                    required
-                  >
-                    <option value="">Select option</option>
-                    <option value="single">Single Piece</option>
-                    <option value="lot">Lot</option>
-                  </select>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-3xl font-semibold text-[#163d64]/80">Calculated Density or Specified Density</label>
-                  <select
-                    value={density}
-                    onChange={handleDensityTypeChange}
-                    className="w-full px-6 py-4 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
-                    required
-                  >
-                    <option value="">Select option</option>
-                    <option value="calculated">Calculated Density</option>
-                    <option value="specified">Specified Density</option>
-                  </select>
-
-                  {density === 'calculated' && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
-                      className="mt-4"
+                  <div className="space-y-3">
+                    <label className="text-3xl font-semibold text-[#163d64]/80">Part Code</label>
+                    <select
+                      value={partCode}
+                      onChange={handlePartCodeChange}
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516]"
+                      required
                     >
+                      <option value="">Select part code</option>
+                      {partCodes.map(code => (
+                        <option key={code} value={code}>{code}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="space-y-3">
+                    <label className="text-3xl font-semibold text-[#163d64]/80">Part Name</label>
+                    <input
+                      type="text"
+                      value={partName}
+                      readOnly
+                      className="w-full px-4 py-3 rounded-xl bg-[#fff0f0] border border-[#163d64]/10 text-black cursor-not-allowed"
+                      placeholder="Part name will be autofilled"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-3xl font-semibold text-[#163d64]/80">Single Piece or Lot</label>
+                    <select
+                      value={pieceOrLot}
+                      onChange={handleSingleOrLotChange}
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516]"
+                      required
+                    >
+                      <option value="">Select option</option>
+                      <option value="single">Single Piece</option>
+                      <option value="lot">Lot</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-3">
+                    <label className="text-3xl font-semibold text-[#163d64]/80">Density Type</label>
+                    <select
+                      value={density}
+                      onChange={handleDensityTypeChange}
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                      required
+                    >
+                      <option value="">Select option</option>
+                      <option value="calculated">Calculated Density</option>
+                      <option value="specified">Specified Density</option>
+                    </select>
+
+                    {density === 'calculated' && (
                       <motion.button
                         onClick={handleViewComposition}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="w-full px-6 py-4 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300 shadow-lg hover:shadow-xl"
+                        className="w-full mt-3 px-4 py-3 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-200 shadow-sm hover:shadow-md"
                       >
                         View Part Composition
                       </motion.button>
-                    </motion.div>
-                  )}
+                    )}
 
-                  {density === 'specified' && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
-                      className="mt-4"
-                    >
+                    {density === 'specified' && (
                       <motion.button
                         onClick={handleShowStandardAlloy}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="w-full px-6 py-4 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300 shadow-lg hover:shadow-xl"
+                        className="w-full mt-3 px-4 py-3 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-200 shadow-sm hover:shadow-md"
                       >
                         {showStandardAlloyPanel ? 'Hide' : 'Show'} Standard Alloy
                       </motion.button>
-                    </motion.div>
-                  )}
-                </div>
+                    )}
+                  </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-[#163d64]/80">Theoretical Density</label>
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="text"
-                      value={theoreticalDensity}
-                      readOnly
-                      className="flex-1 px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64]/75 cursor-not-allowed opacity-75"
-                      placeholder="Theoretical density will be autofilled"
-                    />
-                    <motion.button
-                      onClick={handleRefreshDensity}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="p-2 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] hover:bg-[#163d64]/20 hover:text-[#163d64] transition-all duration-300"
-                    >
-                      <svg 
-                        className="w-5 h-5" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
+                  <div className="space-y-3">
+                    <label className="text-3xl font-semibold text-[#163d64]/80">Theoretical Density</label>
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="text"
+                        value={theoreticalDensity}
+                        readOnly
+                        className="flex-1 px-4 py-3 rounded-xl bg-[#fff0f0] border border-[#163d64]/20 text-[#163d64]/75 cursor-not-allowed"
+                        placeholder="Theoretical density will be autofilled"
+                      />
+                      <motion.button
+                        onClick={handleRefreshDensity}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="p-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] hover:bg-[#163d64]/10 transition-all duration-200"
                       >
-                        <path 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round" 
-                          strokeWidth={2} 
-                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" 
-                        />
-                      </svg>
-                    </motion.button>
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                      </motion.button>
+                    </div>
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-[#163d64]/80">Does the part have attachments?</label>
-                  <select
-                    value={attachment}
-                    onChange={handleAttachmentChange}
-                    className="w-full px-6 py-4 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
-                    required
-                  >
-                    <option value="">Select option</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-[#163d64]/80">Does the master sample exist?</label>
-                  <select
-                    value={master}
-                    onChange={handleMasterChange}
-                    className="w-full px-6 py-4 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
-                    required
-                  >
-                    <option value="">Select option</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </div>
-
-                {master === 'yes' && (
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-[#163d64]/80">Does the master sample have attachments?</label>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-3xl font-semibold text-[#163d64]/80">Attachments?</label>
                     <select
-                      value={masterAttachment}
-                      onChange={handleMasterAttachmentChange}
-                      className="w-full px-6 py-4 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
+                      value={attachment}
+                      onChange={handleAttachmentChange}
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516]"
                       required
                     >
-                      <option value="">Select option</option>
+                      <option value="">Select</option>
                       <option value="yes">Yes</option>
                       <option value="no">No</option>
                     </select>
                   </div>
-                )}
+
+                  <div className="space-y-3">
+                    <label className="text-3xl font-semibold text-[#163d64]/80">Master Sample?</label>
+                    <select
+                      value={master}
+                      onChange={handleMasterChange}
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516]"
+                      required
+                    >
+                      <option value="">Select</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </select>
+                  </div>
+
+                  {master === 'yes' && (
+                    <div className="space-y-3">
+                      <label className="text-3xl font-semibold text-[#163d64]/80">Master Attachments?</label>
+                      <select
+                        value={masterAttachment}
+                        onChange={handleMasterAttachmentChange}
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516]"
+                        required
+                      >
+                        <option value="">Select</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                      </select>
+                    </div>
+                  )}
+                </div>
               </form>
             </div>
           </div>
