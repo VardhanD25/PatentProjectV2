@@ -23,7 +23,7 @@ function LotReportPage() {
 
   
   console.log('Location State:', location.state);
-  console.log('Serial Numbers:', location.state?.serialNumbers);
+  console.log('item numbers:', location.state?.serialNumbers);
 
   if (!location.state) {
     return (
@@ -63,7 +63,7 @@ function LotReportPage() {
     optionalReport = true,
   } = location.state || {};
 
-  // Generate or use passed serial numbers
+  // Generate or use passed item numbers
   const serialNumbers = passedSerialNumbers || massInAir.map((_, index) => {
     const lastUsedNumberKey = `lastSerialNumber_${partCode}_${date}`;
     const lastUsedNumber = parseInt(localStorage.getItem(lastUsedNumberKey)) || 100000;
@@ -248,7 +248,7 @@ function LotReportPage() {
           rows: [
             new TableRow({
               children: [
-                "Serial Number",
+                "item number",
                 "Mass in Air (g)",
                 "Mass in Fluid (g)",
                 "Compactness Ratio",
@@ -398,7 +398,7 @@ function LotReportPage() {
       if (selectedFields.measurements) {
         data.push(
           ['Measurements', '', '', '', ''],
-          ['Serial Number', 'Mass in Air (g)', 'Mass in Fluid (g)', 'Compactness Ratio', 'Porosity'],
+          ['item number', 'Mass in Air (g)', 'Mass in Fluid (g)', 'Compactness Ratio', 'Porosity'],
           ...massInAir.map((_, index) => [
             serialNumbers[index].toString().padStart(6, '0'),
             massInAir[index],
@@ -516,7 +516,7 @@ function LotReportPage() {
                       <table className="w-full">
                         <thead>
                           <tr>
-                            <th className="py-4 px-6 text-left bg-[#163d64] text-white text-lg font-medium rounded-tl-xl">Serial Number</th>
+                            <th className="py-4 px-6 text-left bg-[#163d64] text-white text-lg font-medium rounded-tl-xl">item number</th>
                             <th className="py-4 px-6 text-left bg-[#163d64] text-white text-lg font-medium">Mass in Air (g)</th>
                             <th className="py-4 px-6 text-left bg-[#163d64] text-white text-lg font-medium">Mass in Fluid (g)</th>
                             <th className="py-4 px-6 text-left bg-[#163d64] text-white text-lg font-medium">Compactness Ratio</th>
