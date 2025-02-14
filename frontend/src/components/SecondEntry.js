@@ -1,4 +1,3 @@
-// src/components/SecondEntry.jsx
 import React, { useEffect } from 'react';
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -87,6 +86,13 @@ function SecondEntry({
     onMasterSampleMassFluidChange(value);
   };
 
+  const captureWeight = async (setWeight) => {
+    if (window.electron) {
+      const newWeight = await window.electron.captureWeight();
+      setWeight(newWeight);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-white font-quicksand text-[#163d64] relative">
       <div className="fixed inset-0">
@@ -108,28 +114,46 @@ function SecondEntry({
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="space-y-3">
                     <label className="text-3xl font-semibold text-[#163d64]/80">Mass of Fluid (grams)</label>
-                    <input
-                      type="number"
-                      value={massOfFluid}
-                      onChange={handleMassOfFluidChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
-                      placeholder="Enter mass of fluid"
-                      min="0"
-                      step="0.1"
-                    />
+                    <div className="flex items-center">
+                      <input
+                        type="number"
+                        value={massOfFluid}
+                        onChange={handleMassOfFluidChange}
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                        placeholder="Enter mass of fluid"
+                        min="0"
+                        step="0.1"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => captureWeight(onMassOfFluidChange)}
+                        className="ml-2 px-2 py-1 rounded bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
+                      >
+                        C
+                      </button>
+                    </div>
                   </div>
 
                   <div className="space-y-3">
                     <label className="text-3xl font-semibold text-[#163d64]/80">Volume of Fluid (cm³)</label>
-                    <input
-                      type="number"
-                      value={volumeOfFluid}
-                      onChange={handleVolumeOfFluidChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
-                      placeholder="Enter volume of fluid"
-                      min="0"
-                      step="0.1"
-                    />
+                    <div className="flex items-center">
+                      <input
+                        type="number"
+                        value={volumeOfFluid}
+                        onChange={handleVolumeOfFluidChange}
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                        placeholder="Enter volume of fluid"
+                        min="0"
+                        step="0.1"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => captureWeight(onVolumeOfFluidChange)}
+                        className="ml-2 px-2 py-1 rounded bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
+                      >
+                        C
+                      </button>
+                    </div>
                   </div>
 
                   <div className="space-y-3">
@@ -148,28 +172,46 @@ function SecondEntry({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-3">
                       <label className="text-3xl font-semibold text-[#163d64]/80">Attachment Mass in Air (g)</label>
-                      <input
-                        type="number"
-                        value={attachmentMassAir}
-                        onChange={handleAttachmentMassAirChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
-                        placeholder="Enter attachment mass in air"
-                        min="0"
-                        step="0.1"
-                      />
+                      <div className="flex items-center">
+                        <input
+                          type="number"
+                          value={attachmentMassAir}
+                          onChange={handleAttachmentMassAirChange}
+                          className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                          placeholder="Enter attachment mass in air"
+                          min="0"
+                          step="0.1"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => captureWeight(onAttachmentMassAirChange)}
+                          className="ml-2 px-2 py-1 rounded bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
+                        >
+                          C
+                        </button>
+                      </div>
                     </div>
 
                     <div className="space-y-3">
                       <label className="text-3xl font-semibold text-[#163d64]/80">Attachment Mass in Fluid (g)</label>
-                      <input
-                        type="number"
-                        value={attachmentMassFluid}
-                        onChange={handleAttachmentMassFluidChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
-                        placeholder="Enter attachment mass in fluid"
-                        min="0"
-                        step="0.1"
-                      />
+                      <div className="flex items-center">
+                        <input
+                          type="number"
+                          value={attachmentMassFluid}
+                          onChange={handleAttachmentMassFluidChange}
+                          className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                          placeholder="Enter attachment mass in fluid"
+                          min="0"
+                          step="0.1"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => captureWeight(onAttachmentMassFluidChange)}
+                          className="ml-2 px-2 py-1 rounded bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
+                        >
+                          C
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -178,28 +220,46 @@ function SecondEntry({
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div className="space-y-3">
                       <label className="text-3xl font-semibold text-[#163d64]/80">Master Sample Mass in Air (g)</label>
-                      <input
-                        type="number"
-                        value={masterSampleMassAir}
-                        onChange={handleMasterSampleMassAirChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
-                        placeholder="Enter master sample mass in air"
-                        min="0"
-                        step="0.1"
-                      />
+                      <div className="flex items-center">
+                        <input
+                          type="number"
+                          value={masterSampleMassAir}
+                          onChange={handleMasterSampleMassAirChange}
+                          className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                          placeholder="Enter master sample mass in air"
+                          min="0"
+                          step="0.1"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => captureWeight(onMasterSampleMassAirChange)}
+                          className="ml-2 px-2 py-1 rounded bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
+                        >
+                          C
+                        </button>
+                      </div>
                     </div>
 
                     <div className="space-y-3">
                       <label className="text-3xl font-semibold text-[#163d64]/80">Master Sample Mass in Fluid (g)</label>
-                      <input
-                        type="number"
-                        value={masterSampleMassFluid}
-                        onChange={handleMasterSampleMassFluidChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
-                        placeholder="Enter master sample mass in fluid"
-                        min="0"
-                        step="0.1"
-                      />
+                      <div className="flex items-center">
+                        <input
+                          type="number"
+                          value={masterSampleMassFluid}
+                          onChange={handleMasterSampleMassFluidChange}
+                          className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                          placeholder="Enter master sample mass in fluid"
+                          min="0"
+                          step="0.1"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => captureWeight(onMasterSampleMassFluidChange)}
+                          className="ml-2 px-2 py-1 rounded bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
+                        >
+                          C
+                        </button>
+                      </div>
                     </div>
 
                     <div className="space-y-3">

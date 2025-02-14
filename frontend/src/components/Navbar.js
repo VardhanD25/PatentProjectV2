@@ -39,7 +39,7 @@ const Navbar = () => {
                 className="flex items-center space-x-3 group"
               >
                 <img 
-                  src={logo} 
+                  src={require('../logo.jpg')} 
                   alt="Company Logo" 
                   className="h-16 w-16 object-contain"
                 />

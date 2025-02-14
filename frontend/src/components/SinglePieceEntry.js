@@ -44,6 +44,13 @@ function SinglePieceEntry({
     onPartMassFluidChange(event.target.value);
   };
 
+  const captureWeight = async (setWeight) => {
+    if (window.electron) {
+      const newWeight = await window.electron.captureWeight();
+      setWeight(newWeight);
+    }
+  };
+
   useEffect(() => {
     // Add artificial loading delay
     setTimeout(() => {
@@ -239,30 +246,48 @@ function SinglePieceEntry({
                       <label className="text-3xl font-semibold text-[#163d64]/80">
                         Part Mass in Air (g)
                       </label>
-                      <input
-                        type="number"
-                        value={partMassAir}
-                        onChange={handlePartMassAirChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
-                        placeholder="Enter part mass in air"
-                        min="0"
-                        step="any"
-                      />
+                      <div className="flex items-center">
+                        <input
+                          type="number"
+                          value={partMassAir}
+                          onChange={handlePartMassAirChange}
+                          className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                          placeholder="Enter part mass in air"
+                          min="0"
+                          step="any"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => captureWeight(onPartMassAirChange)}
+                          className="ml-2 px-2 py-1 rounded bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
+                        >
+                          C
+                        </button>
+                      </div>
                     </div>
 
                     <div className="space-y-3">
                       <label className="text-3xl font-semibold text-[#163d64]/80">
                         Part Mass in Fluid (g)
                       </label>
-                      <input
-                        type="number"
-                        value={partMassFluid}
-                        onChange={handlePartMassFluidChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
-                        placeholder="Enter part mass in fluid"
-                        min="0"
-                        step="any"
-                      />
+                      <div className="flex items-center">
+                        <input
+                          type="number"
+                          value={partMassFluid}
+                          onChange={handlePartMassFluidChange}
+                          className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                          placeholder="Enter part mass in fluid"
+                          min="0"
+                          step="any"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => captureWeight(onPartMassFluidChange)}
+                          className="ml-2 px-2 py-1 rounded bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
+                        >
+                          C
+                        </button>
+                      </div>
                     </div>
 
                     <div className="space-y-3">

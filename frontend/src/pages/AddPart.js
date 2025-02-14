@@ -148,16 +148,16 @@ const AddPart = () => {
       return;
     }
 
-    // Validation: Ensure all elements in composition have a symbol
+    // Validation: Ensure all elements in composition have a symbol if composition is not empty
     const hasUnselectedSymbols = composition.some((el) => !el.symbol);
-    if (hasUnselectedSymbols) {
+    if (composition.length > 1 && hasUnselectedSymbols) {
       setErrorMessage('All elements must have a selected symbol.');
       return;
     }
 
-    // Validation: Ensure total composition percentages add up to 100
+    // Validation: Ensure total composition percentages add up to 100 if composition is not empty
     const totalPercentage = composition.reduce((sum, el) => sum + (el.percentage || 0), 0);
-    if (totalPercentage - 100 > 0.01) {
+    if (composition.length > 1 && totalPercentage - 100 > 0.01) {
       setErrorMessage('Total composition percentage must equal 100%.');
       return;
     }
@@ -174,7 +174,7 @@ const AddPart = () => {
           partName,
           userId,
           standardAlloyId: selectedStandardAlloy || undefined,
-          composition: composition.length > 0 ? composition : undefined,
+          composition: composition.length > 1 ? composition : undefined,
         }),
       });
 
@@ -268,7 +268,6 @@ const AddPart = () => {
                                 value={element.symbol}
                                 onChange={(e) => handleCompositionChange(index, 'symbol', e.target.value)}
                                 className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
-                                required
                               >
                                 <option value="">Select Symbol</option>
                                 {elementSymbols
@@ -295,7 +294,6 @@ const AddPart = () => {
                               placeholder="Percentage"
                               min="0"
                               max="100"
-                              required
                             />
                           </div>
                         </div>

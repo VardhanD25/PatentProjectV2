@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from './Navbar';
@@ -142,15 +142,22 @@ function LotEntry({
           return acc;
         }, {}),
         standardAlloyCountry,
-      standardAlloyName,
-      optionalReport: true,
-      notes: 'No additional notes.'
+        standardAlloyName,
+        optionalReport: true,
+        notes: 'No additional notes.'
       }
     });
   };
 
   const handleGoBack = () => {
     setShowResults(false);
+  };
+
+  const captureWeight = async (setWeight) => {
+    if (window.electron) {
+      const newWeight = await window.electron.captureWeight();
+      setWeight(newWeight);
+    }
   };
 
   return (
@@ -254,20 +261,38 @@ function LotEntry({
                           <tr key={index} className="border-b border-[#163d64]/10">
                             <td className="py-4 px-6 text-lg">{index + 1}</td>
                             <td className="py-4 px-6">
-                              <input
-                                type="number"
-                                value={partMassAirArray[index]}
-                                onChange={(e) => handlePartMassAirChange(index, e.target.value)}
-                                className="w-full px-4 py-3 text-lg rounded-lg border border-[#163d64]/20 focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-colors"
-                              />
+                              <div className="flex items-center">
+                                <input
+                                  type="number"
+                                  value={partMassAirArray[index]}
+                                  onChange={(e) => handlePartMassAirChange(index, e.target.value)}
+                                  className="w-full px-4 py-3 text-lg rounded-lg border border-[#163d64]/20 focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-colors"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => captureWeight((value) => handlePartMassAirChange(index, value))}
+                                  className="ml-2 px-2 py-1 rounded bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
+                                >
+                                  C
+                                </button>
+                              </div>
                             </td>
                             <td className="py-4 px-6">
-                              <input
-                                type="number"
-                                value={partMassFluidArray[index]}
-                                onChange={(e) => handlePartMassFluidChange(index, e.target.value)}
-                                className="w-full px-4 py-3 text-lg rounded-lg border border-[#163d64]/20 focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-colors"
-                              />
+                              <div className="flex items-center">
+                                <input
+                                  type="number"
+                                  value={partMassFluidArray[index]}
+                                  onChange={(e) => handlePartMassFluidChange(index, e.target.value)}
+                                  className="w-full px-4 py-3 text-lg rounded-lg border border-[#163d64]/20 focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-colors"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => captureWeight((value) => handlePartMassFluidChange(index, value))}
+                                  className="ml-2 px-2 py-1 rounded bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
+                                >
+                                  C
+                                </button>
+                              </div>
                             </td>
                             <td className="py-4 px-6 text-lg bg-[#fff0f0]">{partDensityArray[index]}</td>
                             <td className="py-4 px-6">
