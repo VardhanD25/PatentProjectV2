@@ -35,6 +35,8 @@ function LotEntry({
   const [standardAlloyId, setStandardAlloyId] = useState('');
   const [standardAlloyName, setStandardAlloyName] = useState('');
   const [standardAlloyCountry, setStandardAlloyCountry] = useState('');
+  const [itemNumbers, setItemNumbers] = useState([]);
+  const [itemNumberError, setItemNumberError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -102,10 +104,19 @@ function LotEntry({
   };
 
   const handleAddPart = () => {
+    const newItemNumbers = generateConsecutiveItemNumbers(itemNumbers.length + 1);
+    setItemNumbers(newItemNumbers);
     onAddPart();
   };
 
   const handleRemovePart = (index) => {
+    const removedNumber = itemNumbers[index];
+    const existingNumbers = JSON.parse(localStorage.getItem('usedItemNumbers') || '[]');
+    const updatedExistingNumbers = existingNumbers.filter(num => num !== removedNumber);
+    localStorage.setItem('usedItemNumbers', JSON.stringify(updatedExistingNumbers));
+    
+    const newItemNumbers = itemNumbers.filter((_, i) => i !== index);
+    setItemNumbers(newItemNumbers);
     onRemovePart(index);
   };
 
@@ -143,6 +154,7 @@ function LotEntry({
         }, {}),
         standardAlloyCountry,
         standardAlloyName,
+        itemNumbers,
         optionalReport: true,
         notes: 'No additional notes.'
       }
@@ -159,6 +171,95 @@ function LotEntry({
       setWeight(newWeight);
     }
   };
+
+  // Generate a random 6-digit alphanumeric number
+  const generateItemNumber = () => {
+    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let result = '';
+    for (let i = 0; i < 6; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  };
+
+  // Generate consecutive item numbers
+  const generateConsecutiveItemNumbers = (count) => {
+    let existingNumbers = JSON.parse(localStorage.getItem('usedItemNumbers') || '[]');
+    
+    let firstNumber = generateItemNumber();
+    // Keep generating until we find an unused number
+    while (existingNumbers.includes(firstNumber)) {
+      firstNumber = generateItemNumber();
+    }
+    
+    const numbers = [firstNumber];
+    
+    for (let i = 1; i < count; i++) {
+      let lastNum = numbers[i - 1];
+      let nextNum = '';
+      
+      // Increment the last character, handling rollover
+      for (let j = 5; j >= 0; j--) {
+        const char = lastNum[j];
+        if (char === '9') {
+          nextNum = 'A' + nextNum;
+        } else if (char === 'Z') {
+          nextNum = '0' + nextNum;
+        } else {
+          const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+          const nextChar = chars[chars.indexOf(char) + 1];
+          nextNum = lastNum.slice(0, j) + nextChar + nextNum;
+          break;
+        }
+      }
+      numbers.push(nextNum);
+    }
+
+    // Store the new numbers in localStorage
+    localStorage.setItem('usedItemNumbers', JSON.stringify([...existingNumbers, ...numbers]));
+    return numbers;
+  };
+
+  // Add handler for manual item number input
+  const handleManualItemNumber = (index, value) => {
+    if (value.length > 6) return;
+    
+    // Allow only alphanumeric input
+    if (!/^[0-9A-Z]*$/.test(value)) return;
+    
+    const existingNumbers = JSON.parse(localStorage.getItem('usedItemNumbers') || '[]');
+    
+    if (existingNumbers.includes(value)) {
+      setItemNumberError('This item number is already in use');
+      return;
+    }
+    
+    // Update the item numbers array
+    const newItemNumbers = [...itemNumbers];
+    
+    // Remove old number from localStorage if it exists
+    if (newItemNumbers[index]) {
+      const updatedExistingNumbers = existingNumbers.filter(num => num !== newItemNumbers[index]);
+      localStorage.setItem('usedItemNumbers', JSON.stringify(updatedExistingNumbers));
+    }
+    
+    newItemNumbers[index] = value;
+    setItemNumbers(newItemNumbers);
+    setItemNumberError('');
+    
+    // Add new number to localStorage
+    if (value.length === 6) {
+      localStorage.setItem('usedItemNumbers', JSON.stringify([...existingNumbers, value]));
+    }
+  };
+
+  // Add cleanup on component unmount
+  useEffect(() => {
+    return () => {
+      // Optionally clear localStorage when component unmounts
+      // localStorage.removeItem('usedItemNumbers');
+    };
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-white font-quicksand text-[#163d64] relative">
@@ -201,7 +302,7 @@ function LotEntry({
                       <tbody>
                         {partMassAirArray.map((_, index) => (
                           <tr key={index} className="border-b border-[#163d64]/10">
-                            <td className="py-4 px-6 text-lg">{index + 1}</td>
+                            <td className="py-4 px-6 text-lg">{itemNumbers[index]}</td>
                             <td className="py-4 px-6 text-lg">{partMassAirArray[index]}</td>
                             <td className="py-4 px-6 text-lg">{partMassFluidArray[index]}</td>
                             <td className="py-4 px-6 text-lg bg-[#fff0f0]">{partDensityArray[index]}</td>
@@ -259,7 +360,21 @@ function LotEntry({
                       <tbody>
                         {partMassAirArray.map((_, index) => (
                           <tr key={index} className="border-b border-[#163d64]/10">
-                            <td className="py-4 px-6 text-lg">{index + 1}</td>
+                            <td className="py-4 px-6">
+                              <div className="flex items-center">
+                                <input
+                                  type="text"
+                                  value={itemNumbers[index] || ''}
+                                  onChange={(e) => handleManualItemNumber(index, e.target.value.toUpperCase())}
+                                  placeholder="Auto-generated"
+                                  className="w-full px-4 py-3 text-lg rounded-lg border border-[#163d64]/20 focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-colors"
+                                  maxLength={6}
+                                />
+                                {itemNumberError && (
+                                  <span className="text-red-500 text-sm ml-2">{itemNumberError}</span>
+                                )}
+                              </div>
+                            </td>
                             <td className="py-4 px-6">
                               <div className="flex items-center">
                                 <input

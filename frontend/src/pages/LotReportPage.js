@@ -59,16 +59,9 @@ function LotReportPage() {
     masterAttachmentExists = false,
     standardAlloyCountry = '',
     standardAlloyName = '',
-    serialNumbers: passedSerialNumbers,
+    itemNumbers = [],
     optionalReport = true,
   } = location.state || {};
-
-  // Generate or use passed item numbers
-  const serialNumbers = passedSerialNumbers || massInAir.map((_, index) => {
-    const lastUsedNumberKey = `lastSerialNumber_${partCode}_${date}`;
-    const lastUsedNumber = parseInt(localStorage.getItem(lastUsedNumberKey)) || 100000;
-    return lastUsedNumber + index;
-  });
 
   const handleFieldToggle = (field) => {
     setSelectedFields(prev => ({
@@ -123,7 +116,7 @@ function LotReportPage() {
               ${massInAir.map((_, index) => {
                 return `
                   <tr>
-                    <td style="border: 1px solid #163d64; padding: 8px; font-family: monospace">${serialNumbers[index].toString().padStart(6, '0')}</td>
+                    <td style="border: 1px solid #163d64; padding: 8px; font-family: monospace">${itemNumbers[index] || ''}</td>
                     <td style="border: 1px solid #163d64; padding: 8px">${massInAir[index]}</td>
                     <td style="border: 1px solid #163d64; padding: 8px">${massInFluid[index]}</td>
                     <td style="border: 1px solid #163d64; padding: 8px">${compactnessRatio[index]}</td>
@@ -270,7 +263,7 @@ function LotReportPage() {
             ...massInAir.map((_, index) => 
               new TableRow({
                 children: [
-                  serialNumbers[index].toString().padStart(6, '0'),
+                  itemNumbers[index] || '',
                   massInAir[index].toString(),
                   massInFluid[index].toString(),
                   compactnessRatio[index].toString(),
@@ -398,9 +391,9 @@ function LotReportPage() {
       if (selectedFields.measurements) {
         data.push(
           ['Measurements', '', '', '', ''],
-          ['item number', 'Mass in Air (g)', 'Mass in Fluid (g)', 'Compactness Ratio', 'Porosity'],
+          ['Item Number', 'Mass in Air (g)', 'Mass in Fluid (g)', 'Compactness Ratio', 'Porosity'],
           ...massInAir.map((_, index) => [
-            serialNumbers[index].toString().padStart(6, '0'),
+            itemNumbers[index] || '',
             massInAir[index],
             massInFluid[index],
             compactnessRatio[index],
@@ -516,7 +509,7 @@ function LotReportPage() {
                       <table className="w-full">
                         <thead>
                           <tr>
-                            <th className="py-4 px-6 text-left bg-[#163d64] text-white text-lg font-medium rounded-tl-xl">item number</th>
+                            <th className="py-4 px-6 text-left bg-[#163d64] text-white text-lg font-medium rounded-tl-xl">Item Number</th>
                             <th className="py-4 px-6 text-left bg-[#163d64] text-white text-lg font-medium">Mass in Air (g)</th>
                             <th className="py-4 px-6 text-left bg-[#163d64] text-white text-lg font-medium">Mass in Fluid (g)</th>
                             <th className="py-4 px-6 text-left bg-[#163d64] text-white text-lg font-medium">Compactness Ratio</th>
@@ -527,7 +520,7 @@ function LotReportPage() {
                           {massInAir.map((_, index) => (
                             <tr key={index} className="border-b border-[#163d64]/10 hover:bg-[#163d64]/5 transition-colors">
                               <td className="py-4 px-6 font-mono text-lg text-[#163d64]">
-                                {serialNumbers[index].toString().padStart(6, '0')}
+                                {itemNumbers[index] || ''}
                               </td>
                               <td className="py-4 px-6 text-lg text-[#163d64]">{massInAir[index]}</td>
                               <td className="py-4 px-6 text-lg text-[#163d64]">{massInFluid[index]}</td>
