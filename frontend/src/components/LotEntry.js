@@ -104,8 +104,19 @@ function LotEntry({
   };
 
   const handleAddPart = () => {
-    const newItemNumbers = generateConsecutiveItemNumbers(itemNumbers.length + 1);
-    setItemNumbers(newItemNumbers);
+    let newNumber = generateItemNumber();
+    const existingNumbers = JSON.parse(localStorage.getItem('usedItemNumbers') || '[]');
+    
+    // Keep generating until we find an unused number
+    while (existingNumbers.includes(newNumber)) {
+      newNumber = generateItemNumber();
+    }
+    
+    // Add new number to localStorage
+    localStorage.setItem('usedItemNumbers', JSON.stringify([...existingNumbers, newNumber]));
+    
+    // Update state with the new number
+    setItemNumbers([...itemNumbers, newNumber]);
     onAddPart();
   };
 
@@ -172,7 +183,7 @@ function LotEntry({
     }
   };
 
-  // Generate a random 6-digit alphanumeric number
+  // Generate a single random 6-digit alphanumeric number
   const generateItemNumber = () => {
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let result = '';
@@ -182,45 +193,7 @@ function LotEntry({
     return result;
   };
 
-  // Generate consecutive item numbers
-  const generateConsecutiveItemNumbers = (count) => {
-    let existingNumbers = JSON.parse(localStorage.getItem('usedItemNumbers') || '[]');
-    
-    let firstNumber = generateItemNumber();
-    // Keep generating until we find an unused number
-    while (existingNumbers.includes(firstNumber)) {
-      firstNumber = generateItemNumber();
-    }
-    
-    const numbers = [firstNumber];
-    
-    for (let i = 1; i < count; i++) {
-      let lastNum = numbers[i - 1];
-      let nextNum = '';
-      
-      // Increment the last character, handling rollover
-      for (let j = 5; j >= 0; j--) {
-        const char = lastNum[j];
-        if (char === '9') {
-          nextNum = 'A' + nextNum;
-        } else if (char === 'Z') {
-          nextNum = '0' + nextNum;
-        } else {
-          const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-          const nextChar = chars[chars.indexOf(char) + 1];
-          nextNum = lastNum.slice(0, j) + nextChar + nextNum;
-          break;
-        }
-      }
-      numbers.push(nextNum);
-    }
-
-    // Store the new numbers in localStorage
-    localStorage.setItem('usedItemNumbers', JSON.stringify([...existingNumbers, ...numbers]));
-    return numbers;
-  };
-
-  // Add handler for manual item number input
+  // Modified handleManualItemNumber to only update the specific index
   const handleManualItemNumber = (index, value) => {
     if (value.length > 6) return;
     
@@ -229,27 +202,28 @@ function LotEntry({
     
     const existingNumbers = JSON.parse(localStorage.getItem('usedItemNumbers') || '[]');
     
-    if (existingNumbers.includes(value)) {
+    // Check if number is already in use (excluding the current index)
+    const otherNumbers = itemNumbers.filter((_, i) => i !== index);
+    if (existingNumbers.includes(value) || otherNumbers.includes(value)) {
       setItemNumberError('This item number is already in use');
       return;
     }
     
-    // Update the item numbers array
-    const newItemNumbers = [...itemNumbers];
-    
     // Remove old number from localStorage if it exists
-    if (newItemNumbers[index]) {
-      const updatedExistingNumbers = existingNumbers.filter(num => num !== newItemNumbers[index]);
+    if (itemNumbers[index]) {
+      const updatedExistingNumbers = existingNumbers.filter(num => num !== itemNumbers[index]);
       localStorage.setItem('usedItemNumbers', JSON.stringify(updatedExistingNumbers));
     }
     
+    // Update only the specific index
+    const newItemNumbers = [...itemNumbers];
     newItemNumbers[index] = value;
     setItemNumbers(newItemNumbers);
     setItemNumberError('');
     
-    // Add new number to localStorage
+    // Add new number to localStorage if it's complete
     if (value.length === 6) {
-      localStorage.setItem('usedItemNumbers', JSON.stringify([...existingNumbers, value]));
+      localStorage.setItem('usedItemNumbers', JSON.stringify([...existingNumbers.filter(num => num !== itemNumbers[index]), value]));
     }
   };
 

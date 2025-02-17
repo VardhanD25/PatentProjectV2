@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLogout } from '../hooks/useLogout';
 import { useAuthContext } from '../hooks/useAuthContext';
-import logo from '../logo.jpg'
+
 const Navbar = () => {
   const { logout } = useLogout();
   const { user } = useAuthContext();
@@ -39,7 +39,7 @@ const Navbar = () => {
                 className="flex items-center space-x-3 group"
               >
                 <img 
-                  src={require('../logo.jpg')} 
+                  src="/logo.jpg" 
                   alt="Company Logo" 
                   className="h-16 w-16 object-contain"
                 />

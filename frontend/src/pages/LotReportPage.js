@@ -19,6 +19,8 @@ function LotReportPage() {
     chemicalComposition: true,
     standardAlloy: true,
     masterDetails: true,
+    compactnessRatio: true,
+    porosity: true
   });
 
   
@@ -108,19 +110,22 @@ function LotReportPage() {
                 <th style="border: 1px solid #163d64; padding: 8px; color: white">Item Number</th>
                 <th style="border: 1px solid #163d64; padding: 8px; color: white">Mass in Air (g)</th>
                 <th style="border: 1px solid #163d64; padding: 8px; color: white">Mass in Fluid (g)</th>
-                <th style="border: 1px solid #163d64; padding: 8px; color: white">Compactness Ratio</th>
-                <th style="border: 1px solid #163d64; padding: 8px; color: white">Porosity</th>
+                <th style="border: 1px solid #163d64; padding: 8px; color: white">Density (g/cm³)</th>
+                ${selectedFields.compactnessRatio ? '<th style="border: 1px solid #163d64; padding: 8px; color: white">Compactness Ratio</th>' : ''}
+                ${selectedFields.porosity ? '<th style="border: 1px solid #163d64; padding: 8px; color: white">Porosity</th>' : ''}
               </tr>
             </thead>
             <tbody>
               ${massInAir.map((_, index) => {
+                const density = ((massInAir[index] * fluidDensity) / (massInAir[index] - massInFluid[index])).toFixed(2);
                 return `
                   <tr>
                     <td style="border: 1px solid #163d64; padding: 8px; font-family: monospace">${itemNumbers[index] || ''}</td>
                     <td style="border: 1px solid #163d64; padding: 8px">${massInAir[index]}</td>
                     <td style="border: 1px solid #163d64; padding: 8px">${massInFluid[index]}</td>
-                    <td style="border: 1px solid #163d64; padding: 8px">${compactnessRatio[index]}</td>
-                    <td style="border: 1px solid #163d64; padding: 8px">${porosityArray[index]}</td>
+                    <td style="border: 1px solid #163d64; padding: 8px">${density}</td>
+                    ${selectedFields.compactnessRatio ? `<td style="border: 1px solid #163d64; padding: 8px">${compactnessRatio[index]}</td>` : ''}
+                    ${selectedFields.porosity ? `<td style="border: 1px solid #163d64; padding: 8px">${porosityArray[index]}</td>` : ''}
                   </tr>
                 `;
               }).join('')}
@@ -233,6 +238,15 @@ function LotReportPage() {
           })
         );
 
+        const headers = [
+          "Item Number",
+          "Mass in Air (g)",
+          "Mass in Fluid (g)",
+          "Density (g/cm³)",
+          ...(selectedFields.compactnessRatio ? ["Compactness Ratio"] : []),
+          ...(selectedFields.porosity ? ["Porosity"] : [])
+        ];
+
         const table = new Table({
           width: {
             size: 100,
@@ -240,13 +254,7 @@ function LotReportPage() {
           },
           rows: [
             new TableRow({
-              children: [
-                "item number",
-                "Mass in Air (g)",
-                "Mass in Fluid (g)",
-                "Compactness Ratio",
-                "Porosity"
-              ].map(header => 
+              children: headers.map(header => 
                 new TableCell({
                   children: [new Paragraph({ 
                     children: [new TextRun({ text: header, bold: true })]
@@ -260,15 +268,18 @@ function LotReportPage() {
                 })
               )
             }),
-            ...massInAir.map((_, index) => 
-              new TableRow({
-                children: [
-                  itemNumbers[index] || '',
-                  massInAir[index].toString(),
-                  massInFluid[index].toString(),
-                  compactnessRatio[index].toString(),
-                  porosityArray[index].toString()
-                ].map(cell => 
+            ...massInAir.map((_, index) => {
+              const density = ((massInAir[index] * fluidDensity) / (massInAir[index] - massInFluid[index])).toFixed(2);
+              const cellData = [
+                itemNumbers[index] || '',
+                massInAir[index].toString(),
+                massInFluid[index].toString(),
+                density,
+                ...(selectedFields.compactnessRatio ? [compactnessRatio[index].toString()] : []),
+                ...(selectedFields.porosity ? [porosityArray[index].toString()] : [])
+              ];
+              return new TableRow({
+                children: cellData.map(cell => 
                   new TableCell({
                     children: [new Paragraph(cell)],
                     borders: {
@@ -279,8 +290,8 @@ function LotReportPage() {
                     }
                   })
                 )
-              })
-            )
+              });
+            })
           ]
         });
 
@@ -389,17 +400,29 @@ function LotReportPage() {
 
       // Add Measurements
       if (selectedFields.measurements) {
+        const headers = [
+          'Item Number',
+          'Mass in Air (g)',
+          'Mass in Fluid (g)',
+          'Density (g/cm³)',
+          ...(selectedFields.compactnessRatio ? ['Compactness Ratio'] : []),
+          ...(selectedFields.porosity ? ['Porosity'] : [])
+        ];
+
         data.push(
-          ['Measurements', '', '', '', ''],
-          ['Item Number', 'Mass in Air (g)', 'Mass in Fluid (g)', 'Compactness Ratio', 'Porosity'],
-          ...massInAir.map((_, index) => [
-            itemNumbers[index] || '',
-            massInAir[index],
-            massInFluid[index],
-            compactnessRatio[index],
-            porosityArray[index]
-          ]),
-          ['', ''] // Empty row for spacing
+          ['Measurements', ...Array(headers.length - 1).fill('')],
+          headers,
+          ...massInAir.map((_, index) => {
+            const density = ((massInAir[index] * fluidDensity) / (massInAir[index] - massInFluid[index])).toFixed(2);
+            return [
+              itemNumbers[index] || '',
+              massInAir[index],
+              massInFluid[index],
+              density,
+              ...(selectedFields.compactnessRatio ? [compactnessRatio[index]] : []),
+              ...(selectedFields.porosity ? [porosityArray[index]] : [])
+            ];
+          })
         );
       }
 
@@ -416,7 +439,7 @@ function LotReportPage() {
       const ws = XLSX.utils.aoa_to_sheet(data);
       
       // Set column widths
-      ws['!cols'] = [{ wch: 20 }, { wch: 15 }, { wch: 15 }, { wch: 15 }, { wch: 15 }];
+      ws['!cols'] = [{ wch: 20 }, { wch: 15 }, { wch: 15 }, { wch: 15 }, { wch: 15 }, { wch: 15 }];
 
       XLSX.utils.book_append_sheet(wb, ws, 'Lot Report');
       
@@ -512,6 +535,7 @@ function LotReportPage() {
                             <th className="py-4 px-6 text-left bg-[#163d64] text-white text-lg font-medium rounded-tl-xl">Item Number</th>
                             <th className="py-4 px-6 text-left bg-[#163d64] text-white text-lg font-medium">Mass in Air (g)</th>
                             <th className="py-4 px-6 text-left bg-[#163d64] text-white text-lg font-medium">Mass in Fluid (g)</th>
+                            <th className="py-4 px-6 text-left bg-[#163d64] text-white text-lg font-medium">Density (g/cm³)</th>
                             <th className="py-4 px-6 text-left bg-[#163d64] text-white text-lg font-medium">Compactness Ratio</th>
                             <th className="py-4 px-6 text-left bg-[#163d64] text-white text-lg font-medium rounded-tr-xl">Porosity</th>
                           </tr>
@@ -519,11 +543,12 @@ function LotReportPage() {
                         <tbody>
                           {massInAir.map((_, index) => (
                             <tr key={index} className="border-b border-[#163d64]/10 hover:bg-[#163d64]/5 transition-colors">
-                              <td className="py-4 px-6 font-mono text-lg text-[#163d64]">
-                                {itemNumbers[index] || ''}
-                              </td>
+                              <td className="py-4 px-6 font-mono text-lg text-[#163d64]">{itemNumbers[index] || ''}</td>
                               <td className="py-4 px-6 text-lg text-[#163d64]">{massInAir[index]}</td>
                               <td className="py-4 px-6 text-lg text-[#163d64]">{massInFluid[index]}</td>
+                              <td className="py-4 px-6 text-lg text-[#163d64]">
+                                {((massInAir[index] * fluidDensity) / (massInAir[index] - massInFluid[index])).toFixed(2)}
+                              </td>
                               <td className="py-4 px-6 text-lg text-[#163d64] bg-[#fff0f0]">{compactnessRatio[index]}</td>
                               <td className="py-4 px-6 text-lg text-[#163d64] bg-[#fff0f0]">{porosityArray[index]}</td>
                             </tr>

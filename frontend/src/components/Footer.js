@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../logo.jpg';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -14,9 +13,9 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-2 space-y-4">
             <Link to="/" className="flex items-center space-x-3 group">
               <img 
-                src={logo} 
+                src="/logo.jpg" 
                 alt="Company Logo" 
-                className="h-10 w-auto object-contain"
+                className="h-16 w-16 object-contain"
               />
               <span className="text-lg font-medium text-[#163d64] group-hover:text-[#163d64]/80">
                 Compactness Calculator
@@ -77,18 +76,8 @@ const Footer = () => {
             
             {/* Legal Links */}
             <div className="flex space-x-6">
-              <Link
-                to="/privacy-policy"
-                className="text-sm text-[#163d64]/70 hover:text-[#fa4516] transition-colors duration-300"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                to="/terms-of-service"
-                className="text-sm text-[#163d64]/70 hover:text-[#fa4516] transition-colors duration-300"
-              >
-                Terms of Service
-              </Link>
+              
+              
               <Link
                 to="/contact-us"
                 className="text-sm text-[#163d64]/70 hover:text-[#fa4516] transition-colors duration-300"
