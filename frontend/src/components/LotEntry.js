@@ -104,19 +104,8 @@ function LotEntry({
   };
 
   const handleAddPart = () => {
-    let newNumber = generateItemNumber();
-    const existingNumbers = JSON.parse(localStorage.getItem('usedItemNumbers') || '[]');
-    
-    // Keep generating until we find an unused number
-    while (existingNumbers.includes(newNumber)) {
-      newNumber = generateItemNumber();
-    }
-    
-    // Add new number to localStorage
-    localStorage.setItem('usedItemNumbers', JSON.stringify([...existingNumbers, newNumber]));
-    
-    // Update state with the new number
-    setItemNumbers([...itemNumbers, newNumber]);
+    // Add a new empty item number slot
+    setItemNumbers([...itemNumbers, '']);
     onAddPart();
   };
 
@@ -132,11 +121,28 @@ function LotEntry({
   };
 
   const handleFormSubmit = () => {
+    
+    const emptyItemNumbers = itemNumbers.some(num => !num || num.trim() === '');
+    if (emptyItemNumbers) {
+      setValidationMessage('Item number cannot be blank. Please enter a 6-digit code for all items.');
+      return;
+    }
+
+    
+    if (itemNumbers.some(num => num.length < 6)) {
+      setValidationMessage('All item numbers must be 6 characters long');
+      return;
+    }
+
+    
     const validation = validateLotEntry();
     if (!validation.isValid) {
       setValidationMessage(validation.message);
       return;
     }
+
+   
+    setValidationMessage('');
     onSubmit();
     setShowResults(true);
   };
@@ -183,36 +189,17 @@ function LotEntry({
     }
   };
 
-  // Generate a single random 6-digit alphanumeric number
-  const generateItemNumber = () => {
-    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    let result = '';
-    for (let i = 0; i < 6; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
-  };
-
-  // Modified handleManualItemNumber to only update the specific index
   const handleManualItemNumber = (index, value) => {
     if (value.length > 6) return;
     
     // Allow only alphanumeric input
     if (!/^[0-9A-Z]*$/.test(value)) return;
     
-    const existingNumbers = JSON.parse(localStorage.getItem('usedItemNumbers') || '[]');
-    
     // Check if number is already in use (excluding the current index)
     const otherNumbers = itemNumbers.filter((_, i) => i !== index);
-    if (existingNumbers.includes(value) || otherNumbers.includes(value)) {
+    if (otherNumbers.includes(value)) {
       setItemNumberError('This item number is already in use');
       return;
-    }
-    
-    // Remove old number from localStorage if it exists
-    if (itemNumbers[index]) {
-      const updatedExistingNumbers = existingNumbers.filter(num => num !== itemNumbers[index]);
-      localStorage.setItem('usedItemNumbers', JSON.stringify(updatedExistingNumbers));
     }
     
     // Update only the specific index
@@ -220,11 +207,6 @@ function LotEntry({
     newItemNumbers[index] = value;
     setItemNumbers(newItemNumbers);
     setItemNumberError('');
-    
-    // Add new number to localStorage if it's complete
-    if (value.length === 6) {
-      localStorage.setItem('usedItemNumbers', JSON.stringify([...existingNumbers.filter(num => num !== itemNumbers[index]), value]));
-    }
   };
 
   // Add cleanup on component unmount
@@ -335,17 +317,17 @@ function LotEntry({
                         {partMassAirArray.map((_, index) => (
                           <tr key={index} className="border-b border-[#163d64]/10">
                             <td className="py-4 px-6">
-                              <div className="flex items-center">
+                              <div className="flex flex-col">
                                 <input
                                   type="text"
                                   value={itemNumbers[index] || ''}
                                   onChange={(e) => handleManualItemNumber(index, e.target.value.toUpperCase())}
-                                  placeholder="Auto-generated"
+                                  placeholder="Enter 6-digit code"
                                   className="w-full px-4 py-3 text-lg rounded-lg border border-[#163d64]/20 focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-colors"
                                   maxLength={6}
                                 />
-                                {itemNumberError && (
-                                  <span className="text-red-500 text-sm ml-2">{itemNumberError}</span>
+                                {itemNumberError && itemNumbers[index] && (
+                                  <span className="text-red-500 text-sm mt-1">{itemNumberError}</span>
                                 )}
                               </div>
                             </td>
@@ -426,6 +408,13 @@ function LotEntry({
 
         <Footer />
       </div>
+
+      {/* Display validation message if exists */}
+      {validationMessage && (
+        <div className="text-red-500 text-center mt-4">
+          {validationMessage}
+        </div>
+      )}
     </div>
   );
 }
