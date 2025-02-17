@@ -113,13 +113,13 @@ function SecondEntry({
               <form className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="space-y-3">
-                    <label className="text-2xl font-semibold text-[#163d64]/80">Mass of Fluid (grams)</label>
+                    <label className="text-3xl font-semibold text-[#163d64]/80">Mass of Fluid (grams)</label>
                     <div className="flex items-center">
                       <input
                         type="number"
                         value={massOfFluid}
                         onChange={handleMassOfFluidChange}
-                        className="w-full px-4 py-4 text-xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                        className="w-full px-4 py-4 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
                         placeholder="Enter mass of fluid"
                         min="0"
                         step="0.1"
@@ -135,13 +135,13 @@ function SecondEntry({
                   </div>
 
                   <div className="space-y-3">
-                    <label className="text-2xl font-semibold text-[#163d64]/80">Volume of Fluid (cm³)</label>
+                    <label className="text-3xl font-semibold text-[#163d64]/80">Volume of Fluid (cm³)</label>
                     <div className="flex items-center">
                       <input
                         type="number"
                         value={volumeOfFluid}
                         onChange={handleVolumeOfFluidChange}
-                        className="w-full px-4 py-4 text-xl rounded-2xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                        className="w-full px-4 py-4 text-2xl rounded-2xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
                         placeholder="Enter volume of fluid"
                         min="0"
                         step="0.1"
@@ -150,12 +150,12 @@ function SecondEntry({
                   </div>
 
                   <div className="space-y-3">
-                    <label className="text-2xl font-semibold text-[#163d64]/80">Density of Fluid (g/cm³)</label>
+                    <label className="text-3xl font-semibold text-[#163d64]/80">Density of Fluid (g/cm³)</label>
                     <input
                       type="text"
                       value={densityOfFluid}
                       readOnly
-                      className="w-full px-4 py-4 text-xl rounded-xl bg-[#fff0f0] border border-[#163d64]/10 text-[#163d64]/75 cursor-not-allowed"
+                      className="w-full px-4 py-4 text-2xl rounded-xl bg-[#fff0f0] border border-[#163d64]/10 text-[#163d64]/75 cursor-not-allowed"
                       placeholder="Density of fluid will be calculated"
                     />
                   </div>
@@ -164,13 +164,13 @@ function SecondEntry({
                 {(attachmentExists === "yes" || masterAttachmentExists === "yes") && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-3">
-                      <label className="text-2xl font-semibold text-[#163d64]/80">Attachment Mass in Air (g)</label>
+                      <label className="text-3xl font-semibold text-[#163d64]/80">Attachment Mass in Air (g)</label>
                       <div className="flex items-center">
                         <input
                           type="number"
                           value={attachmentMassAir}
                           onChange={handleAttachmentMassAirChange}
-                          className="w-full px-4 py-4 text-xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                          className="w-full px-4 py-4 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
                           placeholder="Enter attachment mass in air"
                           min="0"
                           step="0.1"
@@ -186,13 +186,13 @@ function SecondEntry({
                     </div>
 
                     <div className="space-y-3">
-                      <label className="text-2xl font-semibold text-[#163d64]/80">Attachment Mass in Fluid (g)</label>
+                      <label className="text-3xl font-semibold text-[#163d64]/80">Attachment Mass in Fluid (g)</label>
                       <div className="flex items-center">
                         <input
                           type="number"
                           value={attachmentMassFluid}
                           onChange={handleAttachmentMassFluidChange}
-                          className="w-full px-4 py-4 text-xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                          className="w-full px-4 py-4 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
                           placeholder="Enter attachment mass in fluid"
                           min="0"
                           step="0.1"
@@ -212,13 +212,13 @@ function SecondEntry({
                 {masterExists === 'yes' && (
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div className="space-y-3">
-                      <label className="text-2xl font-semibold text-[#163d64]/80">Master Sample Mass in Air (g)</label>
+                      <label className="text-3xl font-semibold text-[#163d64]/80">Master Sample Mass in Air (g)</label>
                       <div className="flex items-center">
                         <input
                           type="number"
                           value={masterSampleMassAir}
                           onChange={handleMasterSampleMassAirChange}
-                          className="w-full px-4 py-4 text-xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                          className="w-full px-4 py-4 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
                           placeholder="Enter master sample mass in air"
                           min="0"
                           step="0.1"
@@ -234,13 +234,13 @@ function SecondEntry({
                     </div>
 
                     <div className="space-y-3">
-                      <label className="text-2xl font-semibold text-[#163d64]/80">Master Sample Mass in Fluid (g)</label>
+                      <label className="text-3xl font-semibold text-[#163d64]/80">Master Sample Mass in Fluid (g)</label>
                       <div className="flex items-center">
                         <input
                           type="number"
                           value={masterSampleMassFluid}
                           onChange={handleMasterSampleMassFluidChange}
-                          className="w-full px-4 py-4 text-xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                          className="w-full px-4 py-4 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
                           placeholder="Enter master sample mass in fluid"
                           min="0"
                           step="0.1"
@@ -256,12 +256,12 @@ function SecondEntry({
                     </div>
 
                     <div className="space-y-3">
-                      <label className="text-2xl font-semibold text-[#163d64]/80">Master Sample Density (g/cm³)</label>
+                      <label className="text-3xl font-semibold text-[#163d64]/80">Master Sample Density (g/cm³)</label>
                       <input
                         type="text"
                         value={densityMasterSample}
                         readOnly
-                        className="w-full px-4 py-4 text-xl rounded-xl bg-[#fff0f0] border border-[#163d64]/10 text-[#163d64]/75 cursor-not-allowed"
+                        className="w-full px-4 py-4 text-2xl rounded-xl bg-[#fff0f0] border border-[#163d64]/10 text-[#163d64]/75 cursor-not-allowed"
                         placeholder="Density will be calculated"
                       />
                     </div>

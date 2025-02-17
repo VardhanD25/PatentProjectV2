@@ -38,7 +38,6 @@ function FirstEntry({
   const [showUpdatePanel, setShowUpdatePanel] = useState(false);
   const [showStandardAlloyPanel, setShowStandardAlloyPanel] = useState(false);
 
-
   useEffect(() => {
     setDate(selectedDate);
   }, [selectedDate]);
@@ -184,7 +183,7 @@ function FirstEntry({
                       type="date"
                       value={date}
                       onChange={handleDateChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516]"
+                      className="w-full px-4 py-4 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516]"
                     />
                   </div>
 
@@ -193,7 +192,7 @@ function FirstEntry({
                     <select
                       value={partCode}
                       onChange={handlePartCodeChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516]"
+                      className="w-full px-4 py-4 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516]"
                       required
                     >
                       <option value="">Select part code</option>
@@ -209,7 +208,7 @@ function FirstEntry({
                       type="text"
                       value={partName}
                       readOnly
-                      className="w-full px-4 py-3 rounded-xl bg-[#fff0f0] border border-[#163d64]/10 text-black cursor-not-allowed"
+                      className="w-full px-4 py-4 text-2xl rounded-xl bg-[#fff0f0] border border-[#163d64]/10 text-black cursor-not-allowed"
                       placeholder="Part name will be autofilled"
                     />
                   </div>
@@ -221,7 +220,7 @@ function FirstEntry({
                     <select
                       value={pieceOrLot}
                       onChange={handleSingleOrLotChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516]"
+                      className="w-full px-4 py-4 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516]"
                       required
                     >
                       <option value="">Select option</option>
@@ -235,7 +234,7 @@ function FirstEntry({
                     <select
                       value={density}
                       onChange={handleDensityTypeChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                      className="w-full px-4 py-4 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
                       required
                     >
                       <option value="">Select option</option>
@@ -273,7 +272,7 @@ function FirstEntry({
                         type="text"
                         value={theoreticalDensity}
                         readOnly
-                        className="flex-1 px-4 py-3 rounded-xl bg-[#fff0f0] border border-[#163d64]/20 text-[#163d64]/75 cursor-not-allowed"
+                        className="flex-1 px-4 py-4 text-2xl rounded-xl bg-[#fff0f0] border border-[#163d64]/20 text-[#163d64]/75 cursor-not-allowed"
                         placeholder="Theoretical density will be autofilled"
                       />
                       <motion.button
@@ -296,7 +295,7 @@ function FirstEntry({
                     <select
                       value={attachment}
                       onChange={handleAttachmentChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516]"
+                      className="w-full px-4 py-4 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516]"
                       required
                     >
                       <option value="">Select</option>
@@ -310,7 +309,7 @@ function FirstEntry({
                     <select
                       value={master}
                       onChange={handleMasterChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516]"
+                      className="w-full px-4 py-4 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516]"
                       required
                     >
                       <option value="">Select</option>
@@ -325,7 +324,7 @@ function FirstEntry({
                       <select
                         value={masterAttachment}
                         onChange={handleMasterAttachmentChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516]"
+                        className="w-full px-4 py-4 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516]"
                         required
                       >
                         <option value="">Select</option>
