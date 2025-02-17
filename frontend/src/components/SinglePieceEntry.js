@@ -243,7 +243,7 @@ function SinglePieceEntry({
                 <form className="space-y-8">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div className="space-y-3">
-                      <label className="text-2xl font-semibold text-[#163d64]/80">
+                      <label className="text-3xl font-semibold text-[#163d64]/80">
                         Part Mass in Air (g)
                       </label>
                       <div className="flex items-center">
@@ -251,7 +251,7 @@ function SinglePieceEntry({
                           type="number"
                           value={partMassAir}
                           onChange={handlePartMassAirChange}
-                          className="w-full px-4 py-3 text-xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                          className="w-full px-4 py-3 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
                           placeholder="Enter part mass in air"
                           min="0"
                           step="any"
@@ -267,7 +267,7 @@ function SinglePieceEntry({
                     </div>
 
                     <div className="space-y-3">
-                      <label className="text-2xl font-semibold text-[#163d64]/80">
+                      <label className="text-3xl font-semibold text-[#163d64]/80">
                         Part Mass in Fluid (g)
                       </label>
                       <div className="flex items-center">
@@ -275,7 +275,7 @@ function SinglePieceEntry({
                           type="number"
                           value={partMassFluid}
                           onChange={handlePartMassFluidChange}
-                          className="w-full px-4 py-3 text-xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                          className="w-full px-4 py-3 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
                           placeholder="Enter part mass in fluid"
                           min="0"
                           step="any"
@@ -291,14 +291,14 @@ function SinglePieceEntry({
                     </div>
 
                     <div className="space-y-3">
-                      <label className="text-2xl font-semibold text-[#163d64]/80">
+                      <label className="text-3xl font-semibold text-[#163d64]/80">
                         Part Density (g/cm³)
                       </label>
                       <input
                         type="text"
                         value={partDensity}
                         readOnly
-                        className="w-full px-4 py-3 text-xl rounded-xl bg-[#fff0f0] border border-[#163d64]/10 text-[#163d64]/75 cursor-not-allowed"
+                        className="w-full px-4 py-3 text-2xl rounded-xl bg-[#fff0f0] border border-[#163d64]/10 text-[#163d64]/75 cursor-not-allowed"
                         placeholder="Part density will be calculated"
                       />
                     </div>

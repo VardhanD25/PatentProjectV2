@@ -247,23 +247,23 @@ function LotEntry({
                     <table className="w-full border-collapse">
                       <thead>
                         <tr className="border-b border-[#163d64]/20">
-                          <th className="py-4 px-6 text-left text-xl font-semibold">item Number</th>
-                          <th className="py-4 px-6 text-left text-xl font-semibold">Mass in Air (g)</th>
-                          <th className="py-4 px-6 text-left text-xl font-semibold">Mass in Fluid (g)</th>
-                          <th className="py-4 px-6 text-left text-xl font-semibold">Density (g/cm³)</th>
-                          <th className="py-4 px-6 text-left text-xl font-semibold">Compactness</th>
-                          <th className="py-4 px-6 text-left text-xl font-semibold">Porosity</th>
+                          <th className="py-4 px-6 text-left text-2xl font-semibold">Item Number</th>
+                          <th className="py-4 px-6 text-left text-2xl font-semibold">Mass in Air (g)</th>
+                          <th className="py-4 px-6 text-left text-2xl font-semibold">Mass in Fluid (g)</th>
+                          <th className="py-4 px-6 text-left text-2xl font-semibold">Density (g/cm³)</th>
+                          <th className="py-4 px-6 text-left text-2xl font-semibold">Compactness</th>
+                          <th className="py-4 px-6 text-left text-2xl font-semibold">Porosity</th>
                         </tr>
                       </thead>
                       <tbody>
                         {partMassAirArray.map((_, index) => (
                           <tr key={index} className="border-b border-[#163d64]/10">
-                            <td className="py-4 px-6 text-lg">{itemNumbers[index]}</td>
-                            <td className="py-4 px-6 text-lg">{partMassAirArray[index]}</td>
-                            <td className="py-4 px-6 text-lg">{partMassFluidArray[index]}</td>
-                            <td className="py-4 px-6 text-lg bg-[#fff0f0]">{partDensityArray[index]}</td>
-                            <td className="py-4 px-6 text-lg bg-[#fff0f0]">{compactnessRatioArray[index]}</td>
-                            <td className="py-4 px-6 text-lg bg-[#fff0f0]">
+                            <td className="py-4 px-6 text-2xl">{itemNumbers[index]}</td>
+                            <td className="py-4 px-6 text-2xl">{partMassAirArray[index]}</td>
+                            <td className="py-4 px-6 text-2xl">{partMassFluidArray[index]}</td>
+                            <td className="py-4 px-6 text-2xl bg-[#fff0f0]">{partDensityArray[index]}</td>
+                            <td className="py-4 px-6 text-2xl bg-[#fff0f0]">{compactnessRatioArray[index]}</td>
+                            <td className="py-4 px-6 text-2xl bg-[#fff0f0]">
                               {masterExists === 'yes' ? (
                                 `${porosityArray[index]}%`
                               ) : (
@@ -280,7 +280,7 @@ function LotEntry({
                     </table>
                   </div>
 
-                  <div className="text-lg text-amber-500/80 mt-6">
+                  <div className="text-2xl text-amber-500/80 mt-6">
                     {masterExists === 'yes' ? (
                       <p>Porosity calculated using master sample as reference</p>
                     ) : (
@@ -306,11 +306,11 @@ function LotEntry({
                     <table className="w-full border-collapse">
                       <thead>
                         <tr className="border-b border-[#163d64]/20">
-                          <th className="py-4 px-6 text-left text-xl font-semibold">Item Number</th>
-                          <th className="py-4 px-6 text-left text-xl font-semibold">Mass in Air (g)</th>
-                          <th className="py-4 px-6 text-left text-xl font-semibold">Mass in Fluid (g)</th>
-                          <th className="py-4 px-6 text-left text-xl font-semibold">Density (g/cm³)</th>
-                          <th className="py-4 px-6 text-left text-xl font-semibold">Actions</th>
+                          <th className="py-4 px-6 text-left text-2xl font-semibold">Item Number</th>
+                          <th className="py-4 px-6 text-left text-2xl font-semibold">Mass in Air (g)</th>
+                          <th className="py-4 px-6 text-left text-2xl font-semibold">Mass in Fluid (g)</th>
+                          <th className="py-4 px-6 text-left text-2xl font-semibold">Density (g/cm³)</th>
+                          <th className="py-4 px-6 text-left text-2xl font-semibold">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -337,7 +337,7 @@ function LotEntry({
                                   type="number"
                                   value={partMassAirArray[index]}
                                   onChange={(e) => handlePartMassAirChange(index, e.target.value)}
-                                  className="w-full px-4 py-3 text-lg rounded-lg border border-[#163d64]/20 focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-colors"
+                                  className="w-full px-4 py-3 text-2xl rounded-lg border border-[#163d64]/20 focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-colors"
                                 />
                                 <button
                                   type="button"
@@ -354,7 +354,7 @@ function LotEntry({
                                   type="number"
                                   value={partMassFluidArray[index]}
                                   onChange={(e) => handlePartMassFluidChange(index, e.target.value)}
-                                  className="w-full px-4 py-3 text-lg rounded-lg border border-[#163d64]/20 focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-colors"
+                                  className="w-full px-4 py-3 text-2xl rounded-lg border border-[#163d64]/20 focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-colors"
                                 />
                                 <button
                                   type="button"
@@ -365,7 +365,7 @@ function LotEntry({
                                 </button>
                               </div>
                             </td>
-                            <td className="py-4 px-6 text-lg bg-[#fff0f0]">{partDensityArray[index]}</td>
+                            <td className="py-4 px-6 text-2xl bg-[#fff0f0]">{partDensityArray[index]}</td>
                             <td className="py-4 px-6">
                               <motion.button
                                 whileHover={{ scale: 1.05 }}

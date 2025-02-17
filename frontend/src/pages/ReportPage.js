@@ -57,91 +57,90 @@ function ReportPage() {
     reportContent.style.padding = '20px';
     reportContent.style.color = '#000';
     reportContent.style.backgroundColor = '#fff';
-
+  
     let content = '';
-
-    
+  
     if (selectedFields.basicInfo) {
       content += `
         <div style="margin-bottom: 20px">
-          <h2 style="font-size: 20px; margin-bottom: 10px">Basic Information</h2>
-          <p><strong>Date:</strong> ${date}</p>
-          <p><strong>Part Code:</strong> ${partCode}</p>
-          <p><strong>Part Name:</strong> ${partName}</p>
-          <p><strong>Theoretical Density:</strong> ${density}</p>
+          <h2 style="font-size: 30px; margin-bottom: 15px">Basic Information</h2>
+          <p style="font-size: 27px"><strong>Date:</strong> ${date}</p>
+          <p style="font-size: 27px"><strong>Part Code:</strong> ${partCode}</p>
+          <p style="font-size: 27px"><strong>Part Name:</strong> ${partName}</p>
+          <p style="font-size: 27px"><strong>Theoretical Density:</strong> ${density}</p>
         </div>
       `;
     }
-
+  
     if (selectedFields.measurements) {
       content += `
         <div style="margin-bottom: 20px">
-          <h2 style="font-size: 20px; margin-bottom: 10px">Measurements</h2>
-          <p><strong>Mass in Air:</strong> ${massInAir}</p>
-          <p><strong>Mass in Fluid:</strong> ${massInFluid}</p>
-          <p><strong>Fluid Density:</strong> ${fluidDensity}</p>
-          <p><strong>Item Density:</strong> ${densityOfItem}</p>
+          <h2 style="font-size: 30px; margin-bottom: 15px">Measurements</h2>
+          <p style="font-size: 27px"><strong>Mass in Air:</strong> ${massInAir}</p>
+          <p style="font-size: 27px"><strong>Mass in Fluid:</strong> ${massInFluid}</p>
+          <p style="font-size: 27px"><strong>Fluid Density:</strong> ${fluidDensity}</p>
+          <p style="font-size: 27px"><strong>Item Density:</strong> ${densityOfItem}</p>
         </div>
       `;
     }
-
+  
     if (selectedFields.compactnessRatio) {
       content += `
         <div style="margin-bottom: 20px">
-          <h2 style="font-size: 20px; margin-bottom: 10px">Compactness Ratio</h2>
-          <p><strong>Compactness Ratio:</strong> ${compactnessRatio}</p>
+          <h2 style="font-size: 30px; margin-bottom: 15px">Compactness Ratio</h2>
+          <p style="font-size: 27px"><strong>Compactness Ratio:</strong> ${compactnessRatio}</p>
         </div>
       `;
     }
-
+  
     if (selectedFields.porosity && porosity && porosity !== 'N/A') {
       content += `
         <div style="margin-bottom: 20px">
-          <h2 style="font-size: 20px; margin-bottom: 10px">Porosity</h2>
-          <p><strong>Porosity:</strong> ${porosity}</p>
+          <h2 style="font-size: 30px; margin-bottom: 15px">Porosity</h2>
+          <p style="font-size: 27px"><strong>Porosity:</strong> ${porosity}</p>
         </div>
       `;
     }
-
+  
     if (selectedFields.chemicalComposition && chemicalComposition && Object.keys(chemicalComposition).length > 0) {
       content += `
         <div style="margin-bottom: 20px">
-          <h2 style="font-size: 20px; margin-bottom: 10px">Chemical Composition</h2>
+          <h2 style="font-size: 30px; margin-bottom: 15px">Chemical Composition</h2>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px">
             <tr style="background-color: #f3f4f6">
-              <th style="border: 1px solid #000; padding: 8px">Element</th>
-              <th style="border: 1px solid #000; padding: 8px">Weight %</th>
+              <th style="border: 1px solid #000; padding: 12px; font-size: 27px">Element</th>
+              <th style="border: 1px solid #000; padding: 12px; font-size: 27px">Weight %</th>
             </tr>
             ${Object.entries(chemicalComposition).map(([element, weight]) => `
               <tr>
-                <td style="border: 1px solid #000; padding: 8px">${element}</td>
-                <td style="border: 1px solid #000; padding: 8px">${weight}</td>
+                <td style="border: 1px solid #000; padding: 12px; font-size: 27px">${element}</td>
+                <td style="border: 1px solid #000; padding: 12px; font-size: 27px">${weight}</td>
               </tr>
             `).join('')}
           </table>
         </div>
       `;
     }
-
+  
     if (selectedFields.notes && notes) {
       content += `
         <div style="margin-bottom: 20px">
-          <h2 style="font-size: 20px; margin-bottom: 10px">Notes</h2>
-          <p>${notes}</p>
+          <h2 style="font-size: 30px; margin-bottom: 15px">Notes</h2>
+          <p style="font-size: 27px">${notes}</p>
         </div>
       `;
     }
-
+  
     if (selectedFields.masterDetails && masterExists === 'yes') {
       content += `
         <div style="margin-bottom: 20px">
-          <h2 style="font-size: 20px; margin-bottom: 10px">Master Sample Details</h2>
-          <p><strong>Master Sample has Attachment:</strong> ${masterAttachmentExists ? 'Yes' : 'No'}</p>
-          <p><strong>Density of Master Sample:</strong> ${densityOfMasterSample}</p>
+          <h2 style="font-size: 30px; margin-bottom: 15px">Master Sample Details</h2>
+          <p style="font-size: 27px"><strong>Master Sample has Attachment:</strong> ${masterAttachmentExists ? 'Yes' : 'No'}</p>
+          <p style="font-size: 27px"><strong>Density of Master Sample:</strong> ${densityOfMasterSample}</p>
         </div>
       `;
     }
-
+  
     reportContent.innerHTML = content;
     
     html2pdf().from(reportContent).set({
