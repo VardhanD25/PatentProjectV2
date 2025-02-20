@@ -1,6 +1,7 @@
 // src/pages/Home.jsx
 import Navbar from "../components/Navbar";
 import Footer from '../components/Footer';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   return (
@@ -33,18 +34,12 @@ const Home = () => {
                   Optimize your material choices with precision and confidence.
                 </p>
                 <div className="flex justify-center gap-6">
-                  <a
-                    href="/userinput"
+                <Link  
+                    to="/userinput"  
                     className="px-8 py-4 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform"
                   >
                     Get Started Now →
-                  </a>
-                  <a
-                    href="#learn-more"
-                    className="px-8 py-4 border-2 border-[#163d64] text-[#163d64] font-semibold rounded-xl hover:bg-[#163d64] hover:text-white transition-all duration-300"
-                  >
-                    Learn More
-                  </a>
+                </Link>
                 </div>
               </div>
 
