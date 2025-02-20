@@ -17,11 +17,11 @@ const Footer = () => {
                 alt="Company Logo" 
                 className="h-16 w-16 object-contain"
               />
-              <span className="text-lg font-medium text-[#163d64] group-hover:text-[#163d64]/80">
+              <span className="text-xl font-medium text-[#163d64] group-hover:text-[#163d64]/80">
                 Compactness Calculator
               </span>
             </Link>
-            <p className="text-[#163d64]/70 text-sm leading-relaxed">
+            <p className="text-lg text-[#163d64]/70 leading-relaxed">
               Revolutionizing material engineering through advanced calculations and innovative solutions. 
               Making complex decisions simple.
             </p>
@@ -29,7 +29,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h3 className="text-[#163d64] font-semibold">Quick Links</h3>
+            <h3 className="text-xl text-[#163d64] font-semibold">Quick Links</h3>
             <ul className="space-y-2">
               {['Home', 'Calculator', 'Add Part'].map((item) => (
                 <li key={item}>
@@ -39,7 +39,7 @@ const Footer = () => {
                       item === 'Calculator' ? '/userinput' : 
                       `/${item.toLowerCase().replace(' ', '')}`
                     }
-                    className="text-sm text-[#163d64]/70 hover:text-[#fa4516] transition-colors duration-300"
+                    className="text-lg text-[#163d64]/70 hover:text-[#fa4516] transition-colors duration-300"
                   >
                     {item}
                   </Link>
@@ -50,17 +50,17 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div className="space-y-4">
-            <h3 className="text-[#163d64] font-semibold">Contact</h3>
+            <h3 className="text-xl text-[#163d64] font-semibold">Contact</h3>
             <ul className="space-y-2">
               <li>
                 <a 
                   href="mailto:contact@example.com"
-                  className="text-sm text-[#163d64]/70 hover:text-[#fa4516] transition-colors duration-300"
+                  className="text-lg text-[#163d64]/70 hover:text-[#fa4516] transition-colors duration-300"
                 >
                   mangeshp@manshaprotech.com
                 </a>
               </li>
-              <li className="text-sm text-[#163d64]/70">
+              <li className="text-lg text-[#163d64]/70">
                 A-11 Rajvihar, Balajinagar, Dhankawadi, Pune-411043
               </li>
             </ul>
@@ -70,17 +70,15 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-[#163d64]/10">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-sm text-[#163d64]/70">
+            <div className="text-lg text-[#163d64]/70">
               © {currentYear} Compactness Calculator. All rights reserved.
             </div>
             
             {/* Legal Links */}
             <div className="flex space-x-6">
-              
-              
               <Link
                 to="/contact-us"
-                className="text-sm text-[#163d64]/70 hover:text-[#fa4516] transition-colors duration-300"
+                className="text-lg text-[#163d64]/70 hover:text-[#fa4516] transition-colors duration-300"
               >
                 Contact
               </Link>

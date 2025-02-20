@@ -119,7 +119,7 @@ function SecondEntry({
                         type="number"
                         value={massOfFluid}
                         onChange={handleMassOfFluidChange}
-                        className="w-full px-4 py-4 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                        className="w-full px-4 py-5 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] hover:border-[#fa4516]/50 transition-all duration-300"
                         placeholder="Enter mass of fluid"
                         min="0"
                         step="0.1"
@@ -127,7 +127,7 @@ function SecondEntry({
                       <button
                         type="button"
                         onClick={() => captureWeight(onMassOfFluidChange)}
-                        className="ml-2 px-2 py-1 rounded bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
+                        className="ml-2 px-5 py-5 rounded-xl bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
                       >
                         C
                       </button>
@@ -141,7 +141,7 @@ function SecondEntry({
                         type="number"
                         value={volumeOfFluid}
                         onChange={handleVolumeOfFluidChange}
-                        className="w-full px-4 py-4 text-2xl rounded-2xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                        className="w-full px-4 py-5 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] hover:border-[#fa4516]/50 transition-all duration-300"
                         placeholder="Enter volume of fluid"
                         min="0"
                         step="0.1"
@@ -170,7 +170,7 @@ function SecondEntry({
                           type="number"
                           value={attachmentMassAir}
                           onChange={handleAttachmentMassAirChange}
-                          className="w-full px-4 py-4 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                          className="w-full px-4 py-5 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] hover:border-[#fa4516]/50 transition-all duration-300"
                           placeholder="Enter attachment mass in air"
                           min="0"
                           step="0.1"
@@ -178,7 +178,7 @@ function SecondEntry({
                         <button
                           type="button"
                           onClick={() => captureWeight(onAttachmentMassAirChange)}
-                          className="ml-2 px-2 py-1 rounded bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
+                          className="ml-2 px-3 py-5 rounded-xl bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
                         >
                           C
                         </button>
@@ -192,7 +192,7 @@ function SecondEntry({
                           type="number"
                           value={attachmentMassFluid}
                           onChange={handleAttachmentMassFluidChange}
-                          className="w-full px-4 py-4 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                          className="w-full px-4 py-5 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] hover:border-[#fa4516]/50 transition-all duration-300"
                           placeholder="Enter attachment mass in fluid"
                           min="0"
                           step="0.1"
@@ -200,7 +200,7 @@ function SecondEntry({
                         <button
                           type="button"
                           onClick={() => captureWeight(onAttachmentMassFluidChange)}
-                          className="ml-2 px-2 py-1 rounded bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
+                          className="ml-2 px-3 py-5 rounded-xl bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
                         >
                           C
                         </button>
@@ -218,7 +218,7 @@ function SecondEntry({
                           type="number"
                           value={masterSampleMassAir}
                           onChange={handleMasterSampleMassAirChange}
-                          className="w-full px-4 py-4 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                          className="w-full px-4 py-5 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] hover:border-[#fa4516]/50 transition-all duration-300"
                           placeholder="Enter master sample mass in air"
                           min="0"
                           step="0.1"
@@ -226,7 +226,7 @@ function SecondEntry({
                         <button
                           type="button"
                           onClick={() => captureWeight(onMasterSampleMassAirChange)}
-                          className="ml-2 px-2 py-1 rounded bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
+                          className="ml-2 px-3 py-5 rounded-xl bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
                         >
                           C
                         </button>
@@ -240,7 +240,7 @@ function SecondEntry({
                           type="number"
                           value={masterSampleMassFluid}
                           onChange={handleMasterSampleMassFluidChange}
-                          className="w-full px-4 py-4 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                          className="w-full px-4 py-5 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] hover:border-[#fa4516]/50 transition-all duration-300"
                           placeholder="Enter master sample mass in fluid"
                           min="0"
                           step="0.1"
@@ -248,7 +248,7 @@ function SecondEntry({
                         <button
                           type="button"
                           onClick={() => captureWeight(onMasterSampleMassFluidChange)}
-                          className="ml-2 px-2 py-1 rounded bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
+                          className="ml-2 px-3 py-5 rounded-xl bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
                         >
                           C
                         </button>

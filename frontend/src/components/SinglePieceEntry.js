@@ -251,7 +251,7 @@ function SinglePieceEntry({
                           type="number"
                           value={partMassAir}
                           onChange={handlePartMassAirChange}
-                          className="w-full px-4 py-3 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                          className="w-full px-4 py-5 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] hover:border-[#fa4516]/50 transition-all duration-300"
                           placeholder="Enter part mass in air"
                           min="0"
                           step="any"
@@ -259,7 +259,7 @@ function SinglePieceEntry({
                         <button
                           type="button"
                           onClick={() => captureWeight(onPartMassAirChange)}
-                          className="ml-2 px-2 py-1 rounded bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
+                          className="ml-2 px-5 py-5 rounded-xl bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
                         >
                           C
                         </button>
@@ -275,7 +275,7 @@ function SinglePieceEntry({
                           type="number"
                           value={partMassFluid}
                           onChange={handlePartMassFluidChange}
-                          className="w-full px-4 py-3 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-200"
+                          className="w-full px-4 py-5 text-2xl rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] hover:border-[#fa4516]/50 transition-all duration-300"
                           placeholder="Enter part mass in fluid"
                           min="0"
                           step="any"
@@ -283,7 +283,7 @@ function SinglePieceEntry({
                         <button
                           type="button"
                           onClick={() => captureWeight(onPartMassFluidChange)}
-                          className="ml-2 px-2 py-1 rounded bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
+                          className="ml-2 px-5 py-5 rounded-xl bg-[#fa4516] text-white hover:bg-[#fa4516]/90 transition-all duration-300"
                         >
                           C
                         </button>
@@ -298,7 +298,7 @@ function SinglePieceEntry({
                         type="text"
                         value={partDensity}
                         readOnly
-                        className="w-full px-4 py-3 text-2xl rounded-xl bg-[#fff0f0] border border-[#163d64]/10 text-[#163d64]/75 cursor-not-allowed"
+                        className="w-full px-4 py-4 text-2xl rounded-xl bg-[#fff0f0] border border-[#163d64]/10 text-[#163d64]/75 cursor-not-allowed"
                         placeholder="Part density will be calculated"
                       />
                     </div>

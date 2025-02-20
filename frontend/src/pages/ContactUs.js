@@ -86,39 +86,38 @@ function ContactUs() {
       <div className="relative z-10 flex flex-col min-h-screen">
         <Navbar />
 
-        <main className="flex-grow p-8 mt-[80px] mb-[80px]">
-          <div className="max-w-6xl mx-auto">
+        <main className="flex-grow p-8 mt-[80px] mb-[80px] flex items-center justify-center">
+          <div className="max-w-6xl mx-auto w-full">
             <div className="space-y-12">
-              <h1 className="text-5xl font-bold text-[#163d64] text-center mb-12">Contact Us</h1>
+              <h1 className="text-6xl font-bold text-[#163d64] text-center mb-12">Contact Us</h1>
 
-              <div className="grid md:grid-cols-2 gap-8">
+              <div className="flex justify-center">
                 {/* Contact Information */}
-                <div className="space-y-8">
-                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-[#163d64]/10 space-y-6">
-                    <h2 className="text-2xl font-bold text-[#163d64]">Get in Touch</h2>
-                    <p className="text-[#163d64]/80">
+                <div className="max-w-2xl w-full">
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-[#163d64]/10 space-y-8">
+                    <h2 className="text-4xl font-bold text-[#163d64] text-center">Get in Touch</h2>
+                    <p className="text-2xl text-[#163d64]/80 text-center">
                       Have questions about our services? We're here to help.
                     </p>
                     
-                    <div className="space-y-6">
-                      <div className="space-y-2">
-                        <h3 className="text-lg font-semibold text-[#163d64]">Email</h3>
+                    <div className="space-y-8">
+                      <div className="space-y-2 text-center">
+                        <h3 className="text-2xl font-semibold text-[#163d64]">Email</h3>
                         <p>
-                          <a href="mailto:mangeshp@manshaprotech.com" className="text-[#fa4516] hover:text-[#fa4516]/80 transition-colors duration-300">
+                          <a href="mailto:mangeshp@manshaprotech.com" className="text-xl text-[#fa4516] hover:text-[#fa4516]/80 transition-colors duration-300">
                             mangeshp@manshaprotech.com
                           </a>
                         </p>
                       </div>
 
-
-                      <div className="space-y-2">
-                        <h3 className="text-lg font-semibold text-[#163d64]">Location</h3>
-                        <p className="text-[#163d64]/80">Pune, India</p>
+                      <div className="space-y-2 text-center">
+                        <h3 className="text-2xl font-semibold text-[#163d64]">Location</h3>
+                        <p className="text-xl text-[#163d64]/80">Pune, India</p>
                       </div>
 
-                      <div className="space-y-2">
-                        <h3 className="text-lg font-semibold text-[#163d64]">Hours</h3>
-                        <p className="text-[#163d64]/80">
+                      <div className="space-y-2 text-center">
+                        <h3 className="text-2xl font-semibold text-[#163d64]">Hours</h3>
+                        <p className="text-xl text-[#163d64]/80">
                           Monday - Friday<br />
                           9:00 AM - 6:00 PM IST
                         </p>
@@ -126,8 +125,6 @@ function ContactUs() {
                     </div>
                   </div>
                 </div>
-
-               
               </div>
             </div>
           </div>
