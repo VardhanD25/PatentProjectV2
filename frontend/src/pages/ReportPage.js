@@ -15,6 +15,7 @@ function ReportPage() {
     partCode,
     partName,
     theoreticalDensity: density,
+    densityType,
     chemicalComposition,
     partAttachments,
     massInAir,
@@ -56,26 +57,26 @@ function ReportPage() {
 
   const handlePrintReport = () => {
     const reportContent = document.createElement('div');
-  reportContent.style.padding = '20px';
-  reportContent.style.color = '#000';
-  reportContent.style.backgroundColor = '#fff';
-
-  let content = `
-    <h1 style="font-size: 45px; text-align: center; margin-bottom: 30px">Compactness Evaluation</h1>
-  `;
-
-  if (selectedFields.basicInfo) {
-    content += `
-      <div style="margin-bottom: 20px">
-        <h2 style="font-size: 30px; margin-bottom: 15px">Basic Information</h2>
-        <p style="font-size: 27px"><strong>Date:</strong> ${date}</p>
-        <p style="font-size: 27px"><strong>Part Code:</strong> ${partCode}</p>
-        <p style="font-size: 27px"><strong>Part Name:</strong> ${partName}</p>
-        <p style="font-size: 27px"><strong>Theoretical Density:</strong> ${density}</p>
-        ${standardAlloyName && standardAlloyCountry ? `<p style="font-size: 27px"><strong>Standard Alloy:</strong> ${standardAlloyName} (${standardAlloyCountry})</p>` : ''}
-      </div>
+    reportContent.style.padding = '20px';
+    reportContent.style.color = '#000';
+    reportContent.style.backgroundColor = '#fff';
+  
+    let content = `
+      <h1 style="font-size: 45px; text-align: center; margin-bottom: 30px">Compactness Evaluation</h1>
     `;
-  }
+  
+    if (selectedFields.basicInfo) {
+      content += `
+        <div style="margin-bottom: 20px">
+          <h2 style="font-size: 30px; margin-bottom: 15px">Basic Information</h2>
+          <p style="font-size: 27px"><strong>Date:</strong> ${date}</p>
+          <p style="font-size: 27px"><strong>Part Code:</strong> ${partCode}</p>
+          <p style="font-size: 27px"><strong>Part Name:</strong> ${partName}</p>
+          <p style="font-size: 27px"><strong>Theoretical Density:</strong> ${density}</p>
+          ${densityType !== 'calculated' && standardAlloyName && standardAlloyCountry ? `<p style="font-size: 27px"><strong>Standard Alloy:</strong> ${standardAlloyName} (${standardAlloyCountry})</p>` : ''}
+        </div>
+      `;
+    }
   
     if (selectedFields.measurements) {
       content += `
@@ -107,7 +108,7 @@ function ReportPage() {
       `;
     }
   
-    if (selectedFields.chemicalComposition && chemicalComposition && Object.keys(chemicalComposition).length > 0) {
+    if (densityType !== 'specified' && selectedFields.chemicalComposition && chemicalComposition && Object.keys(chemicalComposition).length > 0) {
       content += `
         <div style="margin-bottom: 20px">
           <h2 style="font-size: 30px; margin-bottom: 15px">Chemical Composition</h2>
@@ -147,7 +148,7 @@ function ReportPage() {
     }
   
     reportContent.innerHTML = content;
-    
+  
     html2pdf().from(reportContent).set({
       margin: [10, 10, 10, 10],
       filename: `${partCode}_report.pdf`,
@@ -447,142 +448,144 @@ function ReportPage() {
 
               <div className="space-y-8">
                 {/* Field Selection */}
-                <div className="bg-white/50 border border-[#163d64]/20 rounded-xl p-6">
-                  <h3 className="text-3xl font-semibold text-[#163d64] mb-6">Select Sections for Download</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {Object.entries(selectedFields).map(([field, isSelected]) => (
-                      <div key={field} className="flex items-center space-x-3">
-                        <input
-                          type="checkbox"
-                          id={field}
-                          checked={isSelected}
-                          onChange={() => handleFieldToggle(field)}
-                          className="w-5 h-5 rounded border-[#163d64]/20 text-[#fa4516] focus:ring-[#fa4516] transition-colors duration-300"
-                        />
-                        <label htmlFor={field} className="text-xl font-medium text-[#163d64] select-none cursor-pointer">
-                          {formatFieldName(field)}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+<div className="bg-white/50 border border-[#163d64]/20 rounded-xl p-6">
+  <h3 className="text-3xl font-semibold text-[#163d64] mb-6">Select Sections for Download</h3>
+  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    {Object.entries(selectedFields).map(([field, isSelected]) => (
+      (field !== 'chemicalComposition' || (densityType !== 'specified' && chemicalComposition && Object.keys(chemicalComposition).length > 0)) && (
+        <div key={field} className="flex items-center space-x-3">
+          <input
+            type="checkbox"
+            id={field}
+            checked={isSelected}
+            onChange={() => handleFieldToggle(field)}
+            className="w-5 h-5 rounded border-[#163d64]/20 text-[#fa4516] focus:ring-[#fa4516] transition-colors duration-300"
+          />
+          <label htmlFor={field} className="text-xl font-medium text-[#163d64] select-none cursor-pointer">
+            {formatFieldName(field)}
+          </label>
+        </div>
+      )
+    ))}
+  </div>
+</div>
 
-                {/* Basic Information */}
-                <div className="space-y-4">
-                  <h3 className="text-3xl font-semibold text-[#163d64]">Basic Information</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <p className="text-xl font-medium text-[#163d64]/70">Date</p>
-                      <p className="text-2xl text-[#163d64]">{date}</p>
-                    </div>
-                    <div className="space-y-2">
-                      <p className="text-xl font-medium text-[#163d64]/70">Part Code</p>
-                      <p className="text-2xl text-[#163d64]">{partCode}</p>
-                    </div>
-                    <div className="space-y-2">
-                      <p className="text-xl font-medium text-[#163d64]/70">Part Name</p>
-                      <p className="text-2xl text-[#163d64]">{partName}</p>
-                    </div>
-                    <div className="space-y-2">
-                      <p className="text-xl font-medium text-[#163d64]/70">Theoretical Density</p>
-                      <p className="text-2xl text-[#163d64]">{density}</p>
-                    </div>
+{/* Basic Information */}
+<div className="space-y-4">
+  <h3 className="text-3xl font-semibold text-[#163d64]">Basic Information</h3>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="space-y-2">
+      <p className="text-xl font-medium text-[#163d64]/70">Date</p>
+      <p className="text-2xl text-[#163d64]">{date}</p>
+    </div>
+    <div className="space-y-2">
+      <p className="text-xl font-medium text-[#163d64]/70">Part Code</p>
+      <p className="text-2xl text-[#163d64]">{partCode}</p>
+    </div>
+    <div className="space-y-2">
+      <p className="text-xl font-medium text-[#163d64]/70">Part Name</p>
+      <p className="text-2xl text-[#163d64]">{partName}</p>
+    </div>
+    <div className="space-y-2">
+      <p className="text-xl font-medium text-[#163d64]/70">Theoretical Density</p>
+      <p className="text-2xl text-[#163d64]">{density}</p>
+    </div>
 
-                  {standardAlloyName && standardAlloyCountry && (
-                    <div className="space-y-2">
-                      <p className="text-xl font-medium text-[#163d64]/70">Standard Alloy</p>
-                      <p className="text-2xl text-[#163d64]">{`${standardAlloyName} (${standardAlloyCountry})`}</p>
-                    </div>
-                  )}
-                  </div>
-                </div>
+    {densityType !== 'calculated' && standardAlloyName && standardAlloyCountry && (
+      <div className="space-y-2">
+        <p className="text-xl font-medium text-[#163d64]/70">Standard Alloy</p>
+        <p className="text-2xl text-[#163d64]">{`${standardAlloyName} (${standardAlloyCountry})`}</p>
+      </div>
+    )}
+  </div>
+</div>
 
-                {/* Measurements */}
-                <div className="space-y-4">
-                  <h3 className="text-3xl font-semibold text-[#163d64]">Measurements</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <p className="text-xl font-medium text-[#163d64]/70">Mass in Air</p>
-                      <p className="text-2xl text-[#163d64]">{massInAir}</p>
-                    </div>
-                    <div className="space-y-2">
-                      <p className="text-xl font-medium text-[#163d64]/70">Mass in Fluid</p>
-                      <p className="text-2xl text-[#163d64]">{massInFluid}</p>
-                    </div>
-                    <div className="space-y-2">
-                      <p className="text-xl font-medium text-[#163d64]/70">Fluid Density</p>
-                      <p className="text-2xl text-[#163d64]">{fluidDensity}</p>
-                    </div>
-                    <div className="space-y-2">
-                      <p className="text-xl font-medium text-[#163d64]/70">Item Density</p>
-                      <p className="text-2xl text-[#163d64]">{densityOfItem}</p>
-                    </div>
-                  </div>
-                </div>
+{/* Measurements */}
+<div className="space-y-4">
+  <h3 className="text-3xl font-semibold text-[#163d64]">Measurements</h3>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="space-y-2">
+      <p className="text-xl font-medium text-[#163d64]/70">Mass in Air</p>
+      <p className="text-2xl text-[#163d64]">{massInAir}</p>
+    </div>
+    <div className="space-y-2">
+      <p className="text-xl font-medium text-[#163d64]/70">Mass in Fluid</p>
+      <p className="text-2xl text-[#163d64]">{massInFluid}</p>
+    </div>
+    <div className="space-y-2">
+      <p className="text-xl font-medium text-[#163d64]/70">Fluid Density</p>
+      <p className="text-2xl text-[#163d64]">{fluidDensity}</p>
+    </div>
+    <div className="space-y-2">
+      <p className="text-xl font-medium text-[#163d64]/70">Item Density</p>
+      <p className="text-2xl text-[#163d64]">{densityOfItem}</p>
+    </div>
+  </div>
+</div>
 
-                {/* Compactness Ratio */}
-                <div className="space-y-4">
-                  <h3 className="text-3xl font-semibold text-[#163d64]">Compactness Ratio</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <p className="text-xl font-medium text-[#163d64]/70">Compactness Ratio</p>
-                      <p className="text-2xl text-[#163d64]">{compactnessRatio}</p>
-                    </div>
-                  </div>
-                </div>
+{/* Compactness Ratio */}
+<div className="space-y-4">
+  <h3 className="text-3xl font-semibold text-[#163d64]">Compactness Ratio</h3>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="space-y-2">
+      <p className="text-xl font-medium text-[#163d64]/70">Compactness Ratio</p>
+      <p className="text-2xl text-[#163d64]">{compactnessRatio}</p>
+    </div>
+  </div>
+</div>
 
-                {/* Porosity */}
-                {porosity && porosity !== 'N/A' && (
-                  <div className="space-y-4">
-                    <h3 className="text-3xl font-semibold text-[#163d64]">Porosity</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <p className="text-xl font-medium text-[#163d64]/70">Porosity</p>
-                        <p className="text-2xl text-[#163d64]">{porosity}</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
+{/* Porosity */}
+{porosity && porosity !== 'N/A' && (
+  <div className="space-y-4">
+    <h3 className="text-3xl font-semibold text-[#163d64]">Porosity</h3>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="space-y-2">
+        <p className="text-xl font-medium text-[#163d64]/70">Porosity</p>
+        <p className="text-2xl text-[#163d64]">{porosity}</p>
+      </div>
+    </div>
+  </div>
+)}
 
-                {/* Chemical Composition */}
-                {chemicalComposition && Object.keys(chemicalComposition).length > 0 && (
-                  <div className="space-y-4">
-                    <h3 className="text-3xl font-semibold text-[#163d64]">Chemical Composition</h3>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                      {Object.entries(chemicalComposition).map(([element, percentage]) => (
-                        <div key={element} className="bg-white/50 border border-[#163d64]/20 rounded-xl p-4">
-                          <p className="text-xl font-medium text-[#163d64]/70">{element}</p>
-                          <p className="text-2xl text-[#163d64] font-medium">{percentage}%</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+{/* Chemical Composition */}
+{densityType !== 'specified' && chemicalComposition && Object.keys(chemicalComposition).length > 0 && (
+  <div className="space-y-4">
+    <h3 className="text-3xl font-semibold text-[#163d64]">Chemical Composition</h3>
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      {Object.entries(chemicalComposition).map(([element, percentage]) => (
+        <div key={element} className="bg-white/50 border border-[#163d64]/20 rounded-xl p-4">
+          <p className="text-xl font-medium text-[#163d64]/70">{element}</p>
+          <p className="text-2xl text-[#163d64] font-medium">{percentage}%</p>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
 
-                {/* Notes */}
-                {notes && (
-                  <div className="space-y-4">
-                    <h3 className="text-3xl font-semibold text-[#163d64]">Notes</h3>
-                    <p className="text-2xl text-[#163d64]">{notes}</p>
-                  </div>
-                )}
+{/* Notes */}
+{notes && (
+  <div className="space-y-4">
+    <h3 className="text-3xl font-semibold text-[#163d64]">Notes</h3>
+    <p className="text-2xl text-[#163d64]">{notes}</p>
+  </div>
+)}
 
-                {/* Master Details */}
-                {masterExists === 'yes' && (
-                  <div className="space-y-4">
-                    <h3 className="text-3xl font-semibold text-[#163d64]">Master Sample Details</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <p className="text-xl font-medium text-[#163d64]/70">Master Sample has Attachment</p>
-                        <p className="text-2xl text-[#163d64]">{masterAttachmentExists ? 'Yes' : 'No'}</p>
-                      </div>
-                      <div className="space-y-2">
-                        <p className="text-xl font-medium text-[#163d64]/70">Density of Master Sample</p>
-                        <p className="text-2xl text-[#163d64]">{densityOfMasterSample}</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
+{/* Master Details */}
+{masterExists === 'yes' && (
+  <div className="space-y-4">
+    <h3 className="text-3xl font-semibold text-[#163d64]">Master Sample Details</h3>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="space-y-2">
+        <p className="text-xl font-medium text-[#163d64]/70">Master Sample has Attachment</p>
+        <p className="text-2xl text-[#163d64]">{masterAttachmentExists ? 'Yes' : 'No'}</p>
+      </div>
+      <div className="space-y-2">
+        <p className="text-xl font-medium text-[#163d64]/70">Density of Master Sample</p>
+        <p className="text-2xl text-[#163d64]">{densityOfMasterSample}</p>
+      </div>
+    </div>
+  </div>
+)}
 
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">

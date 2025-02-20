@@ -49,6 +49,7 @@ function LotReportPage() {
     selectedPartCode: partCode = '',
     partName = '',
     theoreticalDensity: density = '',
+    densityType,
     chemicalComposition = {},
     partAttachments,
     partMassAirArray: massInAir = [],
@@ -478,60 +479,62 @@ function LotReportPage() {
               </h1>
   
               {/* Field Selection */}
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-slate-200">
-                <h2 className="text-3xl font-semibold text-[#163d64] mb-6">Select Fields for Report</h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                  {Object.entries(selectedFields).map(([field, isSelected]) => (
-                    <div key={field} className="flex items-center gap-3">
-                      <input
-                        type="checkbox"
-                        id={field}
-                        checked={isSelected}
-                        onChange={() => handleFieldToggle(field)}
-                        className="w-6 h-6 rounded-lg border-2 border-[#163d64]/20 text-[#fa4516] focus:ring-[#fa4516]/20 transition-colors"
-                      />
-                      <label 
-                        htmlFor={field} 
-                        className="text-2xl text-[#163d64] select-none cursor-pointer hover:text-[#fa4516] transition-colors"
-                      >
-                        {formatFieldName(field)}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </div>
+<div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-slate-200">
+  <h2 className="text-3xl font-semibold text-[#163d64] mb-6">Select Fields for Report</h2>
+  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+    {Object.entries(selectedFields).map(([field, isSelected]) => (
+      (field !== 'chemicalComposition' || (densityType === 'calculated' && chemicalComposition && Object.keys(chemicalComposition).length > 0)) && (
+        <div key={field} className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            id={field}
+            checked={isSelected}
+            onChange={() => handleFieldToggle(field)}
+            className="w-6 h-6 rounded-lg border-2 border-[#163d64]/20 text-[#fa4516] focus:ring-[#fa4516]/20 transition-colors"
+          />
+          <label 
+            htmlFor={field} 
+            className="text-2xl text-[#163d64] select-none cursor-pointer hover:text-[#fa4516] transition-colors"
+          >
+            {formatFieldName(field)}
+          </label>
+        </div>
+      )
+    ))}
+  </div>
+</div>
   
               {/* Report Preview */}
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-slate-200 space-y-10">
                 {/* Basic Information */}
                 {selectedFields.basicInfo && (
                   <div className="space-y-6">
-                    <h2 className="text-3xl font-semibold text-[#163d64]">Basic Information</h2>
-                    <div className="grid grid-cols-2 gap-8">
-                      <div className="p-6 rounded-xl bg-[#163d64]/5">
-                        <p className="text-2xl text-[#163d64]/70 mb-2">Date</p>
-                        <p className="text-3xl text-[#163d64] font-medium">{date}</p>
-                      </div>
-                      <div className="p-6 rounded-xl bg-[#163d64]/5">
-                        <p className="text-2xl text-[#163d64]/70 mb-2">Part Code</p>
-                        <p className="text-3xl text-[#163d64] font-medium">{partCode}</p>
-                      </div>
-                      <div className="p-6 rounded-xl bg-[#163d64]/5">
-                        <p className="text-2xl text-[#163d64]/70 mb-2">Part Name</p>
-                        <p className="text-3xl text-[#163d64] font-medium">{partName}</p>
-                      </div>
-                      <div className="p-6 rounded-xl bg-[#163d64]/5">
-                        <p className="text-2xl text-[#163d64]/70 mb-2">Theoretical Density</p>
-                        <p className="text-3xl text-[#163d64] font-medium">{density}</p>
-                      </div>
-                      {standardAlloyName && standardAlloyCountry && (
+                  <h2 className="text-3xl font-semibold text-[#163d64]">Basic Information</h2>
+                  <div className="grid grid-cols-2 gap-8">
+                    <div className="p-6 rounded-xl bg-[#163d64]/5">
+                      <p className="text-2xl text-[#163d64]/70 mb-2">Date</p>
+                      <p className="text-3xl text-[#163d64] font-medium">{date}</p>
+                    </div>
+                    <div className="p-6 rounded-xl bg-[#163d64]/5">
+                      <p className="text-2xl text-[#163d64]/70 mb-2">Part Code</p>
+                      <p className="text-3xl text-[#163d64] font-medium">{partCode}</p>
+                    </div>
+                    <div className="p-6 rounded-xl bg-[#163d64]/5">
+                      <p className="text-2xl text-[#163d64]/70 mb-2">Part Name</p>
+                      <p className="text-3xl text-[#163d64] font-medium">{partName}</p>
+                    </div>
+                    <div className="p-6 rounded-xl bg-[#163d64]/5">
+                      <p className="text-2xl text-[#163d64]/70 mb-2">Theoretical Density</p>
+                      <p className="text-3xl text-[#163d64] font-medium">{density}</p>
+                    </div>
+                    {densityType !== 'calculated' && standardAlloyName && standardAlloyCountry && (
                       <div className="space-y-2">
                         <p className="text-xl font-medium text-[#163d64]/70">Standard Alloy</p>
                         <p className="text-2xl text-[#163d64]">{`${standardAlloyName} (${standardAlloyCountry})`}</p>
                       </div>
-                      )}
-                    </div>
+                    )}
                   </div>
+                </div>
                 )}
   
                 {/* Measurements Table */}
@@ -570,36 +573,36 @@ function LotReportPage() {
                 )}
   
                 {/* Chemical Composition */}
-                {selectedFields.chemicalComposition && Object.keys(chemicalComposition).length > 0 && (
-                  <div className="space-y-6">
-                    <h2 className="text-3xl font-semibold text-[#163d64]">Chemical Composition</h2>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                      {Object.entries(chemicalComposition).map(([element, percentage]) => (
-                        <div key={element} className="p-6 rounded-xl bg-[#163d64]/5">
-                          <p className="text-2xl text-[#163d64]/70 mb-2">{element}</p>
-                          <p className="text-3xl text-[#163d64] font-medium">{percentage}%</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+{densityType === 'calculated' && chemicalComposition && Object.keys(chemicalComposition).length > 0 && (
+  <div className="space-y-6">
+    <h2 className="text-3xl font-semibold text-[#163d64]">Chemical Composition</h2>
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {Object.entries(chemicalComposition).map(([element, percentage]) => (
+        <div key={element} className="p-6 rounded-xl bg-[#163d64]/5">
+          <p className="text-2xl text-[#163d64]/70 mb-2">{element}</p>
+          <p className="text-3xl text-[#163d64] font-medium">{percentage}%</p>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
   
                 {/* Standard Alloy Information */}
-                {selectedFields.standardAlloy && standardAlloyName && (
-                  <div className="space-y-6">
-                    <h2 className="text-3xl font-semibold text-[#163d64]">Standard Alloy Information</h2>
-                    <div className="grid grid-cols-2 gap-8">
-                      <div className="p-6 rounded-xl bg-[#163d64]/5">
-                        <p className="text-2xl text-[#163d64]/70 mb-2">Name</p>
-                        <p className="text-3xl text-[#163d64] font-medium">{standardAlloyName}</p>
-                      </div>
-                      <div className="p-6 rounded-xl bg-[#163d64]/5">
-                        <p className="text-2xl text-[#163d64]/70 mb-2">Country</p>
-                        <p className="text-3xl text-[#163d64] font-medium">{standardAlloyCountry}</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
+{densityType !== 'calculated' && selectedFields.standardAlloy && standardAlloyName && (
+  <div className="space-y-6">
+    <h2 className="text-3xl font-semibold text-[#163d64]">Standard Alloy Information</h2>
+    <div className="grid grid-cols-2 gap-8">
+      <div className="p-6 rounded-xl bg-[#163d64]/5">
+        <p className="text-2xl text-[#163d64]/70 mb-2">Name</p>
+        <p className="text-3xl text-[#163d64] font-medium">{standardAlloyName}</p>
+      </div>
+      <div className="p-6 rounded-xl bg-[#163d64]/5">
+        <p className="text-2xl text-[#163d64]/70 mb-2">Country</p>
+        <p className="text-3xl text-[#163d64] font-medium">{standardAlloyCountry}</p>
+      </div>
+    </div>
+  </div>
+)}
   
                 {/* Master Sample Details */}
                 {selectedFields.masterDetails && masterExists && (
