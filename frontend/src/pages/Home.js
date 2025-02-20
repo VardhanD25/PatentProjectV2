@@ -19,32 +19,30 @@ const Home = () => {
         {/* Main Content */}
         <main className="flex-grow">
           {/* Hero Section */}
-          <section className="relative min-h-[90vh]  flex items-center justify-center overflow-hidden">
+          <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 pt-20 lg:px-8">
-              <div className="text-center max-w-3xl mx-auto mb-16">
+              <div className="text-center max-w-4xl mx-auto mb-16">
                
                 <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
                   Pioneering
-                  <span className="block text-[#fa4516] mt-2">
-                  Compactness Calculation
+                  <span className="block text-[#fa4516] mt-3">
+                    Compactness Calculation
                   </span>
                 </h1>
-                <p className="text-xl text-[#163d64]/80 mb-10 max-w-2xl mx-auto">
+                <p className="text-xl md:text-2xl text-[#163d64]/80 mb-10 max-w-3xl mx-auto leading-relaxed">
                   Experience the future of engineering decisions with our cutting-edge Compactness Calculator. 
                   Optimize your material choices with precision and confidence.
                 </p>
                 <div className="flex justify-center gap-6">
-                <Link  
+                  <Link  
                     to="/userinput"  
-                    className="px-8 py-4 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform"
+                    className="px-8 py-4 text-xl bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform"
                   >
                     Get Started Now →
-                </Link>
+                  </Link>
+                  
                 </div>
               </div>
-
-             
-              
             </div>
           </section>
         </main>
