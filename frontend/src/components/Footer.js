@@ -4,6 +4,13 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
+  const getLogoPath = () => {
+    if (window.electron) {
+      return './logo.jpg';
+    }
+    return `${process.env.PUBLIC_URL}/logo.jpg`;
+  };
+
   return (
     <footer className="relative z-10 bg-white border-t border-[#163d64]/10">
       <div className="max-w-7xl mx-auto px-4 py-12">
@@ -13,7 +20,7 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-2 space-y-4">
             <Link to="/" className="flex items-center space-x-3 group">
               <img 
-                src="/logo.jpg" 
+                src={getLogoPath()} 
                 alt="Company Logo" 
                 className="h-16 w-16 object-contain"
               />
