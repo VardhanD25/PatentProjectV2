@@ -222,7 +222,7 @@ const AddPart = () => {
                         type="text"
                         value={partCode}
                         onChange={(e) => setPartCode(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
+                        className="w-full px-4 py-3 text-xl rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
                         required
                         placeholder="Enter unique part code"
                       />
@@ -234,7 +234,7 @@ const AddPart = () => {
                         type="text"
                         value={partName}
                         onChange={(e) => setPartName(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
+                        className="w-full px-4 py-3 text-xl rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] placeholder-[#163d64]/50 focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
                         required
                         placeholder="Enter part name"
                       />
@@ -246,7 +246,7 @@ const AddPart = () => {
                     <select
                       value={selectedStandardAlloy}
                       onChange={(e) => setSelectedStandardAlloy(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
+                      className="w-full px-4 py-3 text-xl rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
                     >
                       <option value="">Select Standard Alloy</option>
                       {standardAlloys.map(alloy => (
@@ -267,7 +267,7 @@ const AddPart = () => {
                               <select
                                 value={element.symbol}
                                 onChange={(e) => handleCompositionChange(index, 'symbol', e.target.value)}
-                                className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
+                                className="w-full px-4 py-3 text-xl rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
                               >
                                 <option value="">Select Symbol</option>
                                 {elementSymbols
@@ -290,7 +290,7 @@ const AddPart = () => {
                               step="0.01"
                               value={element.percentage}
                               onChange={(e) => handleCompositionChange(index, 'percentage', e.target.value)}
-                              className="w-full px-4 py-3 rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
+                              className="w-full px-4 py-3 text-xl rounded-xl bg-white border border-[#163d64]/20 text-[#163d64] focus:outline-none focus:border-[#163d64] focus:ring-1 focus:ring-[#163d64] transition-colors duration-300"
                               placeholder="Percentage"
                               min="0"
                               max="100"
@@ -302,7 +302,7 @@ const AddPart = () => {
                           <button
                             type="button"
                             onClick={() => handleRemoveElement(index)}
-                            className="px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-colors duration-300"
+                            className="px-4 py-2 bg-red-50 text-red-600 text-xl rounded-xl hover:bg-red-100 transition-colors duration-300"
                           >
                             Remove Element
                           </button>
@@ -313,7 +313,7 @@ const AddPart = () => {
                     <button
                       type="button"
                       onClick={handleAddElement}
-                      className="w-full px-4 py-2 border-2 border-[#163d64] text-[#163d64] font-semibold rounded-xl hover:bg-[#163d64] hover:text-white transition-all duration-300"
+                      className="w-full px-4 py-2 border-2 border-[#163d64] text-[#163d64] font-semibold text-xl rounded-xl hover:bg-[#163d64] hover:text-white transition-all duration-300"
                     >
                       Add Element
                     </button>

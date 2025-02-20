@@ -27,6 +27,8 @@ function ReportPage() {
     densityOfMasterSample,
     notes,
     porosity,
+    standardAlloyCountry,
+    standardAlloyName,
   } = location.state.reportData;
 
   const reportRef = useRef();
@@ -54,23 +56,26 @@ function ReportPage() {
 
   const handlePrintReport = () => {
     const reportContent = document.createElement('div');
-    reportContent.style.padding = '20px';
-    reportContent.style.color = '#000';
-    reportContent.style.backgroundColor = '#fff';
-  
-    let content = '';
-  
-    if (selectedFields.basicInfo) {
-      content += `
-        <div style="margin-bottom: 20px">
-          <h2 style="font-size: 30px; margin-bottom: 15px">Basic Information</h2>
-          <p style="font-size: 27px"><strong>Date:</strong> ${date}</p>
-          <p style="font-size: 27px"><strong>Part Code:</strong> ${partCode}</p>
-          <p style="font-size: 27px"><strong>Part Name:</strong> ${partName}</p>
-          <p style="font-size: 27px"><strong>Theoretical Density:</strong> ${density}</p>
-        </div>
-      `;
-    }
+  reportContent.style.padding = '20px';
+  reportContent.style.color = '#000';
+  reportContent.style.backgroundColor = '#fff';
+
+  let content = `
+    <h1 style="font-size: 45px; text-align: center; margin-bottom: 30px">Compactness Evaluation</h1>
+  `;
+
+  if (selectedFields.basicInfo) {
+    content += `
+      <div style="margin-bottom: 20px">
+        <h2 style="font-size: 30px; margin-bottom: 15px">Basic Information</h2>
+        <p style="font-size: 27px"><strong>Date:</strong> ${date}</p>
+        <p style="font-size: 27px"><strong>Part Code:</strong> ${partCode}</p>
+        <p style="font-size: 27px"><strong>Part Name:</strong> ${partName}</p>
+        <p style="font-size: 27px"><strong>Theoretical Density:</strong> ${density}</p>
+        ${standardAlloyName && standardAlloyCountry ? `<p style="font-size: 27px"><strong>Standard Alloy:</strong> ${standardAlloyName} (${standardAlloyCountry})</p>` : ''}
+      </div>
+    `;
+  }
   
     if (selectedFields.measurements) {
       content += `
@@ -482,6 +487,13 @@ function ReportPage() {
                       <p className="text-xl font-medium text-[#163d64]/70">Theoretical Density</p>
                       <p className="text-2xl text-[#163d64]">{density}</p>
                     </div>
+
+                  {standardAlloyName && standardAlloyCountry && (
+                    <div className="space-y-2">
+                      <p className="text-xl font-medium text-[#163d64]/70">Standard Alloy</p>
+                      <p className="text-2xl text-[#163d64]">{`${standardAlloyName} (${standardAlloyCountry})`}</p>
+                    </div>
+                  )}
                   </div>
                 </div>
 

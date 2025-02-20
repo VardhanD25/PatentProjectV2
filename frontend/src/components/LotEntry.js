@@ -72,12 +72,14 @@ function LotEntry({
 
   useEffect(() => {
     const fetchStandardAlloy = async () => {
-      if (standardAlloyId) { // Only fetch if standardAlloyId is available
+      if (standardAlloyId) {
+        console.log('Standard Alloy ID:', standardAlloyId);
+  
         setLoading(true);
         try {
-          const response = await fetch(`http://localhost:4000/standardAlloy/${standardAlloyId}`);
+          const response = await fetch(`http://localhost:4000/standardAlloy/${standardAlloyId._id}`);
           const data = await response.json();
-
+  
           if (response.ok) {
             setStandardAlloyCountry(data.alloy.country);
             setStandardAlloyName(data.alloy.name);
@@ -91,7 +93,7 @@ function LotEntry({
         }
       }
     };
-
+  
     fetchStandardAlloy();
   }, [standardAlloyId]);
 
@@ -262,15 +264,15 @@ function LotEntry({
                             <td className="py-4 px-6 text-2xl">{partMassAirArray[index]}</td>
                             <td className="py-4 px-6 text-2xl">{partMassFluidArray[index]}</td>
                             <td className="py-4 px-6 text-2xl bg-[#fff0f0]">{partDensityArray[index]}</td>
-                            <td className="py-4 px-6 text-2xl bg-[#fff0f0]">{compactnessRatioArray[index]}</td>
+                            <td className="py-4 px-6 text-2xl bg-[#fff0f0]">{compactnessRatioArray[index]}%</td>
                             <td className="py-4 px-6 text-2xl bg-[#fff0f0]">
                               {masterExists === 'yes' ? (
-                                `${porosityArray[index]}%`
+                                `${porosityArray[index]}`
                               ) : (
                                 partDensityArray[index] === Math.max(...partDensityArray.map(d => parseFloat(d))).toString() ? (
                                   'Reference Part'
                                 ) : (
-                                  `${porosityArray[index]}%`
+                                  `${porosityArray[index]}`
                                 )
                               )}
                             </td>
