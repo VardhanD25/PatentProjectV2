@@ -34,7 +34,7 @@ function LotEntry({
   const [composition, setComposition] = useState([]);
   const [standardAlloyId, setStandardAlloyId] = useState('');
   const [standardAlloyName, setStandardAlloyName] = useState('');
-  const [standardAlloyCountry, setStandardAlloyCountry] = useState('');
+  const [standardAlloyReference, setStandardAlloyReference] = useState('');
   const [itemNumbers, setItemNumbers] = useState([]);
   const [itemNumberError, setItemNumberError] = useState('');
   const navigate = useNavigate();
@@ -81,7 +81,7 @@ function LotEntry({
           const data = await response.json();
   
           if (response.ok) {
-            setStandardAlloyCountry(data.alloy.country);
+            setStandardAlloyReference(data.alloy.reference);
             setStandardAlloyName(data.alloy.name);
           } else {
             setError(data.message || 'Error fetching standard alloy response');
@@ -171,7 +171,7 @@ function LotEntry({
           acc[item.element.symbol] = item.percentage;
           return acc;
         }, {}),
-        standardAlloyCountry,
+        standardAlloyReference,
         standardAlloyName,
         itemNumbers,
         optionalReport: true,

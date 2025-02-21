@@ -29,7 +29,7 @@ function SinglePieceEntry({
   const [composition, setComposition] = useState([]);
   const [standardAlloyId, setStandardAlloyId] = useState('');
   const [standardAlloyName, setStandardAlloyName] = useState('');
-  const [standardAlloyCountry, setStandardAlloyCountry] = useState('');
+  const [standardAlloyReference, setStandardAlloyReference] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [artificialLoading, setArtificialLoading] = useState(true);
@@ -100,7 +100,7 @@ function SinglePieceEntry({
           const data = await response.json();
 
           if (response.ok) {
-            setStandardAlloyCountry(data.alloy.country);
+            setStandardAlloyReference(data.alloy.reference);
             setStandardAlloyName(data.alloy.name);
           } else {
             setError(data.message || 'Error fetching standard alloy response');
@@ -152,7 +152,7 @@ function SinglePieceEntry({
       densityOfItem: partDensity,
       compactnessRatio,
       porosity,
-      standardAlloyCountry,
+      standardAlloyReference,
       standardAlloyName,
       optionalReport: true,
       notes: '',

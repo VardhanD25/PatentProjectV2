@@ -28,7 +28,7 @@ function ReportPage() {
     densityOfMasterSample,
     notes,
     porosity,
-    standardAlloyCountry,
+    standardAlloyReference,
     standardAlloyName,
   } = location.state.reportData;
 
@@ -73,7 +73,7 @@ function ReportPage() {
           <p style="font-size: 27px"><strong>Part Code:</strong> ${partCode}</p>
           <p style="font-size: 27px"><strong>Part Name:</strong> ${partName}</p>
           <p style="font-size: 27px"><strong>Theoretical Density:</strong> ${density}</p>
-          ${densityType !== 'calculated' && standardAlloyName && standardAlloyCountry ? `<p style="font-size: 27px"><strong>Standard Alloy:</strong> ${standardAlloyName} (${standardAlloyCountry})</p>` : ''}
+          ${densityType !== 'calculated' && standardAlloyName && standardAlloyReference ? `<p style="font-size: 27px"><strong>Standard Alloy:</strong> ${standardAlloyName} (${standardAlloyReference})</p>` : ''}
         </div>
       `;
     }
@@ -495,10 +495,10 @@ function ReportPage() {
       <p className="text-2xl text-[#163d64]">{attachmentExists==="yes"?'Yes':'No'}</p>
     </div>
 
-    {densityType !== 'calculated' && standardAlloyName && standardAlloyCountry && (
+    {densityType !== 'calculated' && standardAlloyName && standardAlloyReference && (
       <div className="space-y-2">
         <p className="text-xl font-medium text-[#163d64]/70">Standard Alloy</p>
-        <p className="text-2xl text-[#163d64]">{`${standardAlloyName} (${standardAlloyCountry})`}</p>
+        <p className="text-2xl text-[#163d64]">{`${standardAlloyName} (${standardAlloyReference})`}</p>
       </div>
     )}
   </div>

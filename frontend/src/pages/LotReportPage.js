@@ -60,7 +60,7 @@ function LotReportPage() {
     porosityArray = [],
     masterExists,
     masterAttachmentExists,
-    standardAlloyCountry ,
+    standardAlloyReference ,
     standardAlloyName,
     itemNumbers = [],
     optionalReport = true,
@@ -99,7 +99,7 @@ function LotReportPage() {
           <p style="font-size: 27px"><strong>Part Code:</strong> ${partCode}</p>
           <p style="font-size: 27px"><strong>Part Name:</strong> ${partName}</p>
           <p style="font-size: 27px"><strong>Theoretical Density:</strong> ${density}</p>
-          ${densityType !== 'calculated' && standardAlloyName && standardAlloyCountry ? `<p style="font-size: 27px"><strong>Standard Alloy:</strong> ${standardAlloyName} (${standardAlloyCountry})</p>` : ''}
+          ${densityType !== 'calculated' && standardAlloyName && standardAlloyReference ? `<p style="font-size: 27px"><strong>Standard Alloy:</strong> ${standardAlloyName} (${standardAlloyReference})</p>` : ''}
         </div>
       `;
     }
@@ -159,7 +159,7 @@ function LotReportPage() {
         <div style="margin-bottom: 20px">
           <h2 style="font-size: 30px; margin-bottom: 10px">Standard Alloy Information</h2>
           <p style="font-size: 27px"><strong>Name:</strong> ${standardAlloyName}</p>
-          <p style="font-size: 27px"><strong>Country:</strong> ${standardAlloyCountry}</p>
+          <p style="font-size: 27px"><strong>Reference:</strong> ${standardAlloyReference}</p>
         </div>
       `;
     }
@@ -530,10 +530,10 @@ function LotReportPage() {
                       <p className="text-2xl text-[#163d64]/70 mb-2">Attachment</p>
                       <p className="text-3xl text-[#163d64] font-medium">{attachmentExists==="yes" ? 'Yes' : 'No'}</p>
                     </div>
-                    {/* {densityType !== 'calculated' && standardAlloyName && standardAlloyCountry && (
+                    {/* {densityType !== 'calculated' && standardAlloyName && standardAlloyReference && (
                       <div className="p-6 rounded-xl bg-[#163d64]/5">
                         <p className="text-2xl font-medium text-[#163d64]/70">Standard Alloy</p>
-                        <p className="text-3xl text-[#163d64]">{`${standardAlloyName} (${standardAlloyCountry})`}</p>
+                        <p className="text-3xl text-[#163d64]">{`${standardAlloyName} (${standardAlloyReference})`}</p>
                       </div>
                     )} */}
                   </div>
@@ -600,8 +600,8 @@ function LotReportPage() {
         <p className="text-3xl text-[#163d64] font-medium">{standardAlloyName}</p>
       </div>
       <div className="p-6 rounded-xl bg-[#163d64]/5">
-        <p className="text-2xl text-[#163d64]/70 mb-2">Country</p>
-        <p className="text-3xl text-[#163d64] font-medium">{standardAlloyCountry}</p>
+        <p className="text-2xl text-[#163d64]/70 mb-2">Reference</p>
+        <p className="text-3xl text-[#163d64] font-medium">{standardAlloyReference}</p>
       </div>
     </div>
   </div>
