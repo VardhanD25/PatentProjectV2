@@ -145,7 +145,7 @@ function SinglePieceEntry({
         acc[item.element.symbol] = item.percentage;
         return acc;
       }, {}),
-      partAttachments: attachmentExists === 'yes' ? 'yes' : 'no',
+      attachmentExists,
       massInAir: partMassAir,
       massInFluid: partMassFluid,
       fluidDensity: densityOfFluid,

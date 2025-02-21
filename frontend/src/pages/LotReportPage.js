@@ -51,15 +51,15 @@ function LotReportPage() {
     theoreticalDensity: density = '',
     densityType,
     chemicalComposition = {},
-    partAttachments,
+    attachmentExists,
     partMassAirArray: massInAir = [],
     partMassFluidArray: massInFluid = [],
     densityOfFluid: fluidDensity = '',
     densityOfMasterSample: densityOfItem = '',
     compactnessRatioArray: compactnessRatio = [],
     porosityArray = [],
-    masterExists = false,
-    masterAttachmentExists = false,
+    masterExists,
+    masterAttachmentExists,
     standardAlloyCountry ,
     standardAlloyName,
     itemNumbers = [],
@@ -82,28 +82,27 @@ function LotReportPage() {
   };
 
   const handleDownloadReport = () => {
-    console.log("Here"+standardAlloyCountry,standardAlloyName)
     const reportContent = document.createElement('div');
-  reportContent.style.padding = '20px';
-  reportContent.style.color = '#163d64';
-  reportContent.style.backgroundColor = '#fff';
-
-  let content = `
-    <h1 style="font-size: 45px; text-align: center; margin-bottom: 30px">Compactness Evaluation</h1>
-  `;
-
-  if (selectedFields.basicInfo) {
-    content += `
-      <div style="margin-bottom: 20px">
-        <h2 style="color: #163d64; font-size: 30px; margin-bottom: 10px">Basic Information</h2>
-        <p style="font-size: 27px"><strong>Date:</strong> ${date}</p>
-        <p style="font-size: 27px"><strong>Part Code:</strong> ${partCode}</p>
-        <p style="font-size: 27px"><strong>Part Name:</strong> ${partName}</p>
-        <p style="font-size: 27px"><strong>Theoretical Density:</strong> ${density}</p>
-        ${standardAlloyName && standardAlloyCountry ? `<p style="font-size: 27px"><strong>Standard Alloy:</strong> ${standardAlloyName} (${standardAlloyCountry})</p>` : ''}
-      </div>
+    reportContent.style.padding = '20px';
+    reportContent.style.color = '#163d64';
+    reportContent.style.backgroundColor = '#fff';
+  
+    let content = `
+      <h1 style="font-size: 45px; text-align: center; margin-bottom: 30px">Compactness Evaluation</h1>
     `;
-  }
+  
+    if (selectedFields.basicInfo) {
+      content += `
+        <div style="margin-bottom: 20px">
+          <h2 style="color: #163d64; font-size: 30px; margin-bottom: 10px">Basic Information</h2>
+          <p style="font-size: 27px"><strong>Date:</strong> ${date}</p>
+          <p style="font-size: 27px"><strong>Part Code:</strong> ${partCode}</p>
+          <p style="font-size: 27px"><strong>Part Name:</strong> ${partName}</p>
+          <p style="font-size: 27px"><strong>Theoretical Density:</strong> ${density}</p>
+          ${densityType !== 'calculated' && standardAlloyName && standardAlloyCountry ? `<p style="font-size: 27px"><strong>Standard Alloy:</strong> ${standardAlloyName} (${standardAlloyCountry})</p>` : ''}
+        </div>
+      `;
+    }
   
     if (selectedFields.measurements) {
       content += `
@@ -140,7 +139,7 @@ function LotReportPage() {
       `;
     }
   
-    if (selectedFields.chemicalComposition && chemicalComposition) {
+    if (densityType === 'calculated' && selectedFields.chemicalComposition && chemicalComposition && Object.keys(chemicalComposition).length > 0) {
       content += `
         <div style="margin-bottom: 20px">
           <h2 style="font-size: 30px; margin-bottom: 10px">Chemical Composition</h2>
@@ -155,7 +154,7 @@ function LotReportPage() {
       `;
     }
   
-    if (selectedFields.standardAlloy && standardAlloyName) {
+    if (densityType !== 'calculated' && selectedFields.standardAlloy && standardAlloyName) {
       content += `
         <div style="margin-bottom: 20px">
           <h2 style="font-size: 30px; margin-bottom: 10px">Standard Alloy Information</h2>
@@ -176,7 +175,7 @@ function LotReportPage() {
     }
   
     reportContent.innerHTML = content;
-    
+  
     html2pdf().from(reportContent).set({
       margin: [10, 10, 10, 10],
       filename: `${partCode}_report.pdf`,
@@ -527,12 +526,16 @@ function LotReportPage() {
                       <p className="text-2xl text-[#163d64]/70 mb-2">Theoretical Density</p>
                       <p className="text-3xl text-[#163d64] font-medium">{density}</p>
                     </div>
-                    {densityType !== 'calculated' && standardAlloyName && standardAlloyCountry && (
-                      <div className="space-y-2">
-                        <p className="text-xl font-medium text-[#163d64]/70">Standard Alloy</p>
-                        <p className="text-2xl text-[#163d64]">{`${standardAlloyName} (${standardAlloyCountry})`}</p>
+                    <div className="p-6 rounded-xl bg-[#163d64]/5">
+                      <p className="text-2xl text-[#163d64]/70 mb-2">Attachment</p>
+                      <p className="text-3xl text-[#163d64] font-medium">{attachmentExists==="yes" ? 'Yes' : 'No'}</p>
+                    </div>
+                    {/* {densityType !== 'calculated' && standardAlloyName && standardAlloyCountry && (
+                      <div className="p-6 rounded-xl bg-[#163d64]/5">
+                        <p className="text-2xl font-medium text-[#163d64]/70">Standard Alloy</p>
+                        <p className="text-3xl text-[#163d64]">{`${standardAlloyName} (${standardAlloyCountry})`}</p>
                       </div>
-                    )}
+                    )} */}
                   </div>
                 </div>
                 )}
@@ -550,20 +553,20 @@ function LotReportPage() {
                             <th className="py-4 px-6 text-left bg-[#163d64] text-white text-2xl font-medium">Mass in Fluid (g)</th>
                             <th className="py-4 px-6 text-left bg-[#163d64] text-white text-2xl font-medium">Density (g/cm³)</th>
                             <th className="py-4 px-6 text-left bg-[#163d64] text-white text-2xl font-medium">Compactness Ratio</th>
-                            <th className="py-4 px-6 text-left bg-[#163d64] text-white text-2xl font-medium rounded-tr-xl">Porosity</th>
+                            <th className="py-4 px-6 text-left bg-[#163d64] text-white text-2xl font-medium rounded-tr-xl">Porosity Index</th>
                           </tr>
                         </thead>
                         <tbody>
                           {massInAir.map((_, index) => (
                             <tr key={index} className="border-b border-[#163d64]/10 hover:bg-[#163d64]/5 transition-colors">
-                              <td className="py-4 px-6 font-mono text-2xl text-[#163d64]">{itemNumbers[index] || ''}</td>
-                              <td className="py-4 px-6 text-2xl text-[#163d64]">{massInAir[index]}</td>
-                              <td className="py-4 px-6 text-2xl text-[#163d64]">{massInFluid[index]}</td>
-                              <td className="py-4 px-6 text-2xl text-[#163d64]">
+                              <td className="py-4 px-6 font-mono text-3xl text-[#163d64]">{itemNumbers[index] || ''}</td>
+                              <td className="py-4 px-6 font-mono text-3xl text-[#163d64]">{massInAir[index]}</td>
+                              <td className="py-4 px-6 font-mono text-3xl text-[#163d64]">{massInFluid[index]}</td>
+                              <td className="py-4 px-6 font-mono text-3xl text-[#163d64]">
                                 {((massInAir[index] * fluidDensity) / (massInAir[index] - massInFluid[index])).toFixed(2)}
                               </td>
-                              <td className="py-4 px-6 text-2xl text-[#163d64] bg-[#fff0f0]">{compactnessRatio[index]}</td>
-                              <td className="py-4 px-6 text-2xl text-[#163d64] bg-[#fff0f0]">{porosityArray[index]}</td>
+                              <td className="py-4 px-6 font-mono text-3xl text-[#163d64] bg-[#fff0f0]">{compactnessRatio[index]}%</td>
+                              <td className="py-4 px-6 font-mono text-3xl text-[#163d64] bg-[#fff0f0]">{porosityArray[index]}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -580,7 +583,7 @@ function LotReportPage() {
       {Object.entries(chemicalComposition).map(([element, percentage]) => (
         <div key={element} className="p-6 rounded-xl bg-[#163d64]/5">
           <p className="text-2xl text-[#163d64]/70 mb-2">{element}</p>
-          <p className="text-3xl text-[#163d64] font-medium">{percentage}%</p>
+          <p className="font-mono text-3xl text-[#163d64] font-medium">{percentage}%</p>
         </div>
       ))}
     </div>
@@ -614,8 +617,8 @@ function LotReportPage() {
                         <p className="text-3xl text-[#163d64] font-medium">{densityOfItem}</p>
                       </div>
                       <div className="p-6 rounded-xl bg-[#163d64]/5">
-                        <p className="text-2xl text-[#163d64]/70 mb-2">Master Attachment</p>
-                        <p className="text-3xl text-[#163d64] font-medium">{masterAttachmentExists ? 'Yes' : 'No'}</p>
+                        <p className="text-2xl text-[#163d64]/70 mb-2">Attachment</p>
+                        <p className="text-3xl text-[#163d64] font-medium">{masterAttachmentExists==="yes" ? 'Yes' : 'No'}</p>
                       </div>
                     </div>
                   </div>

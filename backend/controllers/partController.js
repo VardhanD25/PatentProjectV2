@@ -504,9 +504,9 @@ const updatePart = async (req, res) => {
       const compactnessRatio = (partDensityNum * 100) / theoreticalDensityNum;
   
       // Check if compactness ratio is greater than 100
-      if (compactnessRatio > 100) {
-        return res.status(400).json({ error: 'Compactness ratio cannot be greater than 100' });
-      }
+      // if (compactnessRatio > 100) {
+      //   return res.status(400).json({ error: 'Compactness ratio cannot be greater than 100' });
+      // }
   
       // Respond with the calculated compactness ratio
       res.json({ compactnessRatio: compactnessRatio.toFixed(2) });
