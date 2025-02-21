@@ -122,15 +122,35 @@ function LotEntry({
     onRemovePart(index);
   };
 
+  const handleManualItemNumber = (index, value) => {
+    if (value.length > 8) return;
+    
+    
+    if (!/^[0-9A-Z]*$/.test(value)) return;
+    
+   
+    const otherNumbers = itemNumbers.filter((_, i) => i !== index);
+    if (otherNumbers.includes(value)) {
+      setItemNumberError('This item number is already in use');
+      return;
+    }
+    
+   
+    const newItemNumbers = [...itemNumbers];
+    newItemNumbers[index] = value;
+    setItemNumbers(newItemNumbers);
+    setItemNumberError('');
+  };
+
   const handleFormSubmit = () => {
     const emptyItemNumbers = itemNumbers.some(num => !num || num.trim() === '');
     if (emptyItemNumbers) {
-      setValidationMessage('Item number cannot be blank. Please enter an 8-digit code for all items.');
+      setValidationMessage('Item number cannot be blank. Please enter a code (up to 8 characters) for all items.');
       return;
     }
 
-    if (itemNumbers.some(num => num.length < 8)) {
-      setValidationMessage('All item numbers must be 8 characters long');
+    if (itemNumbers.some(num => num.length > 8)) {
+      setValidationMessage('Item numbers cannot be longer than 8 characters');
       return;
     }
 
@@ -185,26 +205,6 @@ function LotEntry({
       const newWeight = await window.electron.captureWeight();
       setWeight(newWeight);
     }
-  };
-
-  const handleManualItemNumber = (index, value) => {
-    if (value.length > 8) return;
-    
-    // Allow only alphanumeric input
-    if (!/^[0-9A-Z]*$/.test(value)) return;
-    
-    // Check if number is already in use (excluding the current index)
-    const otherNumbers = itemNumbers.filter((_, i) => i !== index);
-    if (otherNumbers.includes(value)) {
-      setItemNumberError('This item number is already in use');
-      return;
-    }
-    
-    // Update only the specific index
-    const newItemNumbers = [...itemNumbers];
-    newItemNumbers[index] = value;
-    setItemNumbers(newItemNumbers);
-    setItemNumberError('');
   };
 
   // Add cleanup on component unmount
@@ -320,9 +320,9 @@ function LotEntry({
                                   type="text"
                                   value={itemNumbers[index] || ''}
                                   onChange={(e) => handleManualItemNumber(index, e.target.value.toUpperCase())}
-                                  placeholder="Enter 6-digit code"
+                                  placeholder="Enter 8-digit code"
                                   className="w-full px-4 py-3 text-2xl rounded-lg border border-[#163d64]/20 focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-colors"
-                                  maxLength={6}
+                                  maxLength={8}
                                 />
                                 {itemNumberError && itemNumbers[index] && (
                                   <span className="text-red-500 text-sm mt-1">{itemNumberError}</span>
