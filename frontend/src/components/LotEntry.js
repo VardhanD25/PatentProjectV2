@@ -325,7 +325,7 @@ function LotEntry({
                                   value={itemNumbers[index] || ''}
                                   onChange={(e) => handleManualItemNumber(index, e.target.value.toUpperCase())}
                                   placeholder="Enter 6-digit code"
-                                  className="w-full px-4 py-3 text-lg rounded-lg border border-[#163d64]/20 focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-colors"
+                                  className="w-full px-4 py-3 text-2xl rounded-lg border border-[#163d64]/20 focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-colors"
                                   maxLength={6}
                                 />
                                 {itemNumberError && itemNumbers[index] && (

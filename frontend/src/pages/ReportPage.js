@@ -17,7 +17,7 @@ function ReportPage() {
     theoreticalDensity: density,
     densityType,
     chemicalComposition,
-    partAttachments,
+    attachmentExists,
     massInAir,
     massInFluid,
     fluidDensity,
@@ -490,6 +490,10 @@ function ReportPage() {
       <p className="text-xl font-medium text-[#163d64]/70">Theoretical Density</p>
       <p className="text-2xl text-[#163d64]">{density}</p>
     </div>
+    <div className="space-y-2">
+      <p className="text-xl font-medium text-[#163d64]/70">Attachment</p>
+      <p className="text-2xl text-[#163d64]">{attachmentExists==="yes"?'Yes':'No'}</p>
+    </div>
 
     {densityType !== 'calculated' && standardAlloyName && standardAlloyCountry && (
       <div className="space-y-2">
@@ -529,7 +533,7 @@ function ReportPage() {
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
     <div className="space-y-2">
       <p className="text-xl font-medium text-[#163d64]/70">Compactness Ratio</p>
-      <p className="text-2xl text-[#163d64]">{compactnessRatio}</p>
+      <p className="text-2xl text-[#163d64]">{compactnessRatio}%</p>
     </div>
   </div>
 </div>
@@ -537,10 +541,10 @@ function ReportPage() {
 {/* Porosity */}
 {porosity && porosity !== 'N/A' && (
   <div className="space-y-4">
-    <h3 className="text-3xl font-semibold text-[#163d64]">Porosity</h3>
+    <h3 className="text-3xl font-semibold text-[#163d64]">Porosity Index</h3>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div className="space-y-2">
-        <p className="text-xl font-medium text-[#163d64]/70">Porosity</p>
+        <p className="text-xl font-medium text-[#163d64]/70">Porosity Index</p>
         <p className="text-2xl text-[#163d64]">{porosity}</p>
       </div>
     </div>
@@ -555,7 +559,7 @@ function ReportPage() {
       {Object.entries(chemicalComposition).map(([element, percentage]) => (
         <div key={element} className="bg-white/50 border border-[#163d64]/20 rounded-xl p-4">
           <p className="text-xl font-medium text-[#163d64]/70">{element}</p>
-          <p className="text-2xl text-[#163d64] font-medium">{percentage}%</p>
+          <p className="font-mono text-2xl text-[#163d64] font-medium">{percentage}%</p>
         </div>
       ))}
     </div>
@@ -577,7 +581,7 @@ function ReportPage() {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div className="space-y-2">
         <p className="text-xl font-medium text-[#163d64]/70">Master Sample has Attachment</p>
-        <p className="text-2xl text-[#163d64]">{masterAttachmentExists ? 'Yes' : 'No'}</p>
+        <p className="text-2xl text-[#163d64]">{masterAttachmentExists==="yes" ? 'Yes' : 'No'}</p>
       </div>
       <div className="space-y-2">
         <p className="text-xl font-medium text-[#163d64]/70">Density of Master Sample</p>
