@@ -114,7 +114,7 @@ const fetchPart = async (req, res) => {
       })
       .populate({
         path: 'standardAlloyId',
-        select: 'name country density'
+        select: 'name country density reference'
       });
 
     if (!part) {
@@ -143,7 +143,7 @@ const getAllPartsForUser = async (req, res) => {
       })
       .populate({
         path: 'standardAlloyId',
-        select: 'name country density' // Include all fields you need from StandardAlloy
+        select: 'name country density reference' // Include all fields you need from StandardAlloy
       });
 
     // Log the parts to check the data

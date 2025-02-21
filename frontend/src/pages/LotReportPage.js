@@ -60,7 +60,7 @@ function LotReportPage() {
     porosityArray = [],
     masterExists,
     masterAttachmentExists,
-    standardAlloyCountry ,
+    standardAlloyReference ,
     standardAlloyName,
     itemNumbers = [],
     optionalReport = true,
@@ -93,13 +93,13 @@ function LotReportPage() {
   
     if (selectedFields.basicInfo) {
       content += `
-        <div style="margin-bottom: 15px">
-          <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Basic Information</h2>
-          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Date:</strong> ${date}</p>
-          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Part Code:</strong> ${partCode}</p>
-          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Part Name:</strong> ${partName}</p>
-          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Theoretical Density:</strong> ${density}</p>
-          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Attachment:</strong> ${attachmentExists === "yes" ? 'Yes' : 'No'}</p>
+        <div style="margin-bottom: 20px">
+          <h2 style="color: #163d64; font-size: 30px; margin-bottom: 10px">Basic Information</h2>
+          <p style="font-size: 27px"><strong>Date:</strong> ${date}</p>
+          <p style="font-size: 27px"><strong>Part Code:</strong> ${partCode}</p>
+          <p style="font-size: 27px"><strong>Part Name:</strong> ${partName}</p>
+          <p style="font-size: 27px"><strong>Theoretical Density:</strong> ${density}</p>
+          ${densityType !== 'calculated' && standardAlloyName && standardAlloyReference ? `<p style="font-size: 27px"><strong>Standard Alloy:</strong> ${standardAlloyName} (${standardAlloyReference})</p>` : ''}
         </div>
       `;
     }
@@ -147,7 +147,17 @@ function LotReportPage() {
                 <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${weight}</td>
               </tr>
             `).join('')}
-          </table>
+          </div>
+        </div>
+      `;
+    }
+  
+    if (densityType !== 'calculated' && selectedFields.standardAlloy && standardAlloyName) {
+      content += `
+        <div style="margin-bottom: 20px">
+          <h2 style="font-size: 30px; margin-bottom: 10px">Standard Alloy Information</h2>
+          <p style="font-size: 27px"><strong>Name:</strong> ${standardAlloyName}</p>
+          <p style="font-size: 27px"><strong>Reference:</strong> ${standardAlloyReference}</p>
         </div>
       `;
     }
@@ -515,10 +525,10 @@ function LotReportPage() {
                       <p className="text-2xl text-black mb-2">Attachment</p>
                       <p className="text-3xl text-black font-medium">{attachmentExists==="yes" ? 'Yes' : 'No'}</p>
                     </div>
-                    {/* {densityType !== 'calculated' && standardAlloyName && standardAlloyCountry && (
+                    {/* {densityType !== 'calculated' && standardAlloyName && standardAlloyReference && (
                       <div className="p-6 rounded-xl bg-[#163d64]/5">
                         <p className="text-2xl font-medium text-[#163d64]/70">Standard Alloy</p>
-                        <p className="text-3xl text-[#163d64]">{`${standardAlloyName} (${standardAlloyCountry})`}</p>
+                        <p className="text-3xl text-[#163d64]">{`${standardAlloyName} (${standardAlloyReference})`}</p>
                       </div>
                     )} */}
                   </div>
@@ -585,8 +595,8 @@ function LotReportPage() {
         <p className="text-3xl text-black font-medium">{standardAlloyName}</p>
       </div>
       <div className="p-6 rounded-xl bg-[#163d64]/5">
-        <p className="text-2xl text-black mb-2">Country</p>
-        <p className="text-3xl text-black font-medium">{standardAlloyCountry}</p>
+        <p className="text-2xl text-[#163d64]/70 mb-2">Reference</p>
+        <p className="text-3xl text-[#163d64] font-medium">{standardAlloyReference}</p>
       </div>
     </div>
   </div>

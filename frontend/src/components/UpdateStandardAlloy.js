@@ -88,7 +88,7 @@ function UpdateStandardAlloy({ partCode, onClose, onSave }) {
             <div className="bg-[#163d64]/5 rounded-xl p-4 border border-[#163d64]/10">
               <p className="text-[#163d64]">
                 {currentAlloy.name}
-                {currentAlloy.country && ` (${currentAlloy.country})`}
+                {currentAlloy.reference && ` (${currentAlloy.reference})`}
               </p>
               {currentAlloy.density && (
                 <p className="text-[#163d64]/70 text-sm mt-2">
@@ -119,7 +119,7 @@ function UpdateStandardAlloy({ partCode, onClose, onSave }) {
               .filter(alloy => alloy._id !== currentAlloy?._id)
               .map(alloy => (
                 <option key={alloy._id} value={alloy._id}>
-                  {`${alloy.name}${alloy.country ? ` (${alloy.country})` : ''}${alloy.density ? ` - ${alloy.density} g/cm³` : ''}`}
+                  {`${alloy.name}${alloy.reference ? ` (${alloy.reference})` : ''}${alloy.density ? ` - ${alloy.density} g/cm³` : ''}`}
                 </option>
               ))}
           </select>
