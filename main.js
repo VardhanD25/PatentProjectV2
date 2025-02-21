@@ -20,14 +20,16 @@ function checkServerIsReady(port, callback) {
 }
 
 function createWindow() {
-  mainWindow = new BrowserWindow({
+  const mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
+    frame: true,  
     webPreferences: {
-      nodeIntegration: false,
+      nodeIntegration: true,
       contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js'),
-    },
+      enableRemoteModule: true,
+      preload: path.join(__dirname, 'preload.js')
+    }
   });
 
   if (process.env.NODE_ENV === 'development') {

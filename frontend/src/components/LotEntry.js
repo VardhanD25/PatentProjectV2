@@ -123,27 +123,23 @@ function LotEntry({
   };
 
   const handleFormSubmit = () => {
-    
     const emptyItemNumbers = itemNumbers.some(num => !num || num.trim() === '');
     if (emptyItemNumbers) {
-      setValidationMessage('Item number cannot be blank. Please enter a 6-digit code for all items.');
+      setValidationMessage('Item number cannot be blank. Please enter an 8-digit code for all items.');
       return;
     }
 
-    
-    if (itemNumbers.some(num => num.length < 6)) {
-      setValidationMessage('All item numbers must be 6 characters long');
+    if (itemNumbers.some(num => num.length < 8)) {
+      setValidationMessage('All item numbers must be 8 characters long');
       return;
     }
 
-    
     const validation = validateLotEntry();
     if (!validation.isValid) {
       setValidationMessage(validation.message);
       return;
     }
 
-   
     setValidationMessage('');
     onSubmit();
     setShowResults(true);
@@ -192,7 +188,7 @@ function LotEntry({
   };
 
   const handleManualItemNumber = (index, value) => {
-    if (value.length > 6) return;
+    if (value.length > 8) return;
     
     // Allow only alphanumeric input
     if (!/^[0-9A-Z]*$/.test(value)) return;
@@ -324,9 +320,9 @@ function LotEntry({
                                   type="text"
                                   value={itemNumbers[index] || ''}
                                   onChange={(e) => handleManualItemNumber(index, e.target.value.toUpperCase())}
-                                  placeholder="Enter 6-digit code"
+                                  placeholder="Enter 8-digit code"
                                   className="w-full px-4 py-3 text-lg rounded-lg border border-[#163d64]/20 focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-colors"
-                                  maxLength={6}
+                                  maxLength={8}
                                 />
                                 {itemNumberError && itemNumbers[index] && (
                                   <span className="text-red-500 text-sm mt-1">{itemNumberError}</span>
@@ -422,3 +418,5 @@ function LotEntry({
 }
 
 export default LotEntry;
+
+
