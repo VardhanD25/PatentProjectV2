@@ -8,28 +8,37 @@ const { ReadlineParser } = require('@serialport/parser-readline');
 let mainWindow;
 let serverProcess;
 
-function checkServerIsReady(port, callback) {
-  const client = net.createConnection({ port }, () => {
-    client.end();
-    callback(true);
-  });
-
-  client.on('error', () => {
-    callback(false);
+async function checkServerIsReady(port, timeout = 10000) {
+  return new Promise((resolve) => {
+    let elapsedTime = 0;
+    const checkInterval = setInterval(() => {
+      const client = net.createConnection({ port }, () => {
+        client.end();
+        clearInterval(checkInterval);
+        resolve(true);
+      });
+      client.on('error', () => {
+        client.destroy();
+      });
+      elapsedTime += 1000;
+      if (elapsedTime >= timeout) {
+        clearInterval(checkInterval);
+        resolve(false);
+      }
+    }, 1000);
   });
 }
 
 function createWindow() {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
-    frame: true,  
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: true,
       enableRemoteModule: true,
-      preload: path.join(__dirname, 'preload.js')
-    }
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js'),
+    },
   });
 
   if (process.env.NODE_ENV === 'development') {
@@ -42,6 +51,10 @@ function createWindow() {
 
   mainWindow.on('closed', () => {
     mainWindow = null;
+  });
+
+  mainWindow.on('focus', () => {
+    mainWindow.webContents.focus();
   });
 }
 
@@ -61,26 +74,16 @@ function startServer() {
   });
 }
 
-function startApp() {
+async function startApp() {
   const serverPort = process.env.PORT || 4000;
   startServer();
-
-  let timeout = 10000; // 10 seconds
-  let elapsedTime = 0;
-
-  const checkInterval = setInterval(() => {
-    elapsedTime += 1000;
-    checkServerIsReady(serverPort, (isReady) => {
-      if (isReady) {
-        clearInterval(checkInterval);
-        createWindow();
-      } else if (elapsedTime >= timeout) {
-        clearInterval(checkInterval);
-        console.error('Server failed to start within the timeout period.');
-        app.quit();
-      }
-    });
-  }, 1000);
+  const isServerReady = await checkServerIsReady(serverPort);
+  if (isServerReady) {
+    createWindow();
+  } else {
+    console.error('Server failed to start within the timeout period.');
+    app.quit();
+  }
 }
 
 // Open the serial port, read weight once, then close the port
@@ -96,7 +99,6 @@ ipcMain.handle('capture-weight', async () => {
     });
 
     const parser = port.pipe(new ReadlineParser({ delimiter: '\n' }));
-
     let capturedWeight = null;
 
     parser.on('data', (data) => {
@@ -117,7 +119,6 @@ ipcMain.handle('capture-weight', async () => {
     }, 1000); // Wait 1 second before closing the port
   });
 });
-
 
 app.on('ready', startApp);
 
