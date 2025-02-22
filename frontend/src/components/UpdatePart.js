@@ -107,26 +107,23 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
   };
 
   return (
-    <div 
-      className="fixed inset-0 bg-white-900/90 backdrop-blur-sm flex items-center justify-center z-50"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 bg-white-900/90 backdrop-blur-sm flex items-center justify-center z-50" onClick={onClose}>
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.2 }}
-        className="bg-white rounded-2xl shadow-xl max-w-2xl w-full mx-4 overflow-hidden"
+        className="bg-white rounded-2xl shadow-xl max-w-3xl w-full mx-4 overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6 border-b border-[#163d64]/10">
           <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold text-[#163d64]">Update Part Composition</h2>
+            <h2 className="text-4xl font-bold text-black">Update Part Composition</h2>
             <button
               onClick={onClose}
-              className="text-[#163d64]/60 hover:text-[#163d64] transition-colors duration-300"
+              className="text-black/60 hover:text-black transition-colors duration-300"
             >
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -136,19 +133,19 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
         <div className="p-6">
           {loading ? (
             <div className="flex justify-center items-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#fa4516]"></div>
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#fa4516]"></div>
             </div>
           ) : error ? (
-            <div className="text-red-500 text-center py-8 bg-red-50 rounded-xl">
+            <div className="text-red-500 text-center py-8 bg-red-50 rounded-xl text-2xl">
               {error}
             </div>
           ) : !part ? (
-            <div className="text-[#163d64]/60 text-center py-8">
+            <div className="text-black/60 text-center py-8 text-2xl">
               No part found
             </div>
           ) : (
             <div className="space-y-6">
-              <h3 className="text-xl font-medium text-[#163d64]">
+              <h3 className="text-3xl font-medium text-black">
                 {part.partName}
               </h3>
               
@@ -156,28 +153,28 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-[#163d64]/10">
-                      <th className="text-left py-3 px-4 text-sm font-medium text-[#163d64]/70">Element Symbol</th>
-                      <th className="text-left py-3 px-4 text-sm font-medium text-[#163d64]/70">Percentage</th>
+                      <th className="text-left py-4 px-6 text-2xl font-medium text-black">Element Symbol</th>
+                      <th className="text-left py-4 px-6 text-2xl font-medium text-black">Percentage</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#163d64]/10">
                     {composition.map((item, index) => (
                       <tr key={index}>
-                        <td className="py-3 px-4">
+                        <td className="py-4 px-6">
                           <input
                             type="text"
                             value={item.element.symbol}
                             onChange={(e) => handleCompositionChange(index, 'elementSymbol', e.target.value)}
-                            className="w-full px-4 py-2 rounded-lg bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
+                            className="w-full px-6 py-3 rounded-lg bg-white border border-[#163d64]/10 text-black text-2xl focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
                             placeholder="Symbol"
                           />
                         </td>
-                        <td className="py-3 px-4">
+                        <td className="py-4 px-6">
                           <input
                             type="number"
                             value={item.percentage}
                             onChange={(e) => handleCompositionChange(index, 'percentage', e.target.value)}
-                            className="w-full px-4 py-2 rounded-lg bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
+                            className="w-full px-6 py-3 rounded-lg bg-white border border-[#163d64]/10 text-black text-2xl focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
                             placeholder="Percentage"
                             min="0"
                             max="100"
@@ -190,7 +187,7 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
                 </table>
               </div>
 
-              <div className={`text-center py-3 px-4 rounded-xl ${
+              <div className={`text-center py-4 px-6 rounded-xl text-2xl ${
                 Math.abs(totalPercentage - 100) > 0.01
                   ? 'bg-red-50 text-red-500' 
                   : 'bg-green-50 text-green-500'
@@ -203,7 +200,7 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={onClose}
-                  className="px-6 py-2.5 border-2 border-[#163d64] text-[#163d64] rounded-xl font-medium hover:bg-[#163d64] hover:text-white transition-all duration-300"
+                  className="px-8 py-4 text-2xl border-2 border-[#163d64] text-[#163d64] rounded-xl font-medium hover:bg-[#163d64] hover:text-white transition-all duration-300"
                 >
                   Cancel
                 </motion.button>
@@ -211,7 +208,7 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={handleSave}
-                  className="px-6 py-2.5 bg-[#fa4516] text-white rounded-xl font-medium hover:bg-[#fa4516]/90 transition-all duration-300"
+                  className="px-8 py-4 text-2xl bg-[#fa4516] text-white rounded-xl font-medium hover:bg-[#fa4516]/90 transition-all duration-300"
                 >
                   Save Changes
                 </motion.button>

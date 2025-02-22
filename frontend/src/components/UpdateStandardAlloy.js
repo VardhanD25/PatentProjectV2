@@ -77,33 +77,33 @@ function UpdateStandardAlloy({ partCode, onClose, onSave }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-[#163d64]/10 max-w-2xl w-full">
-      <div className="space-y-6">
-        <h2 className="text-3xl font-bold text-[#163d64] mb-8">Update Standard Alloy</h2>
+    <form onSubmit={handleSubmit} className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-[#163d64]/10 max-w-3xl w-full">
+      <div className="space-y-8">
+        <h2 className="text-4xl font-bold text-black mb-8">Update Standard Alloy</h2>
 
         {/* Current Standard Alloy Display */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-[#163d64]/80">Current Standard Alloy</h3>
+        <div className="space-y-6">
+          <h3 className="text-3xl font-semibold text-black">Current Standard Alloy</h3>
           {currentAlloy ? (
-            <div className="bg-[#163d64]/5 rounded-xl p-4 border border-[#163d64]/10">
-              <p className="text-[#163d64]">
+            <div className="bg-[#163d64]/5 rounded-xl p-6 border border-[#163d64]/10">
+              <p className="text-2xl text-black">
                 {currentAlloy.name}
                 {currentAlloy.reference && ` (${currentAlloy.reference})`}
               </p>
               {currentAlloy.density && (
-                <p className="text-[#163d64]/70 text-sm mt-2">
+                <p className="text-2xl text-black/70 mt-4">
                   Density: {currentAlloy.density} g/cm³
                 </p>
               )}
             </div>
           ) : (
-            <p className="text-[#163d64]/70">No standard alloy currently assigned</p>
+            <p className="text-2xl text-black/70">No standard alloy currently assigned</p>
           )}
         </div>
 
         {/* Select New Standard Alloy */}
-        <div className="space-y-2">
-          <label className="text-sm font-semibold text-[#163d64]/80">
+        <div className="space-y-4">
+          <label className="text-2xl font-semibold text-black">
             Select New Standard Alloy
           </label>
           <select
@@ -112,7 +112,7 @@ function UpdateStandardAlloy({ partCode, onClose, onSave }) {
               setSelectedAlloy(e.target.value);
               setError('');
             }}
-            className="w-full px-6 py-4 rounded-xl bg-white border border-[#163d64]/10 text-[#163d64] focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
+            className="w-full px-6 py-4 rounded-xl bg-white border border-[#163d64]/10 text-2xl text-black focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
           >
             <option value="">Select Standard Alloy</option>
             {standardAlloys
@@ -129,9 +129,9 @@ function UpdateStandardAlloy({ partCode, onClose, onSave }) {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="p-4 bg-red-50 border border-red-200 rounded-xl"
+            className="p-6 bg-red-50 border border-red-200 rounded-xl"
           >
-            <p className="text-red-600 text-sm">{error}</p>
+            <p className="text-red-600 text-2xl">{error}</p>
           </motion.div>
         )}
 
@@ -141,7 +141,7 @@ function UpdateStandardAlloy({ partCode, onClose, onSave }) {
             onClick={onClose}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="px-6 py-3 rounded-xl border-2 border-[#163d64] text-[#163d64] font-semibold hover:bg-[#163d64] hover:text-white transition-all duration-300"
+            className="px-8 py-4 text-2xl rounded-xl border-2 border-[#163d64] text-[#163d64] font-medium hover:bg-[#163d64] hover:text-white transition-all duration-300"
           >
             Cancel
           </motion.button>
@@ -150,7 +150,7 @@ function UpdateStandardAlloy({ partCode, onClose, onSave }) {
             disabled={loading || !selectedAlloy || selectedAlloy === currentAlloy?._id}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="px-6 py-3 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 
+            className="px-8 py-4 text-2xl bg-[#fa4516] text-white font-medium rounded-xl hover:bg-[#fa4516]/90 
               transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Updating...' : 'Update'}

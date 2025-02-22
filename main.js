@@ -30,15 +30,17 @@ async function checkServerIsReady(port, timeout = 10000) {
 }
 
 function createWindow() {
-  mainWindow = new BrowserWindow({
+  const mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
+    frame: true,  
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
       contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js'),
-    },
+      enableRemoteModule: true,
+      preload: path.join(__dirname, 'preload.js')
+    }
   });
 
   if (process.env.NODE_ENV === 'development') {

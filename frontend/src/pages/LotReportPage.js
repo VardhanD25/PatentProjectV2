@@ -83,12 +83,12 @@ function LotReportPage() {
 
   const handleDownloadReport = () => {
     const reportContent = document.createElement('div');
-    reportContent.style.padding = '20px';
-    reportContent.style.color = '#163d64';
+    reportContent.style.padding = '15px';
     reportContent.style.backgroundColor = '#fff';
+    reportContent.style.fontFamily = 'monospace';
   
     let content = `
-      <h1 style="font-size: 45px; text-align: center; margin-bottom: 30px">Compactness Evaluation</h1>
+      <h1 style="font-size: 35px; text-align: center; margin-bottom: 20px; color: #163d64; font-family: sans-serif;">Lot Compactness Evaluation</h1>
     `;
   
     if (selectedFields.basicInfo) {
@@ -106,34 +106,27 @@ function LotReportPage() {
   
     if (selectedFields.measurements) {
       content += `
-        <div style="margin-bottom: 20px">
-          <h2 style="color: #163d64; font-size: 30px; margin-bottom: 10px">Measurements</h2>
+        <div style="margin-bottom: 15px">
+          <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Measurements</h2>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px">
-            <thead>
-              <tr style="background-color: #163d64">
-                <th style="border: 1px solid #163d64; padding: 8px; color: white; font-size: 18px">Item Number</th>
-                <th style="border: 1px solid #163d64; padding: 8px; color: white; font-size: 18px">Mass in Air (g)</th>
-                <th style="border: 1px solid #163d64; padding: 8px; color: white; font-size: 18px">Mass in Fluid (g)</th>
-                <th style="border: 1px solid #163d64; padding: 8px; color: white; font-size: 18px">Density (g/cm³)</th>
-                ${selectedFields.compactnessRatio ? '<th style="border: 1px solid #163d64; padding: 8px; color: white; font-size: 27px">Compactness Ratio</th>' : ''}
-                ${selectedFields.porosity ? '<th style="border: 1px solid #163d64; padding: 8px; color: white; font-size: 27px">Porosity</th>' : ''}
+            <tr style="background-color: #f3f4f6">
+              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Item Number</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Mass in Air (g)</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Mass in Fluid (g)</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Density (g/cm³)</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Compactness Ratio</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Porosity Index</th>
+            </tr>
+            ${massInAir.map((_, index) => `
+              <tr>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${itemNumbers[index]}</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${massInAir[index]}</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${massInFluid[index]}</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${((massInAir[index] * fluidDensity) / (massInAir[index] - massInFluid[index])).toFixed(2)}</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${compactnessRatio[index]}%</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${porosityArray[index]}</td>
               </tr>
-            </thead>
-            <tbody>
-              ${massInAir.map((_, index) => {
-                const density = ((massInAir[index] * fluidDensity) / (massInAir[index] - massInFluid[index])).toFixed(2);
-                return `
-                  <tr>
-                    <td style="border: 1px solid #163d64; padding: 8px; font-family: monospace; font-size: 27px">${itemNumbers[index] || ''}</td>
-                    <td style="border: 1px solid #163d64; padding: 8px; font-size: 27px">${massInAir[index]}</td>
-                    <td style="border: 1px solid #163d64; padding: 8px; font-size: 27px">${massInFluid[index]}</td>
-                    <td style="border: 1px solid #163d64; padding: 8px; font-size: 27px">${density}</td>
-                    ${selectedFields.compactnessRatio ? `<td style="border: 1px solid #163d64; padding: 8px; font-size: 27px">${compactnessRatio[index]}</td>` : ''}
-                    ${selectedFields.porosity ? `<td style="border: 1px solid #163d64; padding: 8px; font-size: 27px">${porosityArray[index]}</td>` : ''}
-                  </tr>
-                `;
-              }).join('')}
-            </tbody>
+            `).join('')}
           </table>
         </div>
       `;
@@ -141,13 +134,18 @@ function LotReportPage() {
   
     if (densityType === 'calculated' && selectedFields.chemicalComposition && chemicalComposition && Object.keys(chemicalComposition).length > 0) {
       content += `
-        <div style="margin-bottom: 20px">
-          <h2 style="font-size: 30px; margin-bottom: 10px">Chemical Composition</h2>
-          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px">
-            ${Object.entries(chemicalComposition).map(([element, percentage]) => `
-              <div style="padding: 8px; border: 1px solid #000; font-size: 18px">
-                <strong>${element}:</strong> ${percentage}%
-              </div>
+        <div style="margin-bottom: 15px">
+          <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Chemical Composition</h2>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px">
+            <tr style="background-color: #f3f4f6">
+              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Element</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Weight %</th>
+            </tr>
+            ${Object.entries(chemicalComposition).map(([element, weight]) => `
+              <tr>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${element}</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${weight}</td>
+              </tr>
             `).join('')}
           </div>
         </div>
@@ -166,10 +164,10 @@ function LotReportPage() {
   
     if (selectedFields.masterDetails && masterExists) {
       content += `
-        <div style="margin-bottom: 20px">
-          <h2 style="font-size: 30px; margin-bottom: 10px">Master Sample Details</h2>
-          <p style="font-size: 27px"><strong>Density of Master Sample:</strong> ${densityOfItem}</p>
-          <p style="font-size: 27px"><strong>Master Attachment:</strong> ${masterAttachmentExists ? 'Yes' : 'No'}</p>
+        <div style="margin-bottom: 15px">
+          <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Master Sample Details</h2>
+          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Density of Master Sample:</strong> ${densityOfItem}</p>
+          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Attachment:</strong> ${masterAttachmentExists === "yes" ? 'Yes' : 'No'}</p>
         </div>
       `;
     }
@@ -178,7 +176,7 @@ function LotReportPage() {
   
     html2pdf().from(reportContent).set({
       margin: [10, 10, 10, 10],
-      filename: `${partCode}_report.pdf`,
+      filename: `${partCode}_lot_report.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -456,7 +454,7 @@ function LotReportPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white font-quicksand text-[#163d64] relative">
+    <div className="min-h-screen flex flex-col bg-white font-quicksand relative">
       <div className="fixed inset-0">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#163d640a_1px,transparent_1px),linear-gradient(to_bottom,#163d640a_1px,transparent_1px)] bg-[size:24px_24px]"></div>
         <div className="fixed inset-0 bg-gradient-to-b from-white via-[#163d64]/5 to-white"></div>
@@ -478,57 +476,54 @@ function LotReportPage() {
               </h1>
   
               {/* Field Selection */}
-<div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-slate-200">
-  <h2 className="text-3xl font-semibold text-[#163d64] mb-6">Select Fields for Report</h2>
-  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-    {Object.entries(selectedFields).map(([field, isSelected]) => (
-      (field !== 'chemicalComposition' || (densityType === 'calculated' && chemicalComposition && Object.keys(chemicalComposition).length > 0)) && (
-        <div key={field} className="flex items-center gap-3">
-          <input
-            type="checkbox"
-            id={field}
-            checked={isSelected}
-            onChange={() => handleFieldToggle(field)}
-            className="w-6 h-6 rounded-lg border-2 border-[#163d64]/20 text-[#fa4516] focus:ring-[#fa4516]/20 transition-colors"
-          />
-          <label 
-            htmlFor={field} 
-            className="text-2xl text-[#163d64] select-none cursor-pointer hover:text-[#fa4516] transition-colors"
-          >
-            {formatFieldName(field)}
-          </label>
-        </div>
-      )
-    ))}
-  </div>
-</div>
+              <div className="bg-white/50 border border-[#163d64]/20 rounded-xl p-6">
+                <h3 className="text-3xl font-semibold text-black mb-6">Select Sections for Download</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {Object.keys(selectedFields).map((field) => (
+                    <label 
+                      key={field} 
+                      className="flex items-center space-x-4 cursor-pointer group"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedFields[field]}
+                        onChange={() => handleFieldToggle(field)}
+                        className="w-6 h-6 rounded border-2 border-[#163d64]/20 text-[#fa4516] focus:ring-[#fa4516] cursor-pointer"
+                      />
+                      <span className="text-2xl font-semibold text-black group-hover:text-[#fa4516] transition-colors">
+                        {formatFieldName(field)}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
   
               {/* Report Preview */}
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-slate-200 space-y-10">
                 {/* Basic Information */}
                 {selectedFields.basicInfo && (
                   <div className="space-y-6">
-                  <h2 className="text-3xl font-semibold text-[#163d64]">Basic Information</h2>
+                  <h2 className="text-3xl font-semibold text-black">Basic Information</h2>
                   <div className="grid grid-cols-2 gap-8">
                     <div className="p-6 rounded-xl bg-[#163d64]/5">
-                      <p className="text-2xl text-[#163d64]/70 mb-2">Date</p>
-                      <p className="text-3xl text-[#163d64] font-medium">{date}</p>
+                      <p className="text-2xl text-black mb-2">Date</p>
+                      <p className="text-3xl text-black font-medium">{date}</p>
                     </div>
                     <div className="p-6 rounded-xl bg-[#163d64]/5">
-                      <p className="text-2xl text-[#163d64]/70 mb-2">Part Code</p>
-                      <p className="text-3xl text-[#163d64] font-medium">{partCode}</p>
+                      <p className="text-2xl text-black mb-2">Part Code</p>
+                      <p className="text-3xl text-black font-medium">{partCode}</p>
                     </div>
                     <div className="p-6 rounded-xl bg-[#163d64]/5">
-                      <p className="text-2xl text-[#163d64]/70 mb-2">Part Name</p>
-                      <p className="text-3xl text-[#163d64] font-medium">{partName}</p>
+                      <p className="text-2xl text-black mb-2">Part Name</p>
+                      <p className="text-3xl text-black font-medium">{partName}</p>
                     </div>
                     <div className="p-6 rounded-xl bg-[#163d64]/5">
-                      <p className="text-2xl text-[#163d64]/70 mb-2">Theoretical Density</p>
-                      <p className="text-3xl text-[#163d64] font-medium">{density}</p>
+                      <p className="text-2xl text-black mb-2">Theoretical Density</p>
+                      <p className="text-3xl text-black font-medium">{density}</p>
                     </div>
                     <div className="p-6 rounded-xl bg-[#163d64]/5">
-                      <p className="text-2xl text-[#163d64]/70 mb-2">Attachment</p>
-                      <p className="text-3xl text-[#163d64] font-medium">{attachmentExists==="yes" ? 'Yes' : 'No'}</p>
+                      <p className="text-2xl text-black mb-2">Attachment</p>
+                      <p className="text-3xl text-black font-medium">{attachmentExists==="yes" ? 'Yes' : 'No'}</p>
                     </div>
                     {/* {densityType !== 'calculated' && standardAlloyName && standardAlloyReference && (
                       <div className="p-6 rounded-xl bg-[#163d64]/5">
@@ -543,7 +538,7 @@ function LotReportPage() {
                 {/* Measurements Table */}
                 {selectedFields.measurements && (
                   <div className="space-y-6">
-                    <h2 className="text-3xl font-semibold text-[#163d64]">Measurements</h2>
+                    <h2 className="text-3xl font-semibold text-black">Measurements</h2>
                     <div className="overflow-x-auto rounded-xl border border-slate-200">
                       <table className="w-full">
                         <thead>
@@ -578,12 +573,12 @@ function LotReportPage() {
                 {/* Chemical Composition */}
 {densityType === 'calculated' && chemicalComposition && Object.keys(chemicalComposition).length > 0 && (
   <div className="space-y-6">
-    <h2 className="text-3xl font-semibold text-[#163d64]">Chemical Composition</h2>
+    <h2 className="text-3xl font-semibold text-black">Chemical Composition</h2>
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {Object.entries(chemicalComposition).map(([element, percentage]) => (
         <div key={element} className="p-6 rounded-xl bg-[#163d64]/5">
-          <p className="text-2xl text-[#163d64]/70 mb-2">{element}</p>
-          <p className="font-mono text-3xl text-[#163d64] font-medium">{percentage}%</p>
+          <p className="text-2xl text-black mb-2">{element}</p>
+          <p className="font-mono text-3xl text-black font-medium">{percentage}%</p>
         </div>
       ))}
     </div>
@@ -593,11 +588,11 @@ function LotReportPage() {
                 {/* Standard Alloy Information */}
 {densityType !== 'calculated' && selectedFields.standardAlloy && standardAlloyName && (
   <div className="space-y-6">
-    <h2 className="text-3xl font-semibold text-[#163d64]">Standard Alloy Information</h2>
+    <h2 className="text-3xl font-semibold text-black">Standard Alloy Information</h2>
     <div className="grid grid-cols-2 gap-8">
       <div className="p-6 rounded-xl bg-[#163d64]/5">
-        <p className="text-2xl text-[#163d64]/70 mb-2">Name</p>
-        <p className="text-3xl text-[#163d64] font-medium">{standardAlloyName}</p>
+        <p className="text-2xl text-black mb-2">Name</p>
+        <p className="text-3xl text-black font-medium">{standardAlloyName}</p>
       </div>
       <div className="p-6 rounded-xl bg-[#163d64]/5">
         <p className="text-2xl text-[#163d64]/70 mb-2">Reference</p>
@@ -610,15 +605,15 @@ function LotReportPage() {
                 {/* Master Sample Details */}
                 {selectedFields.masterDetails && masterExists && (
                   <div className="space-y-6">
-                    <h2 className="text-3xl font-semibold text-[#163d64]">Master Sample Details</h2>
+                    <h2 className="text-3xl font-semibold text-black">Master Sample Details</h2>
                     <div className="grid grid-cols-2 gap-8">
                       <div className="p-6 rounded-xl bg-[#163d64]/5">
-                        <p className="text-2xl text-[#163d64]/70 mb-2">Density of Master Sample</p>
-                        <p className="text-3xl text-[#163d64] font-medium">{densityOfItem}</p>
+                        <p className="text-2xl text-black mb-2">Density of Master Sample</p>
+                        <p className="text-3xl text-black font-medium">{densityOfItem}</p>
                       </div>
                       <div className="p-6 rounded-xl bg-[#163d64]/5">
-                        <p className="text-2xl text-[#163d64]/70 mb-2">Attachment</p>
-                        <p className="text-3xl text-[#163d64] font-medium">{masterAttachmentExists==="yes" ? 'Yes' : 'No'}</p>
+                        <p className="text-2xl text-black mb-2">Attachment</p>
+                        <p className="text-3xl text-black font-medium">{masterAttachmentExists==="yes" ? 'Yes' : 'No'}</p>
                       </div>
                     </div>
                   </div>
