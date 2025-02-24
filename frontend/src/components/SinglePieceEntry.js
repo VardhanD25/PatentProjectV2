@@ -203,43 +203,43 @@ function SinglePieceEntry({
               </h2>
 
               {showResults ? (
-                <div className="space-y-8">
-                  <h3 className="text-3xl font-semibold text-[#163d64] text-center">Results</h3>
-                  
-                  <div className="bg-white/50 border border-[#163d64]/20 rounded-xl p-8 space-y-4">
-                    <p className="text-[#163d64] text-3xl">
-                      <span className="font-medium">Compactness Ratio:</span> {compactnessRatio}%
-                    </p>
+                  <div className="space-y-8">
+                    <h3 className="text-3xl font-semibold text-[#163d64] text-center">Results</h3>
                     
-                    {masterExists === 'yes' ? (
-                      <p className="text-[#163d64] text-3xl">
-                        <span className="font-medium">Porosity Index:</span> {porosity}%
+                    <div className="bg-white/50 border border-[#163d64]/20 rounded-xl p-8 space-y-4">
+                      <p className={`text-3xl ${compactnessRatio > 100 ? 'text-red-600' : 'text-[#163d64]'}`}>
+                        <span className="font-medium">Compactness Ratio:</span> {compactnessRatio}%
                       </p>
-                    ) : (
-                      <p className="text-[#fa4516] text-3xl">
-                        <span className="font-medium text-[#163d64]">Porosity Index (For specified alloy density):</span> Cannot be calculated (No master sample)
-                      </p>
-                    )}
-                  </div>
+                      
+                      {masterExists === 'yes' ? (
+                        <p className={`text-[#163d64] text-3xl ${porosity<0 ? 'text-red-600' : 'text-[#163d64]'}`}>
+                          <span className="font-medium">Porosity Index:</span> {porosity}%
+                        </p>
+                      ) : (
+                        <p className="text-[#fa4516] text-3xl">
+                          <span className="font-medium text-[#163d64]">Porosity Index (For specified alloy density):</span> Cannot be calculated (No master sample)
+                        </p>
+                      )}
+                    </div>
 
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      {compactnessRatio !== 'Incorrect input, compactness ratio cannot be greater than 100!' && (
+                        <button
+                          onClick={handleShowReport}
+                          className="px-6 py-3 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-200 shadow-sm hover:shadow-md"
+                        >
+                          Show Report
+                        </button>
+                      )}
+                    </div>
+
                     {compactnessRatio !== 'Incorrect input, compactness ratio cannot be greater than 100!' && (
-                      <button
-                        onClick={handleShowReport}
-                        className="px-6 py-3 bg-[#fa4516] text-white font-semibold rounded-xl hover:bg-[#fa4516]/90 transition-all duration-200 shadow-sm hover:shadow-md"
-                      >
-                        Show Report
-                      </button>
+                      <p className="text-[#fa4516] text-xl text-center">
+                        Verify entries before generating report, values cannot be edited later.
+                      </p>
                     )}
                   </div>
-
-                  {compactnessRatio !== 'Incorrect input, compactness ratio cannot be greater than 100!' && (
-                    <p className="text-[#fa4516] text-xl text-center">
-                      Verify entries before generating report, values cannot be edited later.
-                    </p>
-                  )}
-                </div>
-              ) : (
+                )  : (
                 <form className="space-y-8">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div className="space-y-3">

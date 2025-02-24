@@ -103,7 +103,7 @@ function ReportPage() {
       content += `
         <div style="margin-bottom: 15px">
           <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Porosity</h2>
-          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Porosity:</strong> ${porosity}</p>
+          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Porosity:</strong> ${porosity==='0.00'?'-':`${porosity}`}</p>
         </div>
       `;
     }
@@ -553,9 +553,9 @@ function ReportPage() {
                     </div>
 
     {densityType !== 'calculated' && standardAlloyName && standardAlloyReference && (
-      <div className="space-y-2">
-        <p className="text-xl font-medium text-[#163d64]/70">Standard Alloy</p>
-        <p className="text-2xl text-[#163d64]">{`${standardAlloyName} (${standardAlloyReference})`}</p>
+      <div className="p-6 rounded-xl bg-[#163d64]/5">
+        <p className="text-2xl text-[#163d64]/70 mb-2">Standard Alloy</p>
+        <p className="text-3xl text-black font-medium">{`${standardAlloyName} (${standardAlloyReference})`}</p>
       </div>
     )}
   </div>
@@ -583,14 +583,15 @@ function ReportPage() {
                     </div>
                   </div>
                 </div>
-
                 {/* Compactness Ratio */}
                 <div className="space-y-6">
                   <h3 className="text-3xl font-semibold text-[#163d64]">Compactness Ratio</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="p-6 rounded-xl bg-[#163d64]/5">
                       <p className="text-2xl text-[#163d64]/70 mb-2">Compactness Ratio</p>
-                      <p className="text-3xl text-black font-medium">{compactnessRatio}%</p>
+                      <p className={`text-3xl font-medium ${compactnessRatio > 100 ? 'text-red-600' : 'text-black'}`}>
+                        {compactnessRatio}%
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -602,7 +603,7 @@ function ReportPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                       <div className="p-6 rounded-xl bg-[#163d64]/5">
                         <p className="text-2xl text-[#163d64]/70 mb-2">Porosity Index</p>
-                        <p className="text-3xl text-black font-medium">{porosity}</p>
+                        <p className={`text-3xl font-medium ${porosity < 0 ? 'text-red-600' : 'text-black'}`}>{porosity==='0.00'?'-':`${porosity}`}</p>
                       </div>
                     </div>
                   </div>

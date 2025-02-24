@@ -42,6 +42,7 @@ function UserInput() {
   const [partDensityArray, setPartDensityArray] = useState([]);
   const [compactnessRatioArray, setCompactnessRatioArray] = useState([]);
   const [porosityArray, setPorosityArray] = useState([]);
+  const [showResults, setShowResults] = useState(false);
   // Extract the email from local storage
   const getEmailFromLocalStorage = () => {
     const user = localStorage.getItem('user');
@@ -243,10 +244,12 @@ useEffect(() => {
     }
   
     setSubmitClicked(true);
+    setShowResults(true); // Add this line
   };
+  
   const handleSubmitLot = () => {
     // Perform validation for the current screen
-    if (currentScreen === 'third' && singleOrLot==="lot") {
+    if (currentScreen === 'third' && singleOrLot === "lot") {
       const validation = validateLotEntry();
       if (!validation.isValid) {
         alert(validation.message);
@@ -255,6 +258,7 @@ useEffect(() => {
     }
   
     setSubmitClicked(true);
+    setShowResults(true); // Add this line
   };
   
 
@@ -651,14 +655,14 @@ const validateLotEntry = () => {
 />
 )}
       <div className="fixed bottom-8 right-8 flex gap-4 z-50">
-        {currentScreen !== 'first' && !isUpdatePartVisible && (
-          <button 
-            onClick={goToPreviousScreen}
-            className="px-8 py-4 rounded-xl bg-white/80 backdrop-blur-sm border border-[#163d64]/10 text-[#163d64] hover:bg-[#163d64] hover:text-white transition-all duration-300 font-semibold shadow-lg hover:shadow-xl"
-          >
-            Previous
-          </button>
-        )}
+      {currentScreen !== 'first' && !isUpdatePartVisible && !showResults && (
+  <button 
+    onClick={goToPreviousScreen}
+    className="px-8 py-4 rounded-xl bg-white/80 backdrop-blur-sm border border-[#163d64]/10 text-[#163d64] hover:bg-[#163d64] hover:text-white transition-all duration-300 font-semibold shadow-lg hover:shadow-xl"
+  >
+    Previous
+  </button>
+)}
 
         {currentScreen !== 'third' && !isUpdatePartVisible && (
           <button 

@@ -254,27 +254,29 @@ function LotEntry({
                         </tr>
                       </thead>
                       <tbody>
-                        {partMassAirArray.map((_, index) => (
-                          <tr key={index} className="border-b border-[#163d64]/10">
-                            <td className="py-4 px-6 text-2xl">{itemNumbers[index]}</td>
-                            <td className="py-4 px-6 text-2xl">{partMassAirArray[index]}</td>
-                            <td className="py-4 px-6 text-2xl">{partMassFluidArray[index]}</td>
-                            <td className="py-4 px-6 text-2xl bg-[#fff0f0]">{partDensityArray[index]}</td>
-                            <td className="py-4 px-6 text-2xl bg-[#fff0f0]">{compactnessRatioArray[index]}%</td>
-                            <td className="py-4 px-6 text-2xl bg-[#fff0f0]">
-                              {masterExists === 'yes' ? (
-                                `${porosityArray[index]}`
-                              ) : (
-                                partDensityArray[index] === Math.max(...partDensityArray.map(d => parseFloat(d))).toString() ? (
-                                  'Reference Part'
-                                ) : (
-                                  `${porosityArray[index]}`
-                                )
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
+  {partMassAirArray.map((_, index) => (
+    <tr key={index} className="border-b border-[#163d64]/10">
+      <td className="py-4 px-6 text-2xl">{itemNumbers[index]}</td>
+      <td className="py-4 px-6 text-2xl">{partMassAirArray[index]}</td>
+      <td className="py-4 px-6 text-2xl">{partMassFluidArray[index]}</td>
+      <td className="py-4 px-6 text-2xl bg-[#fff0f0]">{partDensityArray[index]}</td>
+      <td className={`py-4 px-6 text-2xl bg-[#fff0f0] ${compactnessRatioArray[index] > 100 ? 'text-red-600' : ''}`}>
+        {compactnessRatioArray[index]}%
+      </td>
+      <td className="py-4 px-6 text-2xl bg-[#fff0f0]">
+        {masterExists === 'yes' ? (
+          `${porosityArray[index]}`
+        ) : (
+          partDensityArray[index] === Math.max(...partDensityArray.map(d => parseFloat(d))).toString() ? (
+            'Reference Part'
+          ) : (
+            `${porosityArray[index]}`
+          )
+        )}
+      </td>
+    </tr>
+  ))}
+</tbody>
                     </table>
                   </div>
 
