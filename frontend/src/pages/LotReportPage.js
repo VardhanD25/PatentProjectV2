@@ -110,25 +110,25 @@ function LotReportPage() {
           <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Measurements</h2>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px">
             <tr style="background-color: #f3f4f6">
-              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Item Number</th>
-              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Mass in Air (g)</th>
-              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Mass in Fluid (g)</th>
-              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Density (g/cm³)</th>
-              ${selectedFields.compactnessRatio?`<th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Compactness Ratio</th>`:''}
-              ${selectedFields.porosity ? `<th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Porosity Index</th>` : ''}
+              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif; text-align: center;">Item Number</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif; text-align: center;">Mass in Air (g)</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif; text-align: center;">Mass in Fluid (g)</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif; text-align: center;">Density (g/cm³)</th>
+              ${selectedFields.compactnessRatio?`<th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif; text-align: center;">Compactness Ratio</th>`:''}
+              ${selectedFields.porosity ? `<th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif; text-align: center;">Porosity Index</th>` : ''}
             </tr>
             ${massInAir.map((_, index) => `
               <tr>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${itemNumbers[index]}</td>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${massInAir[index]}</td>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${massInFluid[index]}</td>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${((massInAir[index] * fluidDensity) / (massInAir[index] - massInFluid[index])).toFixed(2)}</td>
-                ${selectedFields.compactnessRatio?`<td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: ${
+                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace; text-align: center;">${itemNumbers[index]}</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace; text-align: center;">${massInAir[index]}</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace; text-align: center;">${massInFluid[index]}</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace; text-align: center;">${((massInAir[index] * fluidDensity) / (massInAir[index] - massInFluid[index])).toFixed(2)}</td>
+                ${selectedFields.compactnessRatio?`<td style="border: 1px solid #000; padding: 8px; font-size: 20px; font-family: monospace; text-align: center; ${
                   compactnessRatio[index] > 100 
-                    ? 'bg-red-200/90 text-amber-900' 
-                    : 'text-[#163d64] bg-[#fff0f0]'
-                }; font-family: monospace;">${compactnessRatio[index]}%</td>`:''}
-                ${selectedFields.porosity ? `<td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${porosityArray[index]==='0.00'?'Reference':`${porosityArray[index]}`}</td>` : ''}
+                    ? 'background-color: #fee2e2; color: #92400e;' 
+                    : 'color: #163d64; background-color: #fff0f0;'
+                }">${compactnessRatio[index]}%</td>`:''}
+                ${selectedFields.porosity ? `<td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace; text-align: center;">${porosityArray[index]==='0.00'?'Reference':`${porosityArray[index]}`}</td>` : ''}
               </tr>
             `).join('')}
           </table>
@@ -142,13 +142,13 @@ function LotReportPage() {
           <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Chemical Composition</h2>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px">
             <tr style="background-color: #f3f4f6">
-              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Element</th>
-              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Weight %</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif; text-align: center;">Element</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif; text-align: center;">Percentage</th>
             </tr>
-            ${Object.entries(chemicalComposition).map(([element, weight]) => `
+            ${Object.entries(chemicalComposition).map(([element, percentage]) => `
               <tr>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${element}</td>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${weight}</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif; text-align: center;">${element}</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace; text-align: center;">${percentage}%</td>
               </tr>
             `).join('')}
           </table>
