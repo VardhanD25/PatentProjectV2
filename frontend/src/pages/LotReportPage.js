@@ -123,7 +123,11 @@ function LotReportPage() {
                 <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${massInAir[index]}</td>
                 <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${massInFluid[index]}</td>
                 <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${((massInAir[index] * fluidDensity) / (massInAir[index] - massInFluid[index])).toFixed(2)}</td>
-                ${selectedFields.compactnessRatio?`<td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: ${compactnessRatio[index] > 100 ? 'red' : '#000'}; font-family: monospace;">${compactnessRatio[index]}%</td>`:''}
+                ${selectedFields.compactnessRatio?`<td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: ${
+                  compactnessRatio[index] > 100 
+                    ? 'bg-red-200/90 text-amber-900' 
+                    : 'text-[#163d64] bg-[#fff0f0]'
+                }; font-family: monospace;">${compactnessRatio[index]}%</td>`:''}
                 ${selectedFields.porosity ? `<td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${porosityArray[index]==='0.00'?'Reference':`${porosityArray[index]}`}</td>` : ''}
               </tr>
             `).join('')}
@@ -560,7 +564,11 @@ function LotReportPage() {
       <td className="py-4 px-6 font-mono text-3xl text-[#163d64]">
         {((massInAir[index] * fluidDensity) / (massInAir[index] - massInFluid[index])).toFixed(2)}
       </td>
-      <td className={`py-4 px-6 font-mono text-3xl ${compactnessRatio[index] > 100 ? 'text-red-600' : 'text-[#163d64]'} bg-[#fff0f0]`}>
+      <td className={`py-4 px-6 font-mono text-3xl ${
+        compactnessRatio[index] > 100 
+          ? 'bg-red-200/90 text-amber-900' 
+          : 'text-[#163d64] bg-[#fff0f0]'
+      }`}>
         {compactnessRatio[index]}%
       </td>
       <td className="py-4 px-6 font-mono text-3xl text-[#163d64] bg-[#fff0f0]">{porosityArray[index]==='0.00'?'Reference':`${porosityArray[index]}`}</td>

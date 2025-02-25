@@ -260,7 +260,11 @@ function LotEntry({
       <td className="py-4 px-6 text-2xl">{partMassAirArray[index]}</td>
       <td className="py-4 px-6 text-2xl">{partMassFluidArray[index]}</td>
       <td className="py-4 px-6 text-2xl bg-[#fff0f0]">{partDensityArray[index]}</td>
-      <td className={`py-4 px-6 text-2xl bg-[#fff0f0] ${compactnessRatioArray[index] > 100 ? 'text-red-600' : ''}`}>
+      <td className={`py-4 px-6 text-2xl ${
+        compactnessRatioArray[index] > 100 
+          ? 'bg-red-200/90 text-amber-900' 
+          : 'text-[#163d64] bg-[#fff0f0]'
+      }`}>
         {compactnessRatioArray[index]}%
       </td>
       <td className="py-4 px-6 text-2xl bg-[#fff0f0]">
