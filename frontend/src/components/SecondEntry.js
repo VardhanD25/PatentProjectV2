@@ -135,7 +135,9 @@ function SecondEntry({
                   </div>
 
                   <div className="space-y-3">
-                    <label className="text-3xl font-semibold text-[#163d64]/80">Volume of Fluid (cm³)</label>
+                    <label className="text-2xl md:text-2xl lg:text-3xl font-semibold text-[#163d64]/80 whitespace-nowrap">
+                      Volume of Fluid (cm³)
+                    </label>
                     <div className="flex items-center">
                       <input
                         type="number"
@@ -150,7 +152,9 @@ function SecondEntry({
                   </div>
 
                   <div className="space-y-3">
-                    <label className="text-3xl font-semibold text-[#163d64]/80">Density of Fluid (g/cm³)</label>
+                    <label className="text-2xl md:text-2xl lg:text-3xl font-semibold text-[#163d64]/80">
+                      Density of Fluid (g/cm³)
+                    </label>
                     <input
                       type="text"
                       value={densityOfFluid}
@@ -256,7 +260,9 @@ function SecondEntry({
                     </div>
 
                     <div className="space-y-3">
-                      <label className="text-3xl font-semibold text-[#163d64]/80">Master Sample Density (g/cm³)</label>
+                      <label className="text-2xl md:text-2xl lg:text-3xl font-semibold text-[#163d64]/80">
+                        Master Sample Density (g/cm³)
+                      </label>
                       <input
                         type="text"
                         value={densityMasterSample}
