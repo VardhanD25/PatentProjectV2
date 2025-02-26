@@ -207,12 +207,12 @@ function SinglePieceEntry({
                     <h3 className="text-3xl font-semibold text-[#163d64] text-center">Results</h3>
                     
                     <div className="bg-white/50 border border-[#163d64]/20 rounded-xl p-8 space-y-4">
-                      <p className={`text-3xl ${compactnessRatio > 100 ? 'text-red-600' : 'text-[#163d64]'}`}>
+                      <p className={`text-3xl ${compactnessRatio > 100 ? 'text-amber-900' : 'text-[#163d64]'}`}>
                         <span className="font-medium">Compactness Ratio:</span> {compactnessRatio}%
                       </p>
                       
                       {masterExists === 'yes' ? (
-                        <p className={`text-[#163d64] text-3xl ${porosity<0 ? 'text-red-600' : 'text-[#163d64]'}`}>
+                        <p className={`text-[#163d64] text-3xl ${porosity<0 ? 'text-amber-900' : 'text-[#163d64]'}`}>
                           <span className="font-medium">Porosity Index:</span> {porosity}%
                         </p>
                       ) : (

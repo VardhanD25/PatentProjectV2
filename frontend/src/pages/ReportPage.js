@@ -73,6 +73,7 @@ function ReportPage() {
           <p style="font-size: 27px"><strong>Part Code:</strong> ${partCode}</p>
           <p style="font-size: 27px"><strong>Part Name:</strong> ${partName}</p>
           <p style="font-size: 27px"><strong>Theoretical Density:</strong> ${density}</p>
+          <p style="font-size: 27px"><strong>Attachment:</strong> ${attachmentExists === "yes" ? 'Yes' : 'No'}</p>
           ${densityType !== 'calculated' && standardAlloyName && standardAlloyReference ? `<p style="font-size: 27px"><strong>Standard Alloy:</strong> ${standardAlloyName} (${standardAlloyReference})</p>` : ''}
         </div>
       `;
@@ -82,10 +83,10 @@ function ReportPage() {
       content += `
         <div style="margin-bottom: 15px">
           <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Measurements</h2>
-          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Mass in Air:</strong> ${massInAir}</p>
-          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Mass in Fluid:</strong> ${massInFluid}</p>
-          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Fluid Density:</strong> ${fluidDensity}</p>
-          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Item Density:</strong> ${densityOfItem}</p>
+          <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Mass in Air:</strong> ${massInAir}</p>
+          <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Mass in Fluid:</strong> ${massInFluid}</p>
+          <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Fluid Density:</strong> ${fluidDensity}</p>
+          <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Item Density:</strong> ${densityOfItem}</p>
         </div>
       `;
     }
@@ -94,7 +95,7 @@ function ReportPage() {
       content += `
         <div style="margin-bottom: 15px">
           <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Compactness Ratio</h2>
-          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Compactness Ratio:</strong> ${compactnessRatio}</p>
+          <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Compactness Ratio:</strong> ${compactnessRatio} %</p>
         </div>
       `;
     }
@@ -103,7 +104,7 @@ function ReportPage() {
       content += `
         <div style="margin-bottom: 15px">
           <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Porosity</h2>
-          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Porosity:</strong> ${porosity==='0.00'?'-':`${porosity}`}</p>
+          <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Porosity:</strong> ${porosity === '0.00' ? '-' : `${porosity}`}</p>
         </div>
       `;
     }
@@ -114,13 +115,13 @@ function ReportPage() {
           <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Chemical Composition</h2>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px">
             <tr style="background-color: #f3f4f6">
-              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Element</th>
-              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Weight %</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 27px; color: #000; font-family: sans-serif;">Element</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 27px; color: #000; font-family: sans-serif;">Weight %</th>
             </tr>
             ${Object.entries(chemicalComposition).map(([element, weight]) => `
               <tr>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${element}</td>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${weight}</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 27px; color: #000; font-family: monospace;">${element}</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 27px; color: #000; font-family: monospace;">${weight}</td>
               </tr>
             `).join('')}
           </table>
@@ -141,8 +142,8 @@ function ReportPage() {
       content += `
         <div style="margin-bottom: 15px">
           <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Master Sample Details</h2>
-          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Master Sample has Attachment:</strong> ${masterAttachmentExists ? 'Yes' : 'No'}</p>
-          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Density of Master Sample:</strong> ${densityOfMasterSample}</p>
+          <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Master Sample has Attachment:</strong> ${masterAttachmentExists ? 'Yes' : 'No'}</p>
+          <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Density of Master Sample:</strong> ${densityOfMasterSample}</p>
         </div>
       `;
     }
@@ -589,7 +590,7 @@ function ReportPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="p-6 rounded-xl bg-[#163d64]/5">
                       <p className="text-2xl text-[#163d64]/70 mb-2">Compactness Ratio</p>
-                      <p className={`text-3xl font-medium ${compactnessRatio > 100 ? 'text-red-600' : 'text-black'}`}>
+                      <p className={`text-3xl font-medium ${compactnessRatio > 100 ? 'text-amber-900' : 'text-black'}`}>
                         {compactnessRatio}%
                       </p>
                     </div>

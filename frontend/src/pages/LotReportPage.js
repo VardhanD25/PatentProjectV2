@@ -99,6 +99,7 @@ function LotReportPage() {
           <p style="font-size: 27px"><strong>Part Code:</strong> ${partCode}</p>
           <p style="font-size: 27px"><strong>Part Name:</strong> ${partName}</p>
           <p style="font-size: 27px"><strong>Theoretical Density:</strong> ${density}</p>
+          <p style="font-size: 27px"><strong>Attachment:</strong> ${attachmentExists === "yes" ? 'Yes' : 'No'}</p>
           ${densityType !== 'calculated' && standardAlloyName && standardAlloyReference ? `<p style="font-size: 27px"><strong>Standard Alloy:</strong> ${standardAlloyName} (${standardAlloyReference})</p>` : ''}
         </div>
       `;
@@ -110,21 +111,21 @@ function LotReportPage() {
           <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Measurements</h2>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px">
             <tr style="background-color: #f3f4f6">
-              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Item Number</th>
-              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Mass in Air (g)</th>
-              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Mass in Fluid (g)</th>
-              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Density (g/cm³)</th>
-              ${selectedFields.compactnessRatio?`<th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Compactness Ratio</th>`:''}
-              ${selectedFields.porosity ? `<th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Porosity Index</th>` : ''}
+              <th style="border: 1px solid #000; padding: 8px; font-size: 24px; color: #000; font-family: sans-serif;">Item Number</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 24px; color: #000; font-family: sans-serif;">Mass in Air (g)</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 24px; color: #000; font-family: sans-serif;">Mass in Fluid (g)</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 24px; color: #000; font-family: sans-serif;">Density (g/cm³)</th>
+              ${selectedFields.compactnessRatio ? `<th style="border: 1px solid #000; padding: 8px; font-size: 24px; color: #000; font-family: sans-serif;">Compactness Ratio</th>` : ''}
+              ${selectedFields.porosity ? `<th style="border: 1px solid #000; padding: 8px; font-size: 24px; color: #000; font-family: sans-serif;">Porosity Index</th>` : ''}
             </tr>
             ${massInAir.map((_, index) => `
               <tr>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${itemNumbers[index]}</td>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${massInAir[index]}</td>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${massInFluid[index]}</td>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${((massInAir[index] * fluidDensity) / (massInAir[index] - massInFluid[index])).toFixed(2)}</td>
-                ${selectedFields.compactnessRatio?`<td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: ${compactnessRatio[index] > 100 ? 'red' : '#000'}; font-family: monospace;">${compactnessRatio[index]}%</td>`:''}
-                ${selectedFields.porosity ? `<td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${porosityArray[index]==='0.00'?'Reference':`${porosityArray[index]}`}</td>` : ''}
+                <td style="border: 1px solid #000; padding: 8px; font-size: 24px; color: #000; font-family: monospace;">${itemNumbers[index]}</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 24px; color: #000; font-family: monospace;">${massInAir[index]}</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 24px; color: #000; font-family: monospace;">${massInFluid[index]}</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 24px; color: #000; font-family: monospace;">${((massInAir[index] * fluidDensity) / (massInAir[index] - massInFluid[index])).toFixed(2)}</td>
+                ${selectedFields.compactnessRatio ? `<td style="border: 1px solid #000; padding: 8px; font-size: 24px; color: ${compactnessRatio[index] > 100 ? 'red' : '#000'}; font-family: monospace;">${compactnessRatio[index]}%</td>` : ''}
+                ${selectedFields.porosity ? `<td style="border: 1px solid #000; padding: 8px; font-size: 24px; color: #000; font-family: monospace;">${porosityArray[index] === '0.00' ? 'Reference' : `${porosityArray[index]}`}</td>` : ''}
               </tr>
             `).join('')}
           </table>
@@ -138,13 +139,13 @@ function LotReportPage() {
           <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Chemical Composition</h2>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px">
             <tr style="background-color: #f3f4f6">
-              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Element</th>
-              <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif;">Weight %</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 27px; color: #000; font-family: sans-serif;">Element</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 27px; color: #000; font-family: sans-serif;">Weight %</th>
             </tr>
             ${Object.entries(chemicalComposition).map(([element, weight]) => `
               <tr>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${element}</td>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace;">${weight}</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 27px; color: #000; font-family: monospace;">${element}</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 27px; color: #000; font-family: monospace;">${weight}</td>
               </tr>
             `).join('')}
           </table>
@@ -166,8 +167,8 @@ function LotReportPage() {
       content += `
         <div style="margin-bottom: 15px">
           <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Master Sample Details</h2>
-          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Density of Master Sample:</strong> ${densityOfItem === '0' ? '-' : `${densityOfItem}`}</p>
-          <p style="font-size: 20px; margin-bottom: 5px; font-family: monospace;"><strong>Attachment:</strong> ${masterAttachmentExists === "yes" ? 'Yes' : 'No'}</p>
+          <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Density of Master Sample:</strong> ${densityOfItem === '0' ? '-' : `${densityOfItem}`}</p>
+          <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Attachment:</strong> ${masterAttachmentExists === "yes" ? 'Yes' : 'No'}</p>
         </div>
       `;
     }
@@ -560,7 +561,7 @@ function LotReportPage() {
       <td className="py-4 px-6 font-mono text-3xl text-[#163d64]">
         {((massInAir[index] * fluidDensity) / (massInAir[index] - massInFluid[index])).toFixed(2)}
       </td>
-      <td className={`py-4 px-6 font-mono text-3xl ${compactnessRatio[index] > 100 ? 'text-red-600' : 'text-[#163d64]'} bg-[#fff0f0]`}>
+      <td className={`py-4 px-6 font-mono text-3xl ${compactnessRatio[index] > 100 ? 'text-amber-900' : 'text-[#163d64]'} bg-[#fff0f0]`}>
         {compactnessRatio[index]}%
       </td>
       <td className="py-4 px-6 font-mono text-3xl text-[#163d64] bg-[#fff0f0]">{porosityArray[index]==='0.00'?'Reference':`${porosityArray[index]}`}</td>
