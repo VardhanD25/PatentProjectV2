@@ -262,12 +262,14 @@ function LotEntry({
       <td className="py-4 px-6 text-2xl bg-[#fff0f0]">{partDensityArray[index]}</td>
       <td className={`py-4 px-6 text-2xl ${
         compactnessRatioArray[index] > 100 
-          ? 'bg-red-200/90 text-amber-900' 
+          ? 'bg-yellow-100/90 text-amber-900' 
           : 'text-[#163d64] bg-[#fff0f0]'
       }`}>
         {compactnessRatioArray[index]}%
       </td>
-      <td className="py-4 px-6 text-2xl bg-[#fff0f0]">
+      <td className={`py-4 px-6 text-2xl ${porosityArray[index]< 0 ? 'bg-yellow-100/90 text-amber-900'
+        : 'text-[#163d64] bg-[#fff0f0]'
+      } `}>
         {masterExists === 'yes' ? (
           `${porosityArray[index]}`
         ) : (
@@ -284,11 +286,11 @@ function LotEntry({
                     </table>
                   </div>
 
-                  <div className="text-2xl text-amber-500/80 mt-6">
+                  <div className="text-2xl text-amber-900/80 mt-6">
                     {masterExists === 'yes' ? (
-                      <p>Porosity calculated using master sample as reference</p>
+                      <p>Note : Porosity calculated using master sample as reference</p>
                     ) : (
-                      <p>Porosity calculated using highest density part as reference</p>
+                      <p>Note : Porosity calculated using highest density part as reference</p>
                     )}
                   </div>
 

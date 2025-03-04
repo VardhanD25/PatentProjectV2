@@ -100,7 +100,7 @@ function LotReportPage() {
           <p style="font-size: 27px"><strong>Part Name:</strong> ${partName}</p>
           <p style="font-size: 27px"><strong>Theoretical Density:</strong> ${density}</p>
           <p style="font-size: 27px"><strong>Attachment:</strong> ${attachmentExists === "yes" ? 'Yes' : 'No'}</p>
-          ${densityType !== 'calculated' && standardAlloyName && standardAlloyReference ? `<p style="font-size: 27px"><strong>Standard Alloy:</strong> ${standardAlloyName} (${standardAlloyReference})</p>` : ''}
+          ${standardAlloyName && standardAlloyReference ? `<p style="font-size: 27px"><strong>Standard Alloy:</strong> ${standardAlloyName} (${standardAlloyReference})</p>` : ''}
         </div>
       `;
     }
@@ -126,10 +126,14 @@ function LotReportPage() {
                 <td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace; text-align: center;">${((massInAir[index] * fluidDensity) / (massInAir[index] - massInFluid[index])).toFixed(2)}</td>
                 ${selectedFields.compactnessRatio?`<td style="border: 1px solid #000; padding: 8px; font-size: 20px; font-family: monospace; text-align: center; ${
                   compactnessRatio[index] > 100 
-                    ? 'background-color: #fee2e2; color: #92400e;' 
+                    ? 'background-color: rgb(217, 226, 102); color:rgb(61, 31, 4);' 
                     : 'color: #163d64; background-color: #fff0f0;'
                 }">${compactnessRatio[index]}%</td>`:''}
-                ${selectedFields.porosity ? `<td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace; text-align: center;">${porosityArray[index]==='0.00'?'Reference':`${porosityArray[index]}`}</td>` : ''}
+                ${selectedFields.porosity ? `<td style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: monospace; text-align: center; ${
+                  porosityArray[index] < 0 
+                    ? 'background-color:rgb(217, 226, 102); color:rgb(61, 31, 4);' 
+                    : 'color: #163d64; background-color: #fff0f0;'
+                }">${porosityArray[index]==='0.00'?'Reference':`${porosityArray[index]}`}</td>` : ''}
               </tr>
             `).join('')}
           </table>
@@ -191,21 +195,21 @@ function LotReportPage() {
   const handleDownloadWord = async () => {
     try {
       const children = [];
-
+  
       // Title
       children.push(
         new Paragraph({
-          children: [new TextRun({ text: "Lot Report", bold: true, size: 32 })],
+          children: [new TextRun({ text: "Lot Compactness Evaluation", bold: true, size: 35 })],
           spacing: { after: 400 },
           alignment: AlignmentType.CENTER
         })
       );
-
+  
       // Basic Information
       if (selectedFields.basicInfo) {
         children.push(
           new Paragraph({
-            children: [new TextRun({ text: "Basic Information", bold: true, size: 24 })],
+            children: [new TextRun({ text: "Basic Information", bold: true, size: 30, color: "#163d64" })],
             spacing: { before: 400, after: 200 }
           }),
           new Paragraph({
@@ -230,42 +234,51 @@ function LotReportPage() {
             children: [
               new TextRun({ text: "Theoretical Density: ", bold: true }),
               new TextRun(density || 'N/A')
-            ],
-            spacing: { after: 200 }
-          })
+            ]
+          }),
+          new Paragraph({
+            children: [
+              new TextRun({ text: "Attachment: ", bold: true }),
+              new TextRun(attachmentExists === "yes" ? 'Yes' : 'No')
+            ]
+          }),
+          ...(standardAlloyName && standardAlloyReference ? [
+            new Paragraph({
+              children: [
+                new TextRun({ text: "Standard Alloy: ", bold: true }),
+                new TextRun(`${standardAlloyName} (${standardAlloyReference})`)
+              ]
+            })
+          ] : []),
+          new Paragraph({ text: '', spacing: { after: 200 } }) // Spacing
         );
       }
-
+  
       // Measurements
       if (selectedFields.measurements) {
         children.push(
           new Paragraph({
-            children: [new TextRun({ text: "Measurements", bold: true, size: 24 })],
+            children: [new TextRun({ text: "Measurements", bold: true, size: 25 })],
             spacing: { before: 400, after: 200 }
           })
         );
-
+  
         const headers = [
           "Item Number",
           "Mass in Air (g)",
           "Mass in Fluid (g)",
           "Density (g/cm³)",
           ...(selectedFields.compactnessRatio ? ["Compactness Ratio"] : []),
-          ...(selectedFields.porosity ? ["Porosity"] : [])
+          ...(selectedFields.porosity ? ["Porosity Index"] : [])
         ];
-
+  
         const table = new Table({
-          width: {
-            size: 100,
-            type: WidthType.PERCENTAGE,
-          },
+          width: { size: 100, type: WidthType.PERCENTAGE },
           rows: [
             new TableRow({
               children: headers.map(header => 
                 new TableCell({
-                  children: [new Paragraph({ 
-                    children: [new TextRun({ text: header, bold: true })]
-                  })],
+                  children: [new Paragraph({ children: [new TextRun({ text: header, bold: true })] })],
                   borders: {
                     top: { style: BorderStyle.SINGLE, size: 1 },
                     bottom: { style: BorderStyle.SINGLE, size: 1 },
@@ -277,111 +290,108 @@ function LotReportPage() {
             }),
             ...massInAir.map((_, index) => {
               const density = ((massInAir[index] * fluidDensity) / (massInAir[index] - massInFluid[index])).toFixed(2);
-              const cellData = [
-                itemNumbers[index] || '',
-                massInAir[index].toString(),
-                massInFluid[index].toString(),
-                density,
-                ...(selectedFields.compactnessRatio ? [compactnessRatio[index].toString()] : []),
-                ...(selectedFields.porosity ? [porosityArray[index].toString()] : [])
-              ];
               return new TableRow({
-                children: cellData.map(cell => 
+                children: [
                   new TableCell({
-                    children: [new Paragraph(cell)],
-                    borders: {
-                      top: { style: BorderStyle.SINGLE, size: 1 },
-                      bottom: { style: BorderStyle.SINGLE, size: 1 },
-                      left: { style: BorderStyle.SINGLE, size: 1 },
-                      right: { style: BorderStyle.SINGLE, size: 1 },
-                    }
-                  })
-                )
+                    children: [new Paragraph(itemNumbers[index] || '')],
+                    borders: { top: BorderStyle.SINGLE, bottom: BorderStyle.SINGLE, left: BorderStyle.SINGLE, right: BorderStyle.SINGLE }
+                  }),
+                  new TableCell({
+                    children: [new Paragraph(massInAir[index].toString())],
+                    borders: { top: BorderStyle.SINGLE, bottom: BorderStyle.SINGLE, left: BorderStyle.SINGLE, right: BorderStyle.SINGLE }
+                  }),
+                  new TableCell({
+                    children: [new Paragraph(massInFluid[index].toString())],
+                    borders: { top: BorderStyle.SINGLE, bottom: BorderStyle.SINGLE, left: BorderStyle.SINGLE, right: BorderStyle.SINGLE }
+                  }),
+                  new TableCell({
+                    children: [new Paragraph(density)],
+                    borders: { top: BorderStyle.SINGLE, bottom: BorderStyle.SINGLE, left: BorderStyle.SINGLE, right: BorderStyle.SINGLE }
+                  }),
+                  ...(selectedFields.compactnessRatio ? [
+                    new TableCell({
+                      children: [new Paragraph(`${compactnessRatio[index].toString()}%`)],
+                      borders: { top: BorderStyle.SINGLE, bottom: BorderStyle.SINGLE, left: BorderStyle.SINGLE, right: BorderStyle.SINGLE }
+                    })
+                  ] : []),
+                  ...(selectedFields.porosity ? [
+                    new TableCell({
+                      children: [new Paragraph(porosityArray[index] === '0.00' ? 'Reference' : porosityArray[index].toString())],
+                      borders: { top: BorderStyle.SINGLE, bottom: BorderStyle.SINGLE, left: BorderStyle.SINGLE, right: BorderStyle.SINGLE }
+                    })
+                  ] : [])
+                ]
               });
             })
           ]
         });
-
+  
         children.push(table);
       }
-
+  
       // Chemical Composition
-      if (selectedFields.chemicalComposition && Object.keys(chemicalComposition).length > 0) {
+      if (densityType === 'calculated' && selectedFields.chemicalComposition && Object.keys(chemicalComposition).length > 0) {
         children.push(
           new Paragraph({
-            children: [new TextRun({ text: "Chemical Composition", bold: true, size: 24 })],
+            children: [new TextRun({ text: "Chemical Composition", bold: true, size: 25 })],
             spacing: { before: 400, after: 200 }
           })
         );
-
+  
         const compositionTable = new Table({
-          width: {
-            size: 100,
-            type: WidthType.PERCENTAGE,
-          },
+          width: { size: 100, type: WidthType.PERCENTAGE },
           rows: [
             new TableRow({
               children: [
-                new TableCell({
-                  children: [new Paragraph({ children: [new TextRun({ text: "Element", bold: true })] })],
-                  borders: {
-                    top: { style: BorderStyle.SINGLE, size: 1 },
-                    bottom: { style: BorderStyle.SINGLE, size: 1 },
-                    left: { style: BorderStyle.SINGLE, size: 1 },
-                    right: { style: BorderStyle.SINGLE, size: 1 },
-                  }
-                }),
-                new TableCell({
-                  children: [new Paragraph({ children: [new TextRun({ text: "Percentage", bold: true })] })],
-                  borders: {
-                    top: { style: BorderStyle.SINGLE, size: 1 },
-                    bottom: { style: BorderStyle.SINGLE, size: 1 },
-                    left: { style: BorderStyle.SINGLE, size: 1 },
-                    right: { style: BorderStyle.SINGLE, size: 1 },
-                  }
-                })
+                new TableCell({ children: [new Paragraph("Element")], borders: { top: BorderStyle.SINGLE, bottom: BorderStyle.SINGLE, left: BorderStyle.SINGLE, right: BorderStyle.SINGLE } }),
+                new TableCell({ children: [new Paragraph("Percentage")], borders: { top: BorderStyle.SINGLE, bottom: BorderStyle.SINGLE, left: BorderStyle.SINGLE, right: BorderStyle.SINGLE } })
               ]
             }),
             ...Object.entries(chemicalComposition).map(([element, percentage]) => 
               new TableRow({
                 children: [
-                  new TableCell({
-                    children: [new Paragraph(element)],
-                    borders: {
-                      top: { style: BorderStyle.SINGLE, size: 1 },
-                      bottom: { style: BorderStyle.SINGLE, size: 1 },
-                      left: { style: BorderStyle.SINGLE, size: 1 },
-                      right: { style: BorderStyle.SINGLE, size: 1 },
-                    }
-                  }),
-                  new TableCell({
-                    children: [new Paragraph(`${percentage}%`)],
-                    borders: {
-                      top: { style: BorderStyle.SINGLE, size: 1 },
-                      bottom: { style: BorderStyle.SINGLE, size: 1 },
-                      left: { style: BorderStyle.SINGLE, size: 1 },
-                      right: { style: BorderStyle.SINGLE, size: 1 },
-                    }
-                  })
+                  new TableCell({ children: [new Paragraph(element)], borders: { top: BorderStyle.SINGLE, bottom: BorderStyle.SINGLE, left: BorderStyle.SINGLE, right: BorderStyle.SINGLE } }),
+                  new TableCell({ children: [new Paragraph(`${percentage}%`)], borders: { top: BorderStyle.SINGLE, bottom: BorderStyle.SINGLE, left: BorderStyle.SINGLE, right: BorderStyle.SINGLE } })
                 ]
               })
             )
           ]
         });
-
+  
         children.push(compositionTable);
       }
-
+  
+      // Master Sample Details
+      if (selectedFields.masterDetails && masterExists) {
+        children.push(
+          new Paragraph({
+            children: [new TextRun({ text: "Master Sample Details", bold: true, size: 25 })],
+            spacing: { before: 400, after: 200 }
+          }),
+          new Paragraph({
+            children: [
+              new TextRun({ text: "Density of Master Sample: ", bold: true }),
+              new TextRun(densityOfItem === '0' ? '-' : densityOfItem)
+            ]
+          }),
+          new Paragraph({
+            children: [
+              new TextRun({ text: "Attachment: ", bold: true }),
+              new TextRun(masterAttachmentExists === "yes" ? 'Yes' : 'No')
+            ]
+          })
+        );
+      }
+  
       const doc = new Document({
         sections: [{
           properties: {},
           children: children
         }]
       });
-
+  
       const blob = await Packer.toBlob(doc);
       saveAs(blob, `${partCode}_lot_report.docx`);
-
     } catch (error) {
       console.error('Error generating Word document:', error);
       alert('Error generating Word document. Please try again.');
@@ -392,7 +402,7 @@ function LotReportPage() {
     try {
       const wb = XLSX.utils.book_new();
       const data = [];
-
+  
       // Add Basic Information
       if (selectedFields.basicInfo) {
         data.push(
@@ -401,10 +411,12 @@ function LotReportPage() {
           ['Part Code', partCode],
           ['Part Name', partName],
           ['Theoretical Density', density],
-          ['', ''] // Empty row for spacing
+          ['Attachment', attachmentExists === "yes" ? 'Yes' : 'No'],
+          ...(standardAlloyName && standardAlloyReference ? [['Standard Alloy', `${standardAlloyName} (${standardAlloyReference})`]] : []),
+          ['', '']
         );
       }
-
+  
       // Add Measurements
       if (selectedFields.measurements) {
         const headers = [
@@ -413,9 +425,9 @@ function LotReportPage() {
           'Mass in Fluid (g)',
           'Density (g/cm³)',
           ...(selectedFields.compactnessRatio ? ['Compactness Ratio'] : []),
-          ...(selectedFields.porosity ? ['Porosity'] : [])
+          ...(selectedFields.porosity ? ['Porosity Index'] : [])
         ];
-
+  
         data.push(
           ['Measurements', ...Array(headers.length - 1).fill('')],
           headers,
@@ -427,29 +439,39 @@ function LotReportPage() {
               massInFluid[index],
               density,
               ...(selectedFields.compactnessRatio ? [compactnessRatio[index]] : []),
-              ...(selectedFields.porosity ? [porosityArray[index]] : [])
+              ...(selectedFields.porosity ? [porosityArray[index] === '0.00' ? 'Reference' : porosityArray[index]] : [])
             ];
           })
         );
       }
-
+  
       // Add Chemical Composition
-      if (selectedFields.chemicalComposition && Object.keys(chemicalComposition).length > 0) {
+      if (densityType === 'calculated' && selectedFields.chemicalComposition && Object.keys(chemicalComposition).length > 0) {
         data.push(
           ['Chemical Composition', ''],
           ['Element', 'Percentage'],
           ...Object.entries(chemicalComposition).map(([element, percentage]) => [element, percentage]),
-          ['', ''] // Empty row for spacing
+          ['', '']
         );
       }
-
+  
+      // Add Master Sample Details
+      if (selectedFields.masterDetails && masterExists) {
+        data.push(
+          ['Master Sample Details', ''],
+          ['Density of Master Sample', densityOfItem === '0' ? '-' : densityOfItem],
+          ['Attachment', masterAttachmentExists === "yes" ? 'Yes' : 'No'],
+          ['', '']
+        );
+      }
+  
       const ws = XLSX.utils.aoa_to_sheet(data);
-      
+  
       // Set column widths
       ws['!cols'] = [{ wch: 20 }, { wch: 15 }, { wch: 15 }, { wch: 15 }, { wch: 15 }, { wch: 15 }];
-
+  
       XLSX.utils.book_append_sheet(wb, ws, 'Lot Report');
-      
+  
       const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
       saveAs(new Blob([excelBuffer]), `${partCode}_lot_report.xlsx`);
     } catch (error) {
@@ -530,12 +552,12 @@ function LotReportPage() {
                       <p className="text-2xl text-black mb-2">Attachment</p>
                       <p className="text-3xl text-black font-medium">{attachmentExists==="yes" ? 'Yes' : 'No'}</p>
                     </div>
-                    {/* {densityType !== 'calculated' && standardAlloyName && standardAlloyReference && (
+                    {standardAlloyName && standardAlloyReference && (
                       <div className="p-6 rounded-xl bg-[#163d64]/5">
-                        <p className="text-2xl font-medium text-[#163d64]/70">Standard Alloy</p>
-                        <p className="text-3xl text-[#163d64]">{`${standardAlloyName} (${standardAlloyReference})`}</p>
+                        <p className="text-2xl text-black mb-2">Standard Alloy</p>
+                        <p className="text-3xl text-black font-medium">{`${standardAlloyName} (${standardAlloyReference})`}</p>
                       </div>
-                    )} */}
+                    )}
                   </div>
                 </div>
                 )}
@@ -567,12 +589,16 @@ function LotReportPage() {
       </td>
       <td className={`py-4 px-6 font-mono text-3xl ${
         compactnessRatio[index] > 100 
-          ? 'bg-red-200/90 text-amber-900' 
+          ? 'bg-yellow-100/90 text-amber-900' 
           : 'text-[#163d64] bg-[#fff0f0]'
       }`}>
         {compactnessRatio[index]}%
       </td>
-      <td className="py-4 px-6 font-mono text-3xl text-[#163d64] bg-[#fff0f0]">{porosityArray[index]==='0.00'?'Reference':`${porosityArray[index]}`}</td>
+      <td className={`py-4 px-6 font-mono text-3xl ${
+        porosityArray[index] < 0 
+          ? 'bg-yellow-100/90 text-amber-900' 
+          : 'text-[#163d64] bg-[#fff0f0]'
+      }`}>{porosityArray[index]==='0.00'?'Reference':`${porosityArray[index]}`}</td>
     </tr>
   ))}
 </tbody>

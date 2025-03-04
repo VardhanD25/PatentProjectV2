@@ -2,7 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import html2pdf from 'html2pdf.js';
-import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, BorderStyle } from 'docx';
+import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, BorderStyle ,AlignmentType} from 'docx';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import Navbar from '../components/Navbar';
@@ -74,7 +74,7 @@ function ReportPage() {
           <p style="font-size: 27px"><strong>Part Name:</strong> ${partName}</p>
           <p style="font-size: 27px"><strong>Theoretical Density:</strong> ${density}</p>
           <p style="font-size: 27px"><strong>Attachment:</strong> ${attachmentExists === "yes" ? 'Yes' : 'No'}</p>
-          ${densityType !== 'calculated' && standardAlloyName && standardAlloyReference ? `<p style="font-size: 27px"><strong>Standard Alloy:</strong> ${standardAlloyName} (${standardAlloyReference})</p>` : ''}
+          ${standardAlloyName && standardAlloyReference ? `<p style="font-size: 27px"><strong>Standard Alloy:</strong> ${standardAlloyName} (${standardAlloyReference})</p>` : ''}
         </div>
       `;
     }
@@ -168,18 +168,19 @@ function ReportPage() {
             new Paragraph({
               children: [
                 new TextRun({
-                  text: "Report",
+                  text: "Compactness Evaluation",
                   bold: true,
-                  size: 32,
+                  size: 35,
                 }),
               ],
+              alignment: AlignmentType.CENTER,
               spacing: { after: 400 },
             }),
-
+  
             // Basic Information
             ...(selectedFields.basicInfo ? [
               new Paragraph({
-                children: [new TextRun({ text: "Basic Information", bold: true, size: 28 })],
+                children: [new TextRun({ text: "Basic Information", bold: true, size: 30 })],
                 spacing: { after: 200 },
               }),
               new Paragraph({
@@ -205,14 +206,27 @@ function ReportPage() {
                   new TextRun({ text: "Theoretical Density: ", bold: true }),
                   new TextRun(density),
                 ],
-                spacing: { after: 200 },
               }),
+              new Paragraph({
+                children: [
+                  new TextRun({ text: "Attachment: ", bold: true }),
+                  new TextRun(attachmentExists === "yes" ? 'Yes' : 'No'),
+                ],
+              }),
+              ...(standardAlloyName && standardAlloyReference ? [
+                new Paragraph({
+                  children: [
+                    new TextRun({ text: "Standard Alloy: ", bold: true }),
+                    new TextRun(`${standardAlloyName} (${standardAlloyReference})`),
+                  ],
+                }),
+              ] : []),
             ] : []),
-
+  
             // Measurements
             ...(selectedFields.measurements ? [
               new Paragraph({
-                children: [new TextRun({ text: "Measurements", bold: true, size: 28 })],
+                children: [new TextRun({ text: "Measurements", bold: true, size: 25 })],
                 spacing: { after: 200 },
               }),
               new Paragraph({
@@ -241,11 +255,39 @@ function ReportPage() {
                 spacing: { after: 200 },
               }),
             ] : []),
-
-            // Chemical Composition
-            ...(selectedFields.chemicalComposition && Object.keys(chemicalComposition).length > 0 ? [
+  
+            // Compactness Ratio
+            ...(selectedFields.compactnessRatio ? [
               new Paragraph({
-                children: [new TextRun({ text: "Chemical Composition", bold: true, size: 28 })],
+                children: [new TextRun({ text: "Compactness Ratio", bold: true, size: 25 })],
+                spacing: { after: 200 },
+              }),
+              new Paragraph({
+                children: [
+                  new TextRun({ text: "Compactness Ratio: ", bold: true }),
+                  new TextRun(`${compactnessRatio} %`),
+                ],
+              }),
+            ] : []),
+  
+            // Porosity
+            ...(selectedFields.porosity && porosity && porosity !== 'N/A' ? [
+              new Paragraph({
+                children: [new TextRun({ text: "Porosity", bold: true, size: 25 })],
+                spacing: { after: 200 },
+              }),
+              new Paragraph({
+                children: [
+                  new TextRun({ text: "Porosity: ", bold: true }),
+                  new TextRun(porosity === '0.00' ? '-' : `${porosity}`),
+                ],
+              }),
+            ] : []),
+  
+            // Chemical Composition
+            ...(selectedFields.chemicalComposition && densityType==="calculated" && Object.keys(chemicalComposition).length > 0 ? [
+              new Paragraph({
+                children: [new TextRun({ text: "Chemical Composition", bold: true, size: 25 })],
                 spacing: { after: 200 },
               }),
               new Table({
@@ -299,10 +341,41 @@ function ReportPage() {
                 ],
               }),
             ] : []),
+  
+            // Notes
+            ...(selectedFields.notes && notes ? [
+              new Paragraph({
+                children: [new TextRun({ text: "Notes", bold: true, size: 30 })],
+                spacing: { after: 200 },
+              }),
+              new Paragraph({
+                children: [new TextRun(notes)],
+              }),
+            ] : []),
+  
+            // Master Sample Details
+            ...(selectedFields.masterDetails && masterExists === 'yes' ? [
+              new Paragraph({
+                children: [new TextRun({ text: "Master Sample Details", bold: true, size: 25 })],
+                spacing: { after: 200 },
+              }),
+              new Paragraph({
+                children: [
+                  new TextRun({ text: "Master Sample has Attachment: ", bold: true }),
+                  new TextRun(masterAttachmentExists ? 'Yes' : 'No'),
+                ],
+              }),
+              new Paragraph({
+                children: [
+                  new TextRun({ text: "Density of Master Sample: ", bold: true }),
+                  new TextRun(densityOfMasterSample),
+                ],
+              }),
+            ] : []),
           ],
         }],
       });
-
+  
       const blob = await Packer.toBlob(doc);
       saveAs(blob, `${partCode}_report.docx`);
     } catch (error) {
@@ -310,13 +383,13 @@ function ReportPage() {
       alert('Error generating Word document. Please try again.');
     }
   };
+  
   // excel download sathi template tyyar keliye info is just printed in that specific format
   const handleDownloadExcel = () => {
     try {
-      
       const wb = XLSX.utils.book_new();
       const data = [];
-
+  
       // Add Basic Information
       if (selectedFields.basicInfo) {
         data.push(
@@ -325,10 +398,12 @@ function ReportPage() {
           ['Part Code', partCode],
           ['Part Name', partName],
           ['Theoretical Density', density],
-          ['', ''] // Empty row for spacing
+          ['Attachment', attachmentExists === "yes" ? 'Yes' : 'No'],
+          ...(standardAlloyName && standardAlloyReference ? [['Standard Alloy', `${standardAlloyName} (${standardAlloyReference})`]] : []),
+          ['', '']
         );
       }
-
+  
       // Add Measurements
       if (selectedFields.measurements) {
         data.push(
@@ -337,64 +412,63 @@ function ReportPage() {
           ['Mass in Fluid', massInFluid],
           ['Fluid Density', fluidDensity],
           ['Item Density', densityOfItem],
-          ['', ''] // Empty row for spacing
+          ['', '']
         );
       }
-
+  
       // Add Compactness Ratio
       if (selectedFields.compactnessRatio) {
         data.push(
           ['Compactness Ratio', ''],
           ['Value', compactnessRatio],
-          ['', ''] // Empty row for spacing
+          ['', '']
         );
       }
-
+  
       // Add Porosity
       if (selectedFields.porosity && porosity && porosity !== 'N/A') {
         data.push(
           ['Porosity', ''],
-          ['Value', porosity],
-          ['', ''] 
+          ['Value', porosity === '0.00' ? '-' : `${porosity}`],
+          ['', '']
         );
       }
-
+  
       // Add Chemical Composition
-      if (selectedFields.chemicalComposition && Object.keys(chemicalComposition).length > 0) {
+      if (selectedFields.chemicalComposition && densityType==="calculated" && Object.keys(chemicalComposition).length > 0) {
         data.push(
           ['Chemical Composition', ''],
           ['Element', 'Weight %'],
           ...Object.entries(chemicalComposition).map(([element, weight]) => [element, weight]),
-          ['', ''] // space add keli adhi gichmid hoat hoti
+          ['', '']
         );
       }
-
+  
       // Add Notes
       if (selectedFields.notes && notes) {
         data.push(
           ['Notes', ''],
           ['Content', notes],
-          ['', ''] 
+          ['', '']
         );
       }
-
+  
       // Add Master Details
       if (selectedFields.masterDetails && masterExists === 'yes') {
         data.push(
           ['Master Sample Details', ''],
           ['Has Attachment', masterAttachmentExists ? 'Yes' : 'No'],
           ['Density of Master Sample', densityOfMasterSample],
-          ['', ''] // Empty row for spacing
+          ['', '']
         );
       }
-
-      
+  
       const ws = XLSX.utils.aoa_to_sheet(data);
-
+  
       // Set column widths
       const colWidths = [{ wch: 30 }, { wch: 20 }];
       ws['!cols'] = colWidths;
-
+  
       // Add styling
       for (let i = 0; i < data.length; i++) {
         const cell = XLSX.utils.encode_cell({ r: i, c: 0 });
@@ -410,15 +484,13 @@ function ReportPage() {
           };
         }
       }
-
-      
+  
       XLSX.utils.book_append_sheet(wb, ws, 'Report');
-
-      
+  
       const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
       const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       saveAs(blob, `${partCode}_report.xlsx`);
-
+  
     } catch (error) {
       console.error('Error generating Excel file:', error);
       alert('Error generating Excel file. Please try again.');
@@ -553,7 +625,7 @@ function ReportPage() {
                       <p className="text-3xl text-black font-medium">{attachmentExists==="yes"?'Yes':'No'}</p>
                     </div>
 
-    {densityType !== 'calculated' && standardAlloyName && standardAlloyReference && (
+    {standardAlloyName && standardAlloyReference && (
       <div className="p-6 rounded-xl bg-[#163d64]/5">
         <p className="text-2xl text-[#163d64]/70 mb-2">Standard Alloy</p>
         <p className="text-3xl text-black font-medium">{`${standardAlloyName} (${standardAlloyReference})`}</p>
@@ -604,7 +676,7 @@ function ReportPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                       <div className="p-6 rounded-xl bg-[#163d64]/5">
                         <p className="text-2xl text-[#163d64]/70 mb-2">Porosity Index</p>
-                        <p className={`text-3xl font-medium ${porosity < 0 ? 'text-red-600' : 'text-black'}`}>{porosity==='0.00'?'-':`${porosity}`}</p>
+                        <p className={`text-3xl font-medium ${porosity < 0 ? 'text-amber-900' : 'text-black'}`}>{porosity==='0.00'?'-':`${porosity}`}</p>
                       </div>
                     </div>
                   </div>
