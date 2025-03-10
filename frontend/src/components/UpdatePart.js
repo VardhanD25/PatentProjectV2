@@ -44,10 +44,7 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
 
   const handleCompositionChange = (index, field, value) => {
     const updatedComposition = [...composition];
-    const oldValue = parseFloat(updatedComposition[index][field]) || 0;
-    const newValue = parseFloat(value) || 0;
-    const difference = newValue - oldValue;
-
+  
     if (field === 'elementSymbol') {
       updatedComposition[index] = {
         ...updatedComposition[index],
@@ -57,17 +54,30 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
         }
       };
     } else {
-      updatedComposition[index] = { ...updatedComposition[index], [field]: newValue.toFixed(2) };
+      updatedComposition[index] = { ...updatedComposition[index], [field]: value };
     }
-
-    if (index !== 0 && field === 'percentage') {
-      updatedComposition[0].percentage = Math.max(0, (parseFloat(updatedComposition[0].percentage) || 0) - difference).toFixed(2);
-    }
-
+  
     setComposition(updatedComposition);
-    calculateTotalPercentage(updatedComposition);
+  
+    // Only calculate the total percentage if the field is 'percentage'
+    if (field === 'percentage') {
+      const updatedCompositionWithNumbers = updatedComposition.map(item => ({
+        ...item,
+        percentage: parseFloat(item.percentage) || 0
+      }));
+  
+      const total = updatedCompositionWithNumbers.reduce((sum, item) => sum + item.percentage, 0);
+      const baseElementIndex = updatedCompositionWithNumbers.findIndex(item => item.isBaseElement);
+  
+      if (baseElementIndex !== -1) {
+        const otherElementsTotal = total - updatedCompositionWithNumbers[baseElementIndex].percentage;
+        updatedCompositionWithNumbers[baseElementIndex].percentage = Math.max(0, 100 - otherElementsTotal);
+      }
+  
+      setComposition(updatedCompositionWithNumbers);
+      calculateTotalPercentage(updatedCompositionWithNumbers);
+    }
   };
-
   const handleSave = async (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -170,16 +180,16 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
                           />
                         </td>
                         <td className="py-4 px-6">
-                          <input
-                            type="number"
-                            value={item.percentage}
-                            onChange={(e) => handleCompositionChange(index, 'percentage', e.target.value)}
-                            className="w-full px-6 py-3 rounded-lg bg-white border border-[#163d64]/10 text-black text-2xl focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
-                            placeholder="Percentage"
-                            min="0"
-                            max="100"
-                            step="0.01"
-                          />
+                        <input
+                          type="number"
+                          value={item.percentage}
+                          onChange={(e) => handleCompositionChange(index, 'percentage', e.target.value)}
+                          className="w-full px-6 py-3 rounded-lg bg-white border border-[#163d64]/10 text-black text-2xl focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
+                          placeholder="Percentage"
+                          min="0"
+                          max="100"
+                          step="0.01"
+                        />
                         </td>
                       </tr>
                     ))}
