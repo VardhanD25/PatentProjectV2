@@ -77,52 +77,54 @@ function UpdateStandardAlloy({ partCode, onClose, onSave }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-[#163d64]/10 max-w-3xl w-full">
-      <div className="space-y-8">
-        <h2 className="text-4xl font-bold text-black mb-8">Update Standard Alloy</h2>
+    <form onSubmit={handleSubmit} className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-[#163d64]/10 max-w-7xl w-full">
+      <div className="space-y-6">
+        <h2 className="text-4xl font-bold text-black mb-6">Update Standard Alloy</h2>
 
-        {/* Current Standard Alloy Display */}
-        <div className="space-y-6">
-          <h3 className="text-3xl font-semibold text-black">Current Standard Alloy</h3>
-          {currentAlloy ? (
-            <div className="bg-[#163d64]/5 rounded-xl p-6 border border-[#163d64]/10">
-              <p className="text-2xl text-black">
-                {currentAlloy.name}
-                {currentAlloy.reference && ` (${currentAlloy.reference})`}
-              </p>
-              {currentAlloy.density && (
-                <p className="text-2xl text-black/70 mt-4">
-                  Density: {currentAlloy.density} g/cm³
+        <div className="grid grid-cols-2 gap-8">
+          {/* Current Standard Alloy Display */}
+          <div className="space-y-4">
+            <h3 className="text-3xl font-semibold text-black">Current Standard Alloy</h3>
+            {currentAlloy ? (
+              <div className="bg-[#163d64]/5 rounded-xl p-6 border border-[#163d64]/10">
+                <p className="text-2xl text-black">
+                  {currentAlloy.name}
+                  {currentAlloy.reference && ` (${currentAlloy.reference})`}
                 </p>
-              )}
-            </div>
-          ) : (
-            <p className="text-2xl text-black/70">No standard alloy currently assigned</p>
-          )}
-        </div>
+                {currentAlloy.density && (
+                  <p className="text-2xl text-black/70 mt-3">
+                    Density: {currentAlloy.density} g/cm³
+                  </p>
+                )}
+              </div>
+            ) : (
+              <p className="text-2xl text-black/70">No standard alloy currently assigned</p>
+            )}
+          </div>
 
-        {/* Select New Standard Alloy */}
-        <div className="space-y-4">
-          <label className="text-2xl font-semibold text-black">
-            Select New Standard Alloy
-          </label>
-          <select
-            value={selectedAlloy}
-            onChange={(e) => {
-              setSelectedAlloy(e.target.value);
-              setError('');
-            }}
-            className="w-full px-6 py-4 rounded-xl bg-white border border-[#163d64]/10 text-2xl text-black focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
-          >
-            <option value="">Select Standard Alloy</option>
-            {standardAlloys
-              .filter(alloy => alloy._id !== currentAlloy?._id)
-              .map(alloy => (
-                <option key={alloy._id} value={alloy._id}>
-                  {`${alloy.name}${alloy.reference ? ` (${alloy.reference})` : ''}${alloy.density ? ` - ${alloy.density} g/cm³` : ''}`}
-                </option>
-              ))}
-          </select>
+          {/* Select New Standard Alloy */}
+          <div className="space-y-4">
+            <label className="text-3xl font-semibold text-black">
+              Select New Standard Alloy
+            </label>
+            <select
+              value={selectedAlloy}
+              onChange={(e) => {
+                setSelectedAlloy(e.target.value);
+                setError('');
+              }}
+              className="w-full px-6 py-4 rounded-xl bg-white border border-[#163d64]/10 text-2xl text-black focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
+            >
+              <option value="">Select Standard Alloy</option>
+              {standardAlloys
+                .filter(alloy => alloy._id !== currentAlloy?._id)
+                .map(alloy => (
+                  <option key={alloy._id} value={alloy._id}>
+                    {`${alloy.name}${alloy.reference ? ` (${alloy.reference})` : ''}${alloy.density ? ` - ${alloy.density} g/cm³` : ''}`}
+                  </option>
+                ))}
+            </select>
+          </div>
         </div>
 
         {error && (
@@ -135,7 +137,7 @@ function UpdateStandardAlloy({ partCode, onClose, onSave }) {
           </motion.div>
         )}
 
-        <div className="flex justify-end gap-4 mt-8">
+        <div className="flex justify-end gap-4 mt-6">
           <motion.button
             type="button"
             onClick={onClose}

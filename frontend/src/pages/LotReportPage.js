@@ -93,7 +93,7 @@ function LotReportPage() {
   
     if (selectedFields.basicInfo) {
       content += `
-        <div style="margin-bottom: 20px">
+        <div style="margin-bottom: 20px; text-align: center;">
           <h2 style="color: #163d64; font-size: 30px; margin-bottom: 10px">Basic Information</h2>
           <p style="font-size: 27px"><strong>Date:</strong> ${date}</p>
           <p style="font-size: 27px"><strong>Part Code:</strong> ${partCode}</p>
@@ -108,7 +108,7 @@ function LotReportPage() {
     if (selectedFields.measurements) {
       content += `
         <div style="margin-bottom: 15px">
-          <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Measurements</h2>
+          <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif; text-align: center;">Measurements</h2>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px">
             <tr style="background-color: #f3f4f6">
               <th style="border: 1px solid #000; padding: 8px; font-size: 20px; color: #000; font-family: sans-serif; text-align: center;">Item Number</th>
@@ -210,13 +210,15 @@ function LotReportPage() {
         children.push(
           new Paragraph({
             children: [new TextRun({ text: "Basic Information", bold: true, size: 30, color: "#163d64" })],
-            spacing: { before: 400, after: 200 }
+            spacing: { before: 400, after: 200 },
+            alignment: AlignmentType.CENTER
           }),
           new Paragraph({
             children: [
               new TextRun({ text: "Date: ", bold: true }),
               new TextRun(date || 'N/A')
-            ]
+            ],
+            alignment: AlignmentType.CENTER
           }),
           new Paragraph({
             children: [
@@ -278,7 +280,10 @@ function LotReportPage() {
             new TableRow({
               children: headers.map(header => 
                 new TableCell({
-                  children: [new Paragraph({ children: [new TextRun({ text: header, bold: true })] })],
+                  children: [new Paragraph({ 
+                    children: [new TextRun({ text: header, bold: true })],
+                    alignment: AlignmentType.CENTER
+                  })],
                   borders: {
                     top: { style: BorderStyle.SINGLE, size: 1 },
                     bottom: { style: BorderStyle.SINGLE, size: 1 },
@@ -293,30 +298,48 @@ function LotReportPage() {
               return new TableRow({
                 children: [
                   new TableCell({
-                    children: [new Paragraph(itemNumbers[index] || '')],
+                    children: [new Paragraph({ 
+                      text: itemNumbers[index] || '',
+                      alignment: AlignmentType.CENTER
+                    })],
                     borders: { top: BorderStyle.SINGLE, bottom: BorderStyle.SINGLE, left: BorderStyle.SINGLE, right: BorderStyle.SINGLE }
                   }),
                   new TableCell({
-                    children: [new Paragraph(massInAir[index].toString())],
+                    children: [new Paragraph({ 
+                      text: massInAir[index].toString(),
+                      alignment: AlignmentType.CENTER
+                    })],
                     borders: { top: BorderStyle.SINGLE, bottom: BorderStyle.SINGLE, left: BorderStyle.SINGLE, right: BorderStyle.SINGLE }
                   }),
                   new TableCell({
-                    children: [new Paragraph(massInFluid[index].toString())],
+                    children: [new Paragraph({ 
+                      text: massInFluid[index].toString(),
+                      alignment: AlignmentType.CENTER
+                    })],
                     borders: { top: BorderStyle.SINGLE, bottom: BorderStyle.SINGLE, left: BorderStyle.SINGLE, right: BorderStyle.SINGLE }
                   }),
                   new TableCell({
-                    children: [new Paragraph(density)],
+                    children: [new Paragraph({ 
+                      text: density,
+                      alignment: AlignmentType.CENTER
+                    })],
                     borders: { top: BorderStyle.SINGLE, bottom: BorderStyle.SINGLE, left: BorderStyle.SINGLE, right: BorderStyle.SINGLE }
                   }),
                   ...(selectedFields.compactnessRatio ? [
                     new TableCell({
-                      children: [new Paragraph(`${compactnessRatio[index].toString()}%`)],
+                      children: [new Paragraph({ 
+                        text: `${compactnessRatio[index].toString()}%`,
+                        alignment: AlignmentType.CENTER
+                      })],
                       borders: { top: BorderStyle.SINGLE, bottom: BorderStyle.SINGLE, left: BorderStyle.SINGLE, right: BorderStyle.SINGLE }
                     })
                   ] : []),
                   ...(selectedFields.porosity ? [
                     new TableCell({
-                      children: [new Paragraph(porosityArray[index] === '0.00' ? 'Reference' : porosityArray[index].toString())],
+                      children: [new Paragraph({ 
+                        text: porosityArray[index] === '0.00' ? 'Reference' : porosityArray[index].toString(),
+                        alignment: AlignmentType.CENTER
+                      })],
                       borders: { top: BorderStyle.SINGLE, bottom: BorderStyle.SINGLE, left: BorderStyle.SINGLE, right: BorderStyle.SINGLE }
                     })
                   ] : [])

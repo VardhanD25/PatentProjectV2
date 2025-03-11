@@ -67,8 +67,8 @@ function ReportPage() {
   
     if (selectedFields.basicInfo) {
       content += `
-        <div style="margin-bottom: 20px">
-          <h2 style="font-size: 30px; margin-bottom: 15px">Basic Information</h2>
+        <div style="margin-bottom: 20px; text-align: center;">
+          <h2 style="color: #163d64; font-size: 30px; margin-bottom: 10px">Basic Information</h2>
           <p style="font-size: 27px"><strong>Date:</strong> ${date}</p>
           <p style="font-size: 27px"><strong>Part Code:</strong> ${partCode}</p>
           <p style="font-size: 27px"><strong>Part Name:</strong> ${partName}</p>
@@ -83,10 +83,18 @@ function ReportPage() {
       content += `
         <div style="margin-bottom: 15px">
           <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Measurements</h2>
-          <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Mass in Air:</strong> ${massInAir}</p>
-          <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Mass in Fluid:</strong> ${massInFluid}</p>
-          <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Fluid Density:</strong> ${fluidDensity}</p>
-          <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Item Density:</strong> ${densityOfItem}</p>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px">
+            <tr style="background-color: #f3f4f6">
+              <th style="border: 1px solid #000; padding: 8px; font-size: 27px; color: #000; font-family: sans-serif;">Element</th>
+              <th style="border: 1px solid #000; padding: 8px; font-size: 27px; color: #000; font-family: sans-serif;">Weight %</th>
+            </tr>
+            ${Object.entries(chemicalComposition).map(([element, weight]) => `
+              <tr>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 27px; color: #000; font-family: monospace;">${element}</td>
+                <td style="border: 1px solid #000; padding: 8px; font-size: 27px; color: #000; font-family: monospace;">${weight}</td>
+              </tr>
+            `).join('')}
+          </table>
         </div>
       `;
     }
@@ -182,36 +190,42 @@ function ReportPage() {
               new Paragraph({
                 children: [new TextRun({ text: "Basic Information", bold: true, size: 30 })],
                 spacing: { after: 200 },
+                alignment: AlignmentType.CENTER
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Date: ", bold: true }),
                   new TextRun(date),
                 ],
+                alignment: AlignmentType.CENTER
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Part Code: ", bold: true }),
                   new TextRun(partCode),
                 ],
+                alignment: AlignmentType.CENTER
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Part Name: ", bold: true }),
                   new TextRun(partName),
                 ],
+                alignment: AlignmentType.CENTER
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Theoretical Density: ", bold: true }),
                   new TextRun(density),
                 ],
+                alignment: AlignmentType.CENTER
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Attachment: ", bold: true }),
                   new TextRun(attachmentExists === "yes" ? 'Yes' : 'No'),
                 ],
+                alignment: AlignmentType.CENTER
               }),
               ...(standardAlloyName && standardAlloyReference ? [
                 new Paragraph({
@@ -219,6 +233,7 @@ function ReportPage() {
                     new TextRun({ text: "Standard Alloy: ", bold: true }),
                     new TextRun(`${standardAlloyName} (${standardAlloyReference})`),
                   ],
+                  alignment: AlignmentType.CENTER
                 }),
               ] : []),
             ] : []),
@@ -234,25 +249,28 @@ function ReportPage() {
                   new TextRun({ text: "Mass in Air: ", bold: true }),
                   new TextRun(massInAir),
                 ],
+                alignment: AlignmentType.CENTER
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Mass in Fluid: ", bold: true }),
                   new TextRun(massInFluid),
                 ],
+                alignment: AlignmentType.CENTER
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Fluid Density: ", bold: true }),
                   new TextRun(fluidDensity),
                 ],
+                alignment: AlignmentType.CENTER
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Item Density: ", bold: true }),
                   new TextRun(densityOfItem),
                 ],
-                spacing: { after: 200 },
+                alignment: AlignmentType.CENTER
               }),
             ] : []),
   
@@ -267,6 +285,7 @@ function ReportPage() {
                   new TextRun({ text: "Compactness Ratio: ", bold: true }),
                   new TextRun(`${compactnessRatio} %`),
                 ],
+                alignment: AlignmentType.CENTER
               }),
             ] : []),
   
@@ -281,6 +300,7 @@ function ReportPage() {
                   new TextRun({ text: "Porosity: ", bold: true }),
                   new TextRun(porosity === '0.00' ? '-' : `${porosity}`),
                 ],
+                alignment: AlignmentType.CENTER
               }),
             ] : []),
   
@@ -295,7 +315,10 @@ function ReportPage() {
                   new TableRow({
                     children: [
                       new TableCell({
-                        children: [new Paragraph("Element")],
+                        children: [new Paragraph({ 
+                          text: "Element",
+                          alignment: AlignmentType.CENTER
+                        })],
                         borders: {
                           top: { style: BorderStyle.SINGLE, size: 1 },
                           bottom: { style: BorderStyle.SINGLE, size: 1 },
@@ -304,7 +327,10 @@ function ReportPage() {
                         },
                       }),
                       new TableCell({
-                        children: [new Paragraph("Weight %")],
+                        children: [new Paragraph({ 
+                          text: "Weight %",
+                          alignment: AlignmentType.CENTER
+                        })],
                         borders: {
                           top: { style: BorderStyle.SINGLE, size: 1 },
                           bottom: { style: BorderStyle.SINGLE, size: 1 },
@@ -318,7 +344,10 @@ function ReportPage() {
                     new TableRow({
                       children: [
                         new TableCell({
-                          children: [new Paragraph(element)],
+                          children: [new Paragraph({ 
+                            text: element,
+                            alignment: AlignmentType.CENTER
+                          })],
                           borders: {
                             top: { style: BorderStyle.SINGLE, size: 1 },
                             bottom: { style: BorderStyle.SINGLE, size: 1 },
@@ -327,7 +356,10 @@ function ReportPage() {
                           },
                         }),
                         new TableCell({
-                          children: [new Paragraph(weight)],
+                          children: [new Paragraph({ 
+                            text: weight,
+                            alignment: AlignmentType.CENTER
+                          })],
                           borders: {
                             top: { style: BorderStyle.SINGLE, size: 1 },
                             bottom: { style: BorderStyle.SINGLE, size: 1 },
@@ -350,6 +382,7 @@ function ReportPage() {
               }),
               new Paragraph({
                 children: [new TextRun(notes)],
+                alignment: AlignmentType.CENTER
               }),
             ] : []),
   
@@ -364,12 +397,14 @@ function ReportPage() {
                   new TextRun({ text: "Master Sample has Attachment: ", bold: true }),
                   new TextRun(masterAttachmentExists ? 'Yes' : 'No'),
                 ],
+                alignment: AlignmentType.CENTER
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Density of Master Sample: ", bold: true }),
                   new TextRun(densityOfMasterSample),
                 ],
+                alignment: AlignmentType.CENTER
               }),
             ] : []),
           ],
