@@ -69,51 +69,49 @@ function ReportPage() {
       content += `
         <div style="margin-bottom: 20px; text-align: center;">
           <h2 style="color: #163d64; font-size: 30px; margin-bottom: 10px">Basic Information</h2>
-          <p style="font-size: 27px"><strong>Date:</strong> ${date}</p>
-          <p style="font-size: 27px"><strong>Part Code:</strong> ${partCode}</p>
-          <p style="font-size: 27px"><strong>Part Name:</strong> ${partName}</p>
-          <p style="font-size: 27px"><strong>Theoretical Density:</strong> ${density}</p>
-          <p style="font-size: 27px"><strong>Attachment:</strong> ${attachmentExists === "yes" ? 'Yes' : 'No'}</p>
-          ${standardAlloyName && standardAlloyReference ? `<p style="font-size: 27px"><strong>Standard Alloy:</strong> ${standardAlloyName} (${standardAlloyReference})</p>` : ''}
+          <p style="font-size: 27px; margin-bottom: 10px;"><strong>Date:</strong> ${date}</p>
+          <p style="font-size: 27px; margin-bottom: 10px;"><strong>Part Code:</strong> ${partCode}</p>
+          <p style="font-size: 27px; margin-bottom: 10px;"><strong>Part Name:</strong> ${partName}</p>
+          <p style="font-size: 27px; margin-bottom: 10px;"><strong>Theoretical Density:</strong> ${density}</p>
+          <p style="font-size: 27px; margin-bottom: 10px;"><strong>Attachment:</strong> ${attachmentExists === "yes" ? 'Yes' : 'No'}</p>
+          ${standardAlloyName && standardAlloyReference ? `<p style="font-size: 27px; margin-bottom: 10px;"><strong>Standard Alloy:</strong> ${standardAlloyName} (${standardAlloyReference})</p>` : ''}
         </div>
       `;
     }
   
     if (selectedFields.measurements) {
       content += `
-        <div style="margin-bottom: 15px">
-          <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif; text-align: center;">Measurements</h2>
-          <div style="text-align: center;">
-            <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Mass in Air:</strong> ${massInAir}</p>
-            <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Mass in Fluid:</strong> ${massInFluid}</p>
-            <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Fluid Density:</strong> ${fluidDensity}</p>
-            <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Item Density:</strong> ${densityOfItem}</p>
-          </div>
+        <div style="margin-bottom: 20px; text-align: center;">
+          <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Measurements</h2>
+          <p style="font-size: 27px; margin-bottom: 10px;"><strong>Mass in Air:</strong> ${massInAir}</p>
+          <p style="font-size: 27px; margin-bottom: 10px;"><strong>Mass in Fluid:</strong> ${massInFluid}</p>
+          <p style="font-size: 27px; margin-bottom: 10px;"><strong>Fluid Density:</strong> ${fluidDensity}</p>
+          <p style="font-size: 27px; margin-bottom: 10px;"><strong>Item Density:</strong> ${densityOfItem}</p>
         </div>
       `;
     }
   
     if (selectedFields.compactnessRatio) {
       content += `
-        <div style="margin-bottom: 15px">
+        <div style="margin-bottom: 20px; text-align: center;">
           <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Compactness Ratio</h2>
-          <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Compactness Ratio:</strong> ${compactnessRatio} %</p>
+          <p style="font-size: 27px; margin-bottom: 10px;"><strong>Compactness Ratio:</strong> ${compactnessRatio} %</p>
         </div>
       `;
     }
   
     if (selectedFields.porosity && porosity && porosity !== 'N/A') {
       content += `
-        <div style="margin-bottom: 15px">
+        <div style="margin-bottom: 20px; text-align: center;">
           <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Porosity</h2>
-          <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Porosity:</strong> ${porosity === '0.00' ? '-' : `${porosity}`}</p>
+          <p style="font-size: 27px; margin-bottom: 10px;"><strong>Porosity:</strong> ${porosity === '0.00' ? '-' : `${porosity}`}</p>
         </div>
       `;
     }
   
     if (densityType !== 'specified' && selectedFields.chemicalComposition && chemicalComposition && Object.keys(chemicalComposition).length > 0) {
       content += `
-        <div style="margin-bottom: 15px">
+        <div style="margin-bottom: 20px; text-align: center;">
           <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Chemical Composition</h2>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px">
             <tr style="background-color: #f3f4f6">
@@ -133,19 +131,19 @@ function ReportPage() {
   
     if (selectedFields.notes && notes) {
       content += `
-        <div style="margin-bottom: 20px">
+        <div style="margin-bottom: 20px; text-align: center;">
           <h2 style="font-size: 30px; margin-bottom: 15px">Notes</h2>
-          <p style="font-size: 27px">${notes}</p>
+          <p style="font-size: 27px; margin-bottom: 10px;">${notes}</p>
         </div>
       `;
     }
   
     if (selectedFields.masterDetails && masterExists === 'yes') {
       content += `
-        <div style="margin-bottom: 15px">
+        <div style="margin-bottom: 20px; text-align: center;">
           <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Master Sample Details</h2>
-          <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Master Sample has Attachment:</strong> ${masterAttachmentExists ? 'Yes' : 'No'}</p>
-          <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Density of Master Sample:</strong> ${densityOfMasterSample}</p>
+          <p style="font-size: 27px; margin-bottom: 10px;"><strong>Master Sample has Attachment:</strong> ${masterAttachmentExists ? 'Yes' : 'No'}</p>
+          <p style="font-size: 27px; margin-bottom: 10px;"><strong>Density of Master Sample:</strong> ${densityOfMasterSample}</p>
         </div>
       `;
     }
@@ -191,35 +189,40 @@ function ReportPage() {
                   new TextRun({ text: "Date: ", bold: true }),
                   new TextRun(date),
                 ],
-                alignment: AlignmentType.CENTER
+                alignment: AlignmentType.CENTER,
+                spacing: { after: 200 },
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Part Code: ", bold: true }),
                   new TextRun(partCode),
                 ],
-                alignment: AlignmentType.CENTER
+                alignment: AlignmentType.CENTER,
+                spacing: { after: 200 },
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Part Name: ", bold: true }),
                   new TextRun(partName),
                 ],
-                alignment: AlignmentType.CENTER
+                alignment: AlignmentType.CENTER,
+                spacing: { after: 200 },
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Theoretical Density: ", bold: true }),
                   new TextRun(density),
                 ],
-                alignment: AlignmentType.CENTER
+                alignment: AlignmentType.CENTER,
+                spacing: { after: 200 },
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Attachment: ", bold: true }),
                   new TextRun(attachmentExists === "yes" ? 'Yes' : 'No'),
                 ],
-                alignment: AlignmentType.CENTER
+                alignment: AlignmentType.CENTER,
+                spacing: { after: 200 },
               }),
               ...(standardAlloyName && standardAlloyReference ? [
                 new Paragraph({
@@ -227,7 +230,8 @@ function ReportPage() {
                     new TextRun({ text: "Standard Alloy: ", bold: true }),
                     new TextRun(`${standardAlloyName} (${standardAlloyReference})`),
                   ],
-                  alignment: AlignmentType.CENTER
+                  alignment: AlignmentType.CENTER,
+                  spacing: { after: 200 },
                 }),
               ] : []),
             ] : []),
@@ -237,34 +241,39 @@ function ReportPage() {
               new Paragraph({
                 children: [new TextRun({ text: "Measurements", bold: true, size: 25 })],
                 spacing: { after: 200 },
+                alignment: AlignmentType.CENTER
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Mass in Air: ", bold: true }),
                   new TextRun(massInAir),
                 ],
-                alignment: AlignmentType.CENTER
+                alignment: AlignmentType.CENTER,
+                spacing: { after: 200 },
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Mass in Fluid: ", bold: true }),
                   new TextRun(massInFluid),
                 ],
-                alignment: AlignmentType.CENTER
+                alignment: AlignmentType.CENTER,
+                spacing: { after: 200 },
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Fluid Density: ", bold: true }),
                   new TextRun(fluidDensity),
                 ],
-                alignment: AlignmentType.CENTER
+                alignment: AlignmentType.CENTER,
+                spacing: { after: 200 },
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Item Density: ", bold: true }),
                   new TextRun(densityOfItem),
                 ],
-                alignment: AlignmentType.CENTER
+                alignment: AlignmentType.CENTER,
+                spacing: { after: 200 },
               }),
             ] : []),
   
@@ -273,13 +282,18 @@ function ReportPage() {
               new Paragraph({
                 children: [new TextRun({ text: "Compactness Ratio", bold: true, size: 25 })],
                 spacing: { after: 200 },
+                alignment: AlignmentType.CENTER
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Compactness Ratio: ", bold: true }),
-                  new TextRun(`${compactnessRatio} %`),
+                  new TextRun({
+                    text: `${compactnessRatio} %`,
+                    color: compactnessRatio > 100 ? 'amber-900' : '000000',
+                  }),
                 ],
-                alignment: AlignmentType.CENTER
+                alignment: AlignmentType.CENTER,
+                spacing: { after: 200 },
               }),
             ] : []),
   
@@ -288,31 +302,34 @@ function ReportPage() {
               new Paragraph({
                 children: [new TextRun({ text: "Porosity", bold: true, size: 25 })],
                 spacing: { after: 200 },
+                alignment: AlignmentType.CENTER
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Porosity: ", bold: true }),
-                  new TextRun(porosity === '0.00' ? '-' : `${porosity}`),
+                  new TextRun({
+                    text: `${porosity === '0.00' ? '-' : `${porosity}`}`,
+                    color: porosity < 0 ? 'red-600' : '000000',
+                  }),
                 ],
-                alignment: AlignmentType.CENTER
+                alignment: AlignmentType.CENTER,
+                spacing: { after: 200 },
               }),
             ] : []),
   
             // Chemical Composition
-            ...(selectedFields.chemicalComposition && densityType==="calculated" && Object.keys(chemicalComposition).length > 0 ? [
+            ...(selectedFields.chemicalComposition && Object.keys(chemicalComposition).length > 0 ? [
               new Paragraph({
                 children: [new TextRun({ text: "Chemical Composition", bold: true, size: 25 })],
                 spacing: { after: 200 },
+                alignment: AlignmentType.CENTER
               }),
               new Table({
                 rows: [
                   new TableRow({
                     children: [
                       new TableCell({
-                        children: [new Paragraph({ 
-                          text: "Element",
-                          alignment: AlignmentType.CENTER
-                        })],
+                        children: [new Paragraph({ text: "Element", alignment: AlignmentType.CENTER })],
                         borders: {
                           top: { style: BorderStyle.SINGLE, size: 1 },
                           bottom: { style: BorderStyle.SINGLE, size: 1 },
@@ -321,10 +338,7 @@ function ReportPage() {
                         },
                       }),
                       new TableCell({
-                        children: [new Paragraph({ 
-                          text: "Weight %",
-                          alignment: AlignmentType.CENTER
-                        })],
+                        children: [new Paragraph({ text: "Weight %", alignment: AlignmentType.CENTER })],
                         borders: {
                           top: { style: BorderStyle.SINGLE, size: 1 },
                           bottom: { style: BorderStyle.SINGLE, size: 1 },
@@ -338,10 +352,7 @@ function ReportPage() {
                     new TableRow({
                       children: [
                         new TableCell({
-                          children: [new Paragraph({ 
-                            text: element.toString(),
-                            alignment: AlignmentType.CENTER
-                          })],
+                          children: [new Paragraph({ text: element.toString(), alignment: AlignmentType.CENTER })],
                           borders: {
                             top: { style: BorderStyle.SINGLE, size: 1 },
                             bottom: { style: BorderStyle.SINGLE, size: 1 },
@@ -350,10 +361,7 @@ function ReportPage() {
                           },
                         }),
                         new TableCell({
-                          children: [new Paragraph({ 
-                            text: weight.toString(),
-                            alignment: AlignmentType.CENTER
-                          })],
+                          children: [new Paragraph({ text: weight.toString(), alignment: AlignmentType.CENTER })],
                           borders: {
                             top: { style: BorderStyle.SINGLE, size: 1 },
                             bottom: { style: BorderStyle.SINGLE, size: 1 },
@@ -373,10 +381,12 @@ function ReportPage() {
               new Paragraph({
                 children: [new TextRun({ text: "Notes", bold: true, size: 30 })],
                 spacing: { after: 200 },
+                alignment: AlignmentType.CENTER
               }),
               new Paragraph({
                 children: [new TextRun(notes)],
-                alignment: AlignmentType.CENTER
+                alignment: AlignmentType.CENTER,
+                spacing: { after: 200 },
               }),
             ] : []),
   
@@ -385,20 +395,23 @@ function ReportPage() {
               new Paragraph({
                 children: [new TextRun({ text: "Master Sample Details", bold: true, size: 25 })],
                 spacing: { after: 200 },
+                alignment: AlignmentType.CENTER
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Master Sample has Attachment: ", bold: true }),
                   new TextRun(masterAttachmentExists ? 'Yes' : 'No'),
                 ],
-                alignment: AlignmentType.CENTER
+                alignment: AlignmentType.CENTER,
+                spacing: { after: 200 },
               }),
               new Paragraph({
                 children: [
                   new TextRun({ text: "Density of Master Sample: ", bold: true }),
                   new TextRun(densityOfMasterSample),
                 ],
-                alignment: AlignmentType.CENTER
+                alignment: AlignmentType.CENTER,
+                spacing: { after: 200 },
               }),
             ] : []),
           ],
