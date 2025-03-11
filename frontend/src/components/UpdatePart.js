@@ -44,10 +44,7 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
 
   const handleCompositionChange = (index, field, value) => {
     const updatedComposition = [...composition];
-    const oldValue = parseFloat(updatedComposition[index][field]) || 0;
-    const newValue = parseFloat(value) || 0;
-    const difference = newValue - oldValue;
-
+  
     if (field === 'elementSymbol') {
       updatedComposition[index] = {
         ...updatedComposition[index],
@@ -57,17 +54,30 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
         }
       };
     } else {
-      updatedComposition[index] = { ...updatedComposition[index], [field]: newValue.toFixed(2) };
+      updatedComposition[index] = { ...updatedComposition[index], [field]: value };
     }
-
-    if (index !== 0 && field === 'percentage') {
-      updatedComposition[0].percentage = Math.max(0, (parseFloat(updatedComposition[0].percentage) || 0) - difference).toFixed(2);
-    }
-
+  
     setComposition(updatedComposition);
-    calculateTotalPercentage(updatedComposition);
+  
+    // Only calculate the total percentage if the field is 'percentage'
+    if (field === 'percentage') {
+      const updatedCompositionWithNumbers = updatedComposition.map(item => ({
+        ...item,
+        percentage: parseFloat(item.percentage) || 0
+      }));
+  
+      const total = updatedCompositionWithNumbers.reduce((sum, item) => sum + item.percentage, 0);
+      const baseElementIndex = updatedCompositionWithNumbers.findIndex(item => item.isBaseElement);
+  
+      if (baseElementIndex !== -1) {
+        const otherElementsTotal = total - updatedCompositionWithNumbers[baseElementIndex].percentage;
+        updatedCompositionWithNumbers[baseElementIndex].percentage = Math.max(0, 100 - otherElementsTotal);
+      }
+  
+      setComposition(updatedCompositionWithNumbers);
+      calculateTotalPercentage(updatedCompositionWithNumbers);
+    }
   };
-
   const handleSave = async (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -149,31 +159,42 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
                 {part.partName}
               </h3>
               
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6">
-                {composition.map((item, index) => (
-                  <div key={index} className="flex flex-col space-y-3 p-4 border border-[#163d64]/10 rounded-lg">
-                    <input
-                      type="text"
-                      value={item.element.symbol}
-                      onChange={(e) => handleCompositionChange(index, 'elementSymbol', e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-lg bg-white border border-[#163d64]/10 text-2xl text-black focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
-                      placeholder="Symbol"
-                    />
-                    <div className="flex items-center space-x-2">
-                      <input
-                        type="number"
-                        value={item.percentage}
-                        onChange={(e) => handleCompositionChange(index, 'percentage', e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-lg bg-white border border-[#163d64]/10 text-2xl text-black focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
-                        placeholder="Percentage"
-                        min="0"
-                        max="100"
-                        step="0.01"
-                      />
-                      <span className="text-2xl text-black/60">%</span>
-                    </div>
-                  </div>
-                ))}
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-[#163d64]/10">
+                      <th className="text-left py-4 px-6 text-2xl font-medium text-black">Element Symbol</th>
+                      <th className="text-left py-4 px-6 text-2xl font-medium text-black">Percentage</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#163d64]/10">
+                    {composition.map((item, index) => (
+                      <tr key={index}>
+                        <td className="py-4 px-6">
+                          <input
+                            type="text"
+                            value={item.element.symbol}
+                            onChange={(e) => handleCompositionChange(index, 'elementSymbol', e.target.value)}
+                            className="w-full px-6 py-3 rounded-lg bg-white border border-[#163d64]/10 text-black text-2xl focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
+                            placeholder="Symbol"
+                          />
+                        </td>
+                        <td className="py-4 px-6">
+                        <input
+                          type="number"
+                          value={item.percentage}
+                          onChange={(e) => handleCompositionChange(index, 'percentage', e.target.value)}
+                          className="w-full px-6 py-3 rounded-lg bg-white border border-[#163d64]/10 text-black text-2xl focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
+                          placeholder="Percentage"
+                          min="0"
+                          max="100"
+                          step="0.01"
+                        />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
 
               <div className={`text-center py-4 px-6 rounded-xl text-2xl ${
