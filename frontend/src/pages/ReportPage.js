@@ -82,19 +82,13 @@ function ReportPage() {
     if (selectedFields.measurements) {
       content += `
         <div style="margin-bottom: 15px">
-          <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif;">Measurements</h2>
-          <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px">
-            <tr style="background-color: #f3f4f6">
-              <th style="border: 1px solid #000; padding: 8px; font-size: 27px; color: #000; font-family: sans-serif;">Element</th>
-              <th style="border: 1px solid #000; padding: 8px; font-size: 27px; color: #000; font-family: sans-serif;">Weight %</th>
-            </tr>
-            ${Object.entries(chemicalComposition).map(([element, weight]) => `
-              <tr>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 27px; color: #000; font-family: monospace;">${element}</td>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 27px; color: #000; font-family: monospace;">${weight}</td>
-              </tr>
-            `).join('')}
-          </table>
+          <h2 style="font-size: 25px; margin-bottom: 10px; color: #000; font-family: sans-serif; text-align: center;">Measurements</h2>
+          <div style="text-align: center;">
+            <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Mass in Air:</strong> ${massInAir}</p>
+            <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Mass in Fluid:</strong> ${massInFluid}</p>
+            <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Fluid Density:</strong> ${fluidDensity}</p>
+            <p style="font-size: 27px; margin-bottom: 5px; font-family: monospace;"><strong>Item Density:</strong> ${densityOfItem}</p>
+          </div>
         </div>
       `;
     }
@@ -345,7 +339,7 @@ function ReportPage() {
                       children: [
                         new TableCell({
                           children: [new Paragraph({ 
-                            text: element,
+                            text: element.toString(),
                             alignment: AlignmentType.CENTER
                           })],
                           borders: {
@@ -357,7 +351,7 @@ function ReportPage() {
                         }),
                         new TableCell({
                           children: [new Paragraph({ 
-                            text: weight,
+                            text: weight.toString(),
                             alignment: AlignmentType.CENTER
                           })],
                           borders: {
