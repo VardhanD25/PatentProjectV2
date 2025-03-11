@@ -38,52 +38,57 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
   }, [selectedPartCode]);
 
   const calculateTotalPercentage = (updatedComposition) => {
-    const total = updatedComposition.reduce((sum, item) => sum + (parseFloat(item.percentage) || 0), 0);
+    const total = updatedComposition.reduce((sum, item) => 
+      sum + (parseFloat(item.percentage) || 0), 0);
     setTotalPercentage(parseFloat(total.toFixed(2)));
   };
 
   const handleCompositionChange = (index, field, value) => {
-    const updatedComposition = [...composition];
-  
+    const newComposition = [...composition];
+    
     if (field === 'elementSymbol') {
-      updatedComposition[index] = {
-        ...updatedComposition[index],
+      newComposition[index] = {
+        ...newComposition[index],
         element: {
-          ...updatedComposition[index].element,
+          ...newComposition[index].element,
           symbol: value
         }
       };
-    } else {
-      updatedComposition[index] = { ...updatedComposition[index], [field]: value };
-    }
-  
-    setComposition(updatedComposition);
-  
-    // Only calculate the total percentage if the field is 'percentage'
-    if (field === 'percentage') {
-      const updatedCompositionWithNumbers = updatedComposition.map(item => ({
-        ...item,
-        percentage: parseFloat(item.percentage) || 0
-      }));
-  
-      const total = updatedCompositionWithNumbers.reduce((sum, item) => sum + item.percentage, 0);
-      const baseElementIndex = updatedCompositionWithNumbers.findIndex(item => item.isBaseElement);
-  
-      if (baseElementIndex !== -1) {
-        const otherElementsTotal = total - updatedCompositionWithNumbers[baseElementIndex].percentage;
-        updatedCompositionWithNumbers[baseElementIndex].percentage = Math.max(0, 100 - otherElementsTotal);
+      setComposition(newComposition);
+    } else if (field === 'percentage') {
+      const newPercentage = parseFloat(value) || 0;
+      if (newPercentage < 0 || newPercentage > 100) {
+        return;
       }
-  
-      setComposition(updatedCompositionWithNumbers);
-      calculateTotalPercentage(updatedCompositionWithNumbers);
+
+      // Update the percentage for the current element
+      newComposition[index] = {
+        ...newComposition[index],
+        percentage: newPercentage.toFixed(2)
+      };
+
+      // Calculate total percentage excluding the first element (base element)
+      const totalPercentage = newComposition.reduce((sum, el, i) => 
+        sum + (i === 0 ? 0 : parseFloat(el.percentage || 0)), 0);
+
+      // Adjust the first element (base element) to maintain 100% total
+      newComposition[0] = {
+        ...newComposition[0],
+        percentage: Math.max(0, (100 - totalPercentage)).toFixed(2)
+      };
+
+      setComposition(newComposition);
+      calculateTotalPercentage(newComposition);
     }
   };
+
   const handleSave = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
+    // Validation: Ensure total composition percentages add up to 100
     if (Math.abs(totalPercentage - 100) > 0.01) {
-      alert('Total percentage must equal 100% before saving.');
+      alert('Total composition percentage must equal 100%.');
       return;
     }
 
@@ -93,23 +98,20 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ partCode: selectedPartCode, composition }),
+        body: JSON.stringify({ 
+          partCode: selectedPartCode, 
+          composition: composition.map(item => ({
+            ...item,
+            percentage: parseFloat(item.percentage).toFixed(2)
+          }))
+        }),
       });
 
-      const data = await response.json();
-
       if (response.ok) {
-        const densityResponse = await fetch(`http://localhost:4000/parts/calculateDensity/${selectedPartCode}`);
-        const densityData = await densityResponse.json();
-        
-        if (densityResponse.ok) {
-          alert('Part updated successfully!');
-          onSave(densityData.formattedDensity);
-        } else {
-          alert('Part updated but failed to recalculate density');
-        }
+        onSave();
       } else {
-        alert(data.message || 'Error updating part');
+        const errorData = await response.json();
+        alert(errorData.message || 'Error updating part');
       }
     } catch (error) {
       alert('Error connecting to server');
@@ -140,7 +142,7 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
           </div>
         </div>
 
-        <div className="p-6 overflow-y-auto h-[calc(95vh-80px)]">
+        <div className="p-6">
           {loading ? (
             <div className="flex justify-center items-center py-6">
               <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#fa4516]"></div>
@@ -159,34 +161,49 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
                 {part.partName}
               </h3>
               
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-4">
-                {composition.map((item, index) => (
-                  <div key={index} className="flex flex-col space-y-2 p-3 border border-[#163d64]/10 rounded-lg bg-white hover:shadow-md transition-shadow duration-200">
-                    <input
-                      type="text"
-                      value={item.element.symbol}
-                      onChange={(e) => handleCompositionChange(index, 'elementSymbol', e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-white border border-[#163d64]/10 text-2xl text-black focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
-                      placeholder="Symbol"
-                    />
-                    <div className="flex items-center space-x-1">
-                      <input
-                        type="number"
-                        value={item.percentage}
-                        onChange={(e) => handleCompositionChange(index, 'percentage', e.target.value)}
-                        className="w-full px-3 py-2 rounded-lg bg-white border border-[#163d64]/10 text-2xl text-black focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
-                        placeholder="Percentage"
-                        min="0"
-                        max="100"
-                        step="0.01"
-                      />
-                      <span className="text-2xl text-black/60 w-6">%</span>
+              {/* Scrollable list container */}
+              <div className="border border-[#163d64]/10 rounded-xl overflow-hidden">
+                {/* Header row */}
+                <div className="grid grid-cols-2 gap-4 p-4 bg-[#163d64]/5 border-b border-[#163d64]/10">
+                  <div className="text-2xl font-semibold text-black">Element Symbol</div>
+                  <div className="text-2xl font-semibold text-black">Percentage</div>
+                </div>
+                
+                {/* Scrollable content */}
+                <div className="max-h-[calc(95vh-350px)] overflow-y-auto">
+                  {composition.map((item, index) => (
+                    <div 
+                      key={index} 
+                      className="grid grid-cols-2 gap-4 p-4 border-b border-[#163d64]/10 hover:bg-gray-50 transition-colors duration-200"
+                    >
+                      <div>
+                        <input
+                          type="text"
+                          value={item.element.symbol}
+                          onChange={(e) => handleCompositionChange(index, 'elementSymbol', e.target.value)}
+                          className="w-full px-4 py-3 rounded-lg bg-white border border-[#163d64]/10 text-2xl text-black focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
+                          placeholder="Symbol"
+                        />
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="number"
+                          value={item.percentage}
+                          onChange={(e) => handleCompositionChange(index, 'percentage', e.target.value)}
+                          className="w-full px-4 py-3 rounded-lg bg-white border border-[#163d64]/10 text-2xl text-black focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
+                          placeholder="Percentage"
+                          min="0"
+                          max="100"
+                          step="0.01"
+                        />
+                        <span className="text-2xl text-black/60">%</span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
 
-              <div className={`text-center py-3 px-4 rounded-xl text-2xl ${
+              <div className={`text-center py-4 px-6 rounded-xl text-2xl ${
                 Math.abs(totalPercentage - 100) > 0.01
                   ? 'bg-red-50 text-red-500' 
                   : 'bg-green-50 text-green-500'
@@ -199,7 +216,7 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={onClose}
-                  className="px-6 py-3 text-2xl border-2 border-[#163d64] text-[#163d64] rounded-xl font-medium hover:bg-[#163d64] hover:text-white transition-all duration-300"
+                  className="px-8 py-4 text-2xl border-2 border-[#163d64] text-[#163d64] rounded-xl font-medium hover:bg-[#163d64] hover:text-white transition-all duration-300"
                 >
                   Cancel
                 </motion.button>
@@ -207,7 +224,7 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={handleSave}
-                  className="px-6 py-3 text-2xl bg-[#fa4516] text-white rounded-xl font-medium hover:bg-[#fa4516]/90 transition-all duration-300"
+                  className="px-8 py-4 text-2xl bg-[#fa4516] text-white rounded-xl font-medium hover:bg-[#fa4516]/90 transition-all duration-300"
                 >
                   Save Changes
                 </motion.button>
