@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -15,6 +15,9 @@ const AddPart = () => {
   const [standardAlloys, setStandardAlloys] = useState([]);
   const [selectedStandardAlloy, setSelectedStandardAlloy] = useState('');
   const navigate = useNavigate();
+
+  // Ref for the partCode input field
+  const partCodeInputRef = useRef(null);
 
   const getEmailFromLocalStorage = () => {
     const user = localStorage.getItem('user');
@@ -141,27 +144,27 @@ const AddPart = () => {
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
     setErrorMessage(''); // Clear any previous error messages
-
+  
     // Validation: Ensure part code is unique
     if (existingPartCodes.includes(partCode)) {
       setErrorMessage('Part code already exists. Please enter a unique part code.');
       return;
     }
-
+  
     // Validation: Ensure all elements in composition have a symbol if composition is not empty
     const hasUnselectedSymbols = composition.some((el) => !el.symbol);
     if (composition.length > 1 && hasUnselectedSymbols) {
       setErrorMessage('All elements must have a selected symbol.');
       return;
     }
-
+  
     // Validation: Ensure total composition percentages add up to 100 if composition is not empty
     const totalPercentage = composition.reduce((sum, el) => sum + (el.percentage || 0), 0);
     if (composition.length > 1 && totalPercentage - 100 > 0.01) {
       setErrorMessage('Total composition percentage must equal 100%.');
       return;
     }
-
+  
     // Proceed with submission
     try {
       const response = await fetch('http://localhost:4000/parts/', {
@@ -177,7 +180,7 @@ const AddPart = () => {
           composition: composition.length > 1 ? composition : undefined,
         }),
       });
-
+  
       if (response.ok) {
         // Reset form fields after successful submission
         setPartCode('');
@@ -186,8 +189,19 @@ const AddPart = () => {
         setSelectedSymbols(new Set());
         setSelectedStandardAlloy('');
         setErrorMessage('');
+  
+        // Restore focus to the partCode input field
+        setTimeout(() => {
+          partCodeInputRef.current?.focus();
+        }, 0);
+  
         alert('Part created successfully!');
-        navigate('/userinput');
+  
+        // Delay navigation to ensure state updates are applied
+        setTimeout(() => {
+          navigate('/userinput');
+          window.electron.repaintWindow(); // Use the exposed repaintWindow function
+        }, 500);
       } else {
         const errorData = await response.json();
         setErrorMessage(errorData.message || 'An error occurred.');
@@ -219,6 +233,7 @@ const AddPart = () => {
                     <div className="space-y-2">
                       <label className="text-3xl font-semibold text-[#163d64]/80">Part Code</label>
                       <input
+                        ref={partCodeInputRef} // Attach the ref to the input field
                         type="text"
                         value={partCode}
                         onChange={(e) => setPartCode(e.target.value)}

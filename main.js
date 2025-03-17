@@ -120,6 +120,14 @@ ipcMain.handle('capture-weight', async () => {
   });
 });
 
+// Add an IPC listener to force repaint
+ipcMain.on('force-repaint', () => {
+  if (mainWindow) {
+    mainWindow.blur(); // Temporarily blur the window
+    mainWindow.focus(); // Refocus the window to force repaint
+  }
+});
+
 app.on('ready', startApp);
 
 app.on('window-all-closed', () => {
