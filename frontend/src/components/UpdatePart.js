@@ -45,38 +45,37 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
 
   const handleCompositionChange = (index, field, value) => {
     const newComposition = [...composition];
-    
+  
     if (field === 'elementSymbol') {
       newComposition[index] = {
         ...newComposition[index],
         element: {
           ...newComposition[index].element,
-          symbol: value
-        }
+          symbol: value,
+        },
       };
       setComposition(newComposition);
     } else if (field === 'percentage') {
-      const newPercentage = parseFloat(value) || 0;
+      const newPercentage = value === '' ? '' : parseFloat(value); // Allow empty input
       if (newPercentage < 0 || newPercentage > 100) {
-        return;
+        return; // Prevent invalid percentages
       }
-
-      // Update the percentage for the current element
+  
       newComposition[index] = {
         ...newComposition[index],
-        percentage: newPercentage.toFixed(2)
+        percentage: value, // Temporarily store raw input
       };
-
-      // Calculate total percentage excluding the first element (base element)
-      const totalPercentage = newComposition.reduce((sum, el, i) => 
-        sum + (i === 0 ? 0 : parseFloat(el.percentage || 0)), 0);
-
-      // Adjust the first element (base element) to maintain 100% total
+  
+      const totalPercentage = newComposition.reduce(
+        (sum, el, i) => sum + (i === 0 ? 0 : parseFloat(el.percentage || 0)),
+        0
+      );
+  
       newComposition[0] = {
         ...newComposition[0],
-        percentage: Math.max(0, (100 - totalPercentage)).toFixed(2)
+        percentage: Math.max(0, 100 - totalPercentage).toFixed(2), // Format base element
       };
-
+  
       setComposition(newComposition);
       calculateTotalPercentage(newComposition);
     }
@@ -178,36 +177,41 @@ const UpdatePart = ({ selectedPartCode, onSave, onClose }) => {
                     
                     {/* Scrollable content */}
                     <div className="overflow-y-auto">
-                      {composition.map((item, index) => (
-                        <div 
-                          key={index} 
-                          className="grid grid-cols-2 gap-4 p-4 border-b border-[#163d64]/10 hover:bg-gray-50 transition-colors duration-200"
-                        >
-                          <div>
-                            <input
-                              type="text"
-                              value={item.element.symbol}
-                              onChange={(e) => handleCompositionChange(index, 'elementSymbol', e.target.value)}
-                              className="w-full px-4 py-3 rounded-lg bg-white border border-[#163d64]/10 text-2xl text-black focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
-                              placeholder="Symbol"
-                            />
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <input
-                              type="number"
-                              value={item.percentage}
-                              onChange={(e) => handleCompositionChange(index, 'percentage', e.target.value)}
-                              className="w-full px-4 py-3 rounded-lg bg-white border border-[#163d64]/10 text-2xl text-black focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
-                              placeholder="Percentage"
-                              min="0"
-                              max="100"
-                              step="0.01"
-                            />
-                            <span className="text-2xl text-black/60">%</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+    {composition.map((item, index) => (
+      <div
+        key={index}
+        className="grid grid-cols-2 gap-4 p-4 border-b border-[#163d64]/10 hover:bg-gray-50 transition-colors duration-200"
+      >
+        <div>
+          <input
+            type="text"
+            value={item.element.symbol}
+            onChange={(e) => handleCompositionChange(index, 'elementSymbol', e.target.value)}
+            className="w-full px-4 py-3 rounded-lg bg-white border border-[#163d64]/10 text-2xl text-black focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
+            placeholder="Symbol"
+          />
+        </div>
+        <div className="flex items-center space-x-2">
+          <input
+            type="number"
+            value={item.percentage}
+            onChange={(e) => handleCompositionChange(index, 'percentage', e.target.value)}
+            onBlur={() => {
+              const newComposition = [...composition];
+              newComposition[index].percentage = parseFloat(newComposition[index].percentage || 0).toFixed(2); // Format on blur
+              setComposition(newComposition);
+            }}
+            className="w-full px-4 py-3 rounded-lg bg-white border border-[#163d64]/10 text-2xl text-black focus:outline-none focus:border-[#fa4516] focus:ring-1 focus:ring-[#fa4516] transition-all duration-300"
+            placeholder="Percentage"
+            min="0"
+            max="100"
+            step="0.01"
+          />
+          <span className="text-2xl text-black/60">%</span>
+        </div>
+      </div>
+    ))}
+  </div>
                   </div>
                 </div>
               )}
